@@ -61,7 +61,7 @@
   },
   "field.proxy": {
     "message": "Proxy",
-    "description": "Il proxy è un servizio online, utilizzato per il trasferimento dei dati tramite HTTP."
+    "description": "Il proxy è un servizio online che si riferisce a un proxy HTTP utilizzato per il trasferimento dei dati."
   },
   "message.paidSuccessfully": {
     "message": "Pagamento riuscito",
@@ -79,6 +79,18 @@
     "message": "Apri WeChat sul telefono e scansiona per completare il pagamento",
     "description": "Messaggio di aiuto per il pagamento WeChat."
   },
+  "message.wechatPayMobileGuide": {
+    "message": "Il browser attuale non supporta la chiamata diretta a WeChat Pay. Copia il link sottostante e aprilo in WeChat per completare il pagamento.",
+    "description": "Testo guida mostrato in un browser mobile non WeChat."
+  },
+  "button.copyPayLink": {
+    "message": "Copia il link di pagamento",
+    "description": "Testo del pulsante per copiare l'URL della pagina corrente negli appunti, per facilitare l'incollaggio su WeChat."
+  },
+  "message.wechatPayMobileHint": {
+    "message": "Dopo aver copiato, apri WeChat, incolla il link in qualsiasi chat o nella barra di ricerca in alto, e clicca sul link per completare il pagamento.",
+    "description": "Suggerimento secondario sotto il pulsante di copia del link."
+  },
   "message.free": {
     "message": "Gratuito",
     "description": "Messaggio per ordine gratuito."
@@ -86,6 +98,18 @@
   "message.buyInExternalUrl": {
     "message": "Completa il pagamento nel link esterno",
     "description": "Messaggio per pagamento tramite link esterno."
+  },
+  "message.applePayProcessing": {
+    "message": "Completamento dell’acquisto tramite l’App Store…",
+    "description": "Message while the Apple in-app purchase is processing."
+  },
+  "message.applePayFailed": {
+    "message": "Pagamento App Store non completato. Riprova.",
+    "description": "Message when the Apple in-app purchase fails."
+  },
+  "message.applePayUnavailable": {
+    "message": "Questo pacchetto non può essere acquistato nell’app.",
+    "description": "Message when Apple in-app purchase is unavailable for the package."
   },
   "message.updateFailed": {
     "message": "Aggiornamento fallito",
@@ -129,11 +153,15 @@
   },
   "title.aliPay": {
     "message": "Alipay",
-    "description": "Titolo visualizzato sul sito, indica il pagamento Alipay, un metodo di pagamento online."
+    "description": "Titolo visualizzato come titolo del sito, indica il pagamento tramite Alipay, che è un metodo di pagamento online."
   },
   "title.stripe": {
     "message": "Stripe",
     "description": "Titolo visualizzato sul sito, indica il pagamento Stripe, un metodo di pagamento online."
+  },
+  "title.card": {
+    "message": "Carta di credito",
+    "description": "Titolo mostrato sul sito, indica il pagamento tramite carta di credito/debito."
   },
   "title.manageOrder": {
     "message": "Gestisci Ordine",
@@ -371,6 +399,10 @@
     "message": "Portafoglio Solana",
     "description": "Titolo della scheda di connessione del portafoglio Solana."
   },
+  "message.publicPayNotFound": {
+    "message": "Ordine non trovato o scaduto.",
+    "description": "Shown on public pay page when the order GET returns 404."
+  },
   "message.x402WalletStatusDetected": {
     "message": "Rilevato",
     "description": "Etichetta dello stato del portafoglio rilevato/installato."
@@ -502,5 +534,45 @@
   "title.updateDiscount": {
     "message": "Aggiorna sconto",
     "description": "Titolo del popup per modificare uno sconto."
+  },
+  "message.wechatPayLongPressTip": {
+    "message": "Tieni premuto il codice QR qui sotto e seleziona 'Riconosci codice QR' per completare il pagamento in WeChat.",
+    "description": "Tip shown above the Native QR on mobile-WeChat. The user long-presses to recognise the `weixin://wxpay/bizpayurl` URL and pays without leaving WeChat."
+  },
+  "message.wechatPayMobileScanTip": {
+    "message": "Salva o fai uno screenshot del codice QR qui sotto, apri WeChat, clicca su Scansiona, seleziona l'album in alto a destra e scegli l'immagine salvata per completare il pagamento.",
+    "description": "Testo guida mostrato sopra il codice QR in un browser mobile non WeChat. Guida l'utente a salvare l'immagine del codice QR e a utilizzare la funzione album di WeChat per riconoscerlo e completare il pagamento."
+  },
+  "message.creditsValue": {
+    "message": "{value} crediti",
+    "description": "Display of credits amount for an order, e.g. '5 credits'. {value} is the formatted credit number."
+  },
+  "title.totalOrders": {
+    "message": "Numero totale di ordini",
+    "description": "Scheda di riepilogo: numero totale di ordini in base ai criteri di filtro attuali."
+  },
+  "title.totalSpent": {
+    "message": "Spesa totale",
+    "description": "Scheda di riepilogo: importo totale degli ordini in base ai criteri di filtro attuali."
+  },
+  "title.finishedOrders": {
+    "message": "Ordini completati",
+    "description": "Scheda di riepilogo: numero di ordini completati."
+  },
+  "title.pendingOrders": {
+    "message": "Ordini in attesa di pagamento",
+    "description": "Scheda di riepilogo: numero di ordini in attesa di pagamento."
+  },
+  "button.export": {
+    "message": "Esporta CSV",
+    "description": "Testo del pulsante: esporta gli ordini in formato CSV in base ai criteri di filtro attuali."
+  },
+  "field.allStates": {
+    "message": "Tutti gli stati",
+    "description": "Segnaposto del menu a discesa per gli stati: indica che non ci sono limitazioni sugli stati."
+  },
+  "field.allPayWays": {
+    "message": "Tutti i metodi di pagamento",
+    "description": "Segnaposto del menu a discesa per i metodi di pagamento: indica che non ci sono limitazioni sui metodi di pagamento."
   }
 }

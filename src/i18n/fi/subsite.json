@@ -11,6 +11,10 @@
     "message": "Siirry alisivustolle nyt",
     "description": "Uuden alisivuston luomisen jälkeen kysytään, siirrytäänkö heti"
   },
+  "title.openSite": {
+    "message": "Avaa alasivusto",
+    "description": "Title of the open-subsite confirmation dialog."
+  },
   "field.slug": {
     "message": "Alidomainin etuliite",
     "description": "Alisivuston slug-syöttökentän otsikko"
@@ -18,6 +22,14 @@
   "field.origin": {
     "message": "Alisivuston verkkotunnus",
     "description": "Alisivustoluettelon verkkotunnussarake"
+  },
+  "field.defaultLabel": {
+    "message": "Oletus",
+    "description": "Tag rendered next to the default subdomain in the open-subsite dialog."
+  },
+  "field.customLabel": {
+    "message": "Mukautettu",
+    "description": "Tag rendered next to a custom (BYO) hostname in the open-subsite dialog."
   },
   "field.title": {
     "message": "Alisivuston otsikko",
@@ -51,6 +63,10 @@
     "message": "Hallitse",
     "description": "Siirry alisivuston asetuksiin -painike"
   },
+  "button.delete": {
+    "message": "Poista",
+    "description": "Button to delete a subsite"
+  },
   "message.indexTip": {
     "message": "Luo itsenäisiä alisivustoja pääsivuston alle. Jokaisella alisivustolla voi olla oma logo, otsikko ja toiminnallisuudet ilman erillistä koodin rakentamista.",
     "description": "Alisivuston hallinnan etusivun selitysteksti"
@@ -79,6 +95,10 @@
     "message": "Alisivuston luominen epäonnistui, yritä myöhemmin uudelleen.",
     "description": "Luonti epäonnistui"
   },
+  "message.slugTaken": {
+    "message": "Aliverkkotunnus {origin} on jo käytössä, kokeile toista.",
+    "description": "Kun luodaan alaosastoa, slug on jo varattu (palvelin palautti koodin=duplication)."
+  },
   "message.loadFailed": {
     "message": "Alisivustoluettelon lataaminen epäonnistui.",
     "description": "Luettelon lataaminen epäonnistui"
@@ -86,6 +106,22 @@
   "message.openNowConfirm": {
     "message": "Alisivusto {origin} on luotu. Haluatko avata sen nyt jatkaaksesi asetusten määrittämistä?",
     "description": "Luomisen jälkeen kysytään, avataanko heti"
+  },
+  "message.openSiteHint": {
+    "message": "Tälle alisivustolle on liitetty useita verkkotunnuksia, valitse avattava osoite, avataan se uudessa välilehdessä.",
+    "description": "Teksti alisivuston avausdialogissa, joka selittää URL-valitsimen."
+  },
+  "message.deleteConfirm": {
+    "message": "Poistetaanko aliosa {origin}? Käyttäjät eivät enää pääse siihen tämän verkkotunnuksen kautta, eikä toimintoa voi peruuttaa.",
+    "description": "Confirmation prompt before deleting a subsite"
+  },
+  "message.deleted": {
+    "message": "Aliosa {origin} on poistettu.",
+    "description": "Success message after deleting a subsite"
+  },
+  "message.deleteFailed": {
+    "message": "Aliosan poistaminen epäonnistui, yritä myöhemmin uudelleen.",
+    "description": "Fallback error message when DELETE fails"
   },
   "title.domains": {
     "message": "{origin} mukautettu verkkotunnus",
@@ -155,6 +191,10 @@
     "message": "Verkkotunnuksen luominen epäonnistui, yritä myöhemmin uudelleen.",
     "description": "Luonti epäonnistui"
   },
+  "message.domainTaken": {
+    "message": "Verkkotunnus {hostname} on jo lisätty. Käytä toista verkkotunnusta.",
+    "description": "Näytetään, kun valittu isäntänimi on jo sidottu sivustoon (palvelin palauttaa code=duplication)."
+  },
   "message.domainsLoadFailed": {
     "message": "Verkkotunnusluettelon lataaminen epäonnistui.",
     "description": "Verkkotunnusluettelon lataaminen epäonnistui"
@@ -165,11 +205,11 @@
   },
   "message.domainFailed": {
     "message": "Verkkotunnuksen vahvistus tai julkaisu epäonnistui.",
-    "description": "Failed 状态兑底文案"
+    "description": "Epäonnistui-tilan varmuusteksti"
   },
   "message.domainVerifyFailed": {
     "message": "Vahvistus epäonnistui, tarkista että CNAME-tietue osoittaa meidän käänteiseen välimuistiin ja että DNS-levitys on valmis.",
-    "description": "verify 接口 4xx"
+    "description": "Vahvistusrajapinnan 4xx-virhe"
   },
   "message.domainDeleteConfirm": {
     "message": "Haluatko varmasti irrottaa {hostname}? Irrottamisen jälkeen käyttäjät eivät pääse käsiksi aliverkkotunnukseesi tämän verkkotunnuksen kautta.",
@@ -177,18 +217,22 @@
   },
   "message.domainDeleteFailed": {
     "message": "Verkkotunnuksen poistaminen epäonnistui.",
-    "description": "DELETE 接口 5xx"
+    "description": "DELETE-rajapinnan 5xx-virhe"
   },
   "status.pending": {
     "message": "Vahvistusta odottamassa",
-    "description": "Pending 状态标签：odottaa käyttäjän lisäävän CNAME:n ja napsauttavan 'Vahvista nyt'"
+    "description": "Odottaa-tilatunniste: odottaa käyttäjän lisäävän CNAME:n ja napsauttavan 'Vahvista nyt'"
   },
   "status.active": {
     "message": "Julkaistu",
-    "description": "Active 状态标签"
+    "description": "Aktiivinen-tilatunniste"
   },
   "status.failed": {
     "message": "Epäonnistui",
-    "description": "Failed 状态标签"
+    "description": "Epäonnistui-tilatunniste"
+  },
+  "message.recordNameHint": {
+    "message": "Vinkki: Useimmissa DNS-palveluntarjoajissa (DNSPod, Cloudflare, Aliyun, Tencent Cloud jne.) \"Host\" / \"Name\" -kenttä hyväksyy vain alidomainin etuliitteen. Esimerkiksi sidottaessa studio.your-brand.com syötät vain studio; sidottaessa juuritoimialuetta itseään (esim. your-brand.com) käytä isäntänä {'@'}-merkkiä. Palvelut, jotka odottavat täydellistä FQDN:ää (AWS Route 53, Bind jne.) hyväksyvät yllä olevassa taulukossa näkyvän arvon sellaisenaan.",
+    "description": "DNS-tietuetaulukon alla oleva vinkki, joka selittää mitä Host/Name-kenttään syötetään yleisillä DNS-palveluntarjoajilla (aliverkkotunnuksen etuliite / @ / täysi FQDN)."
   }
 }

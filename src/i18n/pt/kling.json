@@ -55,6 +55,10 @@
     "message": "std prioriza desempenho, pro prioriza qualidade de imagem.",
     "description": "motion mode 说明"
   },
+  "description.motionModel": {
+    "message": "O Kling 3.0 tem qualidade superior, mas preço por segundo mais alto; o Kling 2.6 é mais econômico.",
+    "description": "motion model version description"
+  },
   "description.keepOriginalSound": {
     "message": "Se ativado, mantém o áudio original do vídeo de referência; se desativado, o vídeo gerado não incluirá áudio original.",
     "description": "keep_original_sound 说明"
@@ -70,6 +74,10 @@
   "message.motionMissingInputs": {
     "message": "Por favor, envie tanto a imagem do personagem quanto o vídeo de referência.",
     "description": "Motion Control 缺少输入时的提示"
+  },
+  "message.motionPricingNote": {
+    "message": "Cobrado por segundo do vídeo gerado; o valor final varia conforme a duração do vídeo de referência.",
+    "description": "Explains that Motion Control is billed per second"
   },
   "inspiration.title": {
     "message": "Inspiração e Predefinições",
@@ -340,7 +348,7 @@
     "description": "camera_control.config.roll"
   },
   "name.cc_zoom": {
-    "message": "Zoom",
+    "message": "Zoom (push-pull)",
     "description": "camera_control.config.zoom"
   },
   "name.failure": {
@@ -353,7 +361,7 @@
   },
   "name.status": {
     "message": "Status",
-    "description": "Status da tarefa"
+    "description": "O estado da tarefa"
   },
   "name.traceId": {
     "message": "ID de Rastreamento",
@@ -414,6 +422,14 @@
   "name.mode": {
     "message": "Modo de vídeo",
     "description": "Modo a ser utilizado para gerar o vídeo"
+  },
+  "name.motionModel": {
+    "message": "Versão do modelo",
+    "description": "The Kling model version used for motion control"
+  },
+  "name.perSecond": {
+    "message": "segundo",
+    "description": "Unit suffix for per-second pricing"
   },
   "name.effect": {
     "message": "Efeito do vídeo",
@@ -490,6 +506,14 @@
   "description.cameraControlDisabled4k": {
     "message": "Modo 4K selecionado, controle de câmera não disponível, mude para std / pro e ative novamente",
     "description": "Razão pela qual o controle de câmera está desativado"
+  },
+  "description.cameraControlDisabledImage2Video": {
+    "message": "O controle de câmera não é suportado após enviar a imagem de referência inicial. Remova a imagem de referência inicial para usar.",
+    "description": "Motivo pelo qual o controle de câmera foi desativado (image2video)"
+  },
+  "description.cameraControlNotSupported": {
+    "message": "O controle de câmera não é suportado pelo modelo/modo/duração atual. Ajuste a configuração antes de ativar.",
+    "description": "Motivo pelo qual o controle de câmera foi desativado (modelo não suportado)"
   },
   "status.pending": {
     "message": "Aguardando",
@@ -694,5 +718,129 @@
   "message.noTasks": {
     "message": "Nenhuma tarefa histórica, por favor clique à esquerda para gerar vídeo",
     "description": "Mensagem quando não há tarefas"
+  },
+  "tab.talkingPhoto": {
+    "message": "Foto falante",
+    "description": "Tab label: Talking Photo"
+  },
+  "name.talkingPhotoImage": {
+    "message": "Foto de retrato",
+    "description": "Talking Photo portrait image input"
+  },
+  "name.talkingPhotoAudio": {
+    "message": "Áudio de controle",
+    "description": "Talking Photo driving audio input"
+  },
+  "name.talkingPhotoPrompt": {
+    "message": "Prompt de movimento (opcional)",
+    "description": "Talking Photo optional motion prompt"
+  },
+  "description.talkingPhotoImage": {
+    "message": "Envie um retrato frontal nítido; ele será animado e fará falar.",
+    "description": "Talking Photo portrait image help text"
+  },
+  "description.talkingPhotoAudio": {
+    "message": "Envie um clipe de áudio (mp3/wav, ≤5 MB); o personagem sincroniza os lábios.",
+    "description": "Talking Photo driving audio help text"
+  },
+  "description.talkingPhotoPrompt": {
+    "message": "Opcional: descreva a expressão/movimento desejado, ex.: «olhar suavemente para a câmera».",
+    "description": "Talking Photo motion prompt help text"
+  },
+  "placeholder.talkingPhotoPrompt": {
+    "message": "ex.: suave, calmo, natural, leve movimento de cabeça",
+    "description": "Talking Photo prompt input placeholder"
+  },
+  "button.generateTalkingPhoto": {
+    "message": "Gerar foto falante",
+    "description": "Talking Photo generate button"
+  },
+  "button.uploadAudio": {
+    "message": "Enviar áudio",
+    "description": "Talking Photo upload audio button"
+  },
+  "message.talkingPhotoMissingInputs": {
+    "message": "Envie primeiro uma foto de retrato e um áudio de controle.",
+    "description": "Talking Photo missing inputs warning"
+  },
+  "message.uploadAudioExceed": {
+    "message": "Apenas um arquivo de áudio é permitido.",
+    "description": "Talking Photo audio count limit warning"
+  },
+  "message.uploadAudioError": {
+    "message": "Falha no envio do áudio, tente novamente.",
+    "description": "Talking Photo audio upload error"
+  },
+  "name.referenceVideo": {
+    "message": "Vídeo de referência",
+    "description": "Rótulo do campo do formulário: vídeo de referência/para edição do Omni"
+  },
+  "description.omniReferenceVideo": {
+    "message": "Aplicável ao Kling O1 e V3 Omni. Envie um MP4/MOV (720–2160px, 3–10 segundos, ≤200MB) para edição ou referência de vídeo existente, as palavras-chave serão adicionadas automaticamente <<<video_1>>>.",
+    "description": "Texto de ajuda para o envio de vídeo de referência do Omni"
+  },
+  "name.referenceImages": {
+    "message": "Imagens de Referência",
+    "description": "Rótulo do campo de imagens de referência do Omni"
+  },
+  "description.referenceImages": {
+    "message": "Aplicável ao Kling O1 e V3 Omni. É possível enviar até 7 imagens de referência; se houver um vídeo de referência, no máximo 4 imagens. As marcações de palavras-chave serão adicionadas automaticamente.",
+    "description": "Texto de ajuda para imagens de referência do Omni"
+  },
+  "button.uploadReferenceImages": {
+    "message": "Enviar Imagens",
+    "description": "Botão para enviar imagens de referência do Omni"
+  },
+  "message.referenceImagesExceed": {
+    "message": "Você pode enviar mais {count} imagens de referência.",
+    "description": "Dica sobre a quantidade de imagens de referência"
+  },
+  "message.referenceImagesError": {
+    "message": "Falha ao enviar imagens de referência, por favor, tente novamente.",
+    "description": "Erro ao enviar imagens de referência"
+  },
+  "name.referenceVideoType": {
+    "message": "Uso do Vídeo",
+    "description": "Rótulo do tipo de vídeo de referência"
+  },
+  "name.referenceVideoFeature": {
+    "message": "Referência de Características",
+    "description": "Opção de vídeo de referência de características"
+  },
+  "name.referenceVideoBase": {
+    "message": "Editar Vídeo Original",
+    "description": "Opção de edição de vídeo base"
+  },
+  "message.referenceVideoImageLimit": {
+    "message": "Com um vídeo de referência, é possível suportar no máximo 4 imagens de referência, por favor, remova as imagens extras.",
+    "description": "Conflito entre a quantidade de vídeos de referência e imagens"
+  },
+  "message.referenceImagesTotalLimit": {
+    "message": "Esta solicitação suporta no máximo {count} imagens de referência, incluindo o primeiro e o último quadro no total.",
+    "description": "Aviso sobre o limite total de imagens de referência."
+  },
+  "message.baseVideoFrameConflict": {
+    "message": "O vídeo base a ser editado não pode ser usado com o primeiro ou o último quadro ao mesmo tempo.",
+    "description": "Aviso de conflito entre o vídeo base e os quadros inicial e final."
+  },
+  "button.uploadReferenceVideo": {
+    "message": "Enviar vídeo",
+    "description": "Botão para enviar o vídeo de referência"
+  },
+  "message.referenceVideoExceed": {
+    "message": "É permitido enviar apenas 1 vídeo de referência",
+    "description": "Mensagem de erro quando mais de 1 vídeo de referência é enviado"
+  },
+  "message.referenceVideoError": {
+    "message": "Falha ao enviar o vídeo de referência, por favor tente novamente mais tarde",
+    "description": "Mensagem de erro quando o envio do vídeo de referência falha"
+  },
+  "message.referenceVideoTypeFailed": {
+    "message": "O arquivo enviado deve ser no formato MP4 ou MOV!",
+    "description": "Mensagem de erro quando o formato do vídeo de referência não é MP4/MOV"
+  },
+  "message.referenceVideoSizeExceed": {
+    "message": "O tamanho do arquivo enviado não pode exceder 200MB!",
+    "description": "Mensagem de erro quando o vídeo de referência excede 200MB"
   }
 }

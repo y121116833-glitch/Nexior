@@ -11,6 +11,10 @@
     "message": "Subdomain jetzt besuchen",
     "description": "Titel des Dialogs, der nach erfolgreichem Erstellen fragt, ob sofort weitergeleitet werden soll"
   },
+  "title.openSite": {
+    "message": "Subsite öffnen",
+    "description": "Title of the open-subsite confirmation dialog."
+  },
   "field.slug": {
     "message": "Subdomain-Präfix",
     "description": "Titel des Eingabefelds für den Subdomain-Slug"
@@ -18,6 +22,14 @@
   "field.origin": {
     "message": "Subdomain-Domain",
     "description": "Domain-Spalte in der Subdomain-Liste"
+  },
+  "field.defaultLabel": {
+    "message": "Standard",
+    "description": "Tag rendered next to the default subdomain in the open-subsite dialog."
+  },
+  "field.customLabel": {
+    "message": "Benutzerdefiniert",
+    "description": "Tag rendered next to a custom (BYO) hostname in the open-subsite dialog."
   },
   "field.title": {
     "message": "Subdomain-Titel",
@@ -51,6 +63,10 @@
     "message": "Verwalten",
     "description": "Button zum Zugriff auf die Einstellungen der Subdomain"
   },
+  "button.delete": {
+    "message": "Löschen",
+    "description": "Button to delete a subsite"
+  },
   "message.indexTip": {
     "message": "Erstellen Sie unabhängige Subdomains unter der Hauptdomain, jede Subdomain kann ihr eigenes Logo, ihren Titel und ihre Funktionalitäten haben, ohne dass der Quellcode separat aufgebaut werden muss.",
     "description": "Erklärungstext auf der Hauptseite der Subdomain-Verwaltung"
@@ -79,6 +95,10 @@
     "message": "Erstellung der Subdomain fehlgeschlagen, bitte versuchen Sie es später erneut.",
     "description": "Erstellung fehlgeschlagen"
   },
+  "message.slugTaken": {
+    "message": "Der Subdomain {origin} ist bereits vergeben, bitte versuchen Sie es mit einem anderen.",
+    "description": "Wenn eine Unterseite erstellt wird, ist der slug bereits belegt (Backend gibt code=duplication zurück)"
+  },
   "message.loadFailed": {
     "message": "Laden der Subdomain-Liste fehlgeschlagen.",
     "description": "Laden der Liste fehlgeschlagen"
@@ -86,6 +106,22 @@
   "message.openNowConfirm": {
     "message": "Subdomain {origin} wurde erstellt. Möchten Sie sie jetzt öffnen, um die Konfiguration fortzusetzen?",
     "description": "Sofort nach der Erstellung öffnen"
+  },
+  "message.openSiteHint": {
+    "message": "Diese Subsite ist mit mehreren Domains verknüpft. Bitte wählen Sie die Adresse, die Sie öffnen möchten. Wir öffnen sie in einem neuen Tab.",
+    "description": "Hinweistext im Dialog zum Öffnen der Subsite, der den URL-Auswähler erklärt."
+  },
+  "message.deleteConfirm": {
+    "message": "Subsite {origin} löschen? Benutzer können sie über diese Domain nicht mehr erreichen, und diese Aktion kann nicht rückgängig gemacht werden.",
+    "description": "Confirmation prompt before deleting a subsite"
+  },
+  "message.deleted": {
+    "message": "Subsite {origin} wurde gelöscht.",
+    "description": "Success message after deleting a subsite"
+  },
+  "message.deleteFailed": {
+    "message": "Subsite konnte nicht gelöscht werden, bitte versuchen Sie es später erneut.",
+    "description": "Fallback error message when DELETE fails"
   },
   "title.domains": {
     "message": "Benutzerdefinierte Domain für {origin}",
@@ -97,7 +133,7 @@
   },
   "button.domains": {
     "message": "Domains",
-    "description": "Button zum Öffnen des Dialogs zur Domainverwaltung"
+    "description": "Schaltfläche zum Öffnen des Dialogfelds zur Verwaltung von Domains"
   },
   "button.bindDomain": {
     "message": "Domain binden",
@@ -155,6 +191,10 @@
     "message": "Erstellung der Domain fehlgeschlagen, bitte versuchen Sie es später erneut.",
     "description": "Erstellung fehlgeschlagen"
   },
+  "message.domainTaken": {
+    "message": "Die Domain {hostname} wurde bereits hinzugefügt. Bitte verwenden Sie eine andere Domain.",
+    "description": "Wird angezeigt, wenn der gewählte Hostname bereits an eine Website gebunden ist (Backend gibt code=duplication zurück)."
+  },
   "message.domainsLoadFailed": {
     "message": "Laden der Domainliste fehlgeschlagen.",
     "description": "Laden der Domainliste fehlgeschlagen"
@@ -190,5 +230,9 @@
   "status.failed": {
     "message": "Fehlgeschlagen",
     "description": "Failed 状态标签"
+  },
+  "message.recordNameHint": {
+    "message": "Hinweis: Bei den meisten DNS-Anbietern (DNSPod, Cloudflare, Aliyun, Tencent Cloud usw.) erwartet das Feld „Host\" / „Name\" nur das Subdomain-Präfix. Beispiel: Beim Binden von studio.your-brand.com gibst du nur studio ein; beim Binden der Root-Domain selbst (z. B. your-brand.com) verwende {'@'} als Host. Anbieter, die einen vollständigen FQDN erwarten (AWS Route 53, Bind usw.), akzeptieren den oben in der Tabelle angezeigten Wert unverändert.",
+    "description": "Hinweis unter der DNS-Eintragstabelle, der erklärt, was für das Host-/Name-Feld bei gängigen DNS-Anbietern einzutragen ist (Subdomain-Präfix / @ / vollständiger FQDN)"
   }
 }

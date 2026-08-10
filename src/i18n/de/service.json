@@ -21,7 +21,7 @@
   },
   "field.name": {
     "message": "Name",
-    "description": "Der Name des Services."
+    "description": "Der Name des Dienstes."
   },
   "field.price": {
     "message": "Preis",
@@ -122,6 +122,22 @@
   "unit.Calls": {
     "message": "Aufrufe",
     "description": "Aufrufe sind die Anzahl der Aufrufe des API-Dienstes, dies ist die Großschreibung und Pluralform."
+  },
+  "unit.count": {
+    "message": "Mal",
+    "description": "Count unit (number of API calls), singular."
+  },
+  "unit.Count": {
+    "message": "Mal",
+    "description": "Count unit (number of API calls), singular."
+  },
+  "unit.counts": {
+    "message": "Mal",
+    "description": "Count unit (number of API calls), plural."
+  },
+  "unit.Counts": {
+    "message": "Mal",
+    "description": "Count unit (number of API calls), plural."
   },
   "unit.MB": {
     "message": "MB",

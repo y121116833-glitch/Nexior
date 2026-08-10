@@ -7,6 +7,10 @@
     "message": "Limit",
     "description": "Limit usługi."
   },
+  "badge.shared": {
+    "message": "Udostępnione",
+    "description": "Odznaka w liście aplikacji, oznaczająca, że ta aplikacja została udostępniona bieżącemu użytkownikowi przez inną osobę, a nie jest własnością bieżącego użytkownika."
+  },
   "field.expiredAt": {
     "message": "Data wygaśnięcia",
     "description": "Data wygaśnięcia wniosku."
@@ -101,7 +105,7 @@
   },
   "field.proxy": {
     "message": "Proxy",
-    "description": "To jest usługa online, formularz dostarcza usługi użytkownikowi przez HTTP proxy."
+    "description": "To jest usługa online, formularz korzysta z proxy HTTP (do przesyłania danych), aby zapewnić użytkownikowi usługę."
   },
   "field.credential": {
     "message": "Dane uwierzytelniające",
@@ -134,6 +138,18 @@
   "message.applySuccessfully": {
     "message": "Wniosek złożony pomyślnie",
     "description": "Wiadomość wyświetlana, gdy użytkownik pomyślnie złożył wniosek o tę usługę."
+  },
+  "message.applyFailed": {
+    "message": "Nie udało się uruchomić bezpłatnej wersji próbnej, odśwież stronę i spróbuj ponownie.",
+    "description": "Komunikat wyświetlany, gdy automatyczne utworzenie globalnego wniosku nie powiodło się."
+  },
+  "message.welcomeWithCredits": {
+    "message": "🎉 Witamy w {brand}! Otrzymałeś {credits} punktów, które możesz wykorzystać we wszystkich usługach serwisu.",
+    "description": "Powitanie wyświetlane po pomyślnym automatycznym utworzeniu globalnego wniosku lub przy pierwszym wejściu. {credits} to pozostały limit punktów w globalnym wniosku."
+  },
+  "message.welcomeNoCredits": {
+    "message": "🎉 Witamy w {brand}! Twoje konto jest gotowe, możesz korzystać z dowolnych usług serwisu.",
+    "description": "Powitanie wyświetlane, gdy nie ma dostępnych darmowych limitów w globalnym wniosku."
   },
   "message.notApplied": {
     "message": "Nie złożyłeś jeszcze wniosku o tę usługę, proszę złożyć wniosek przed użyciem",
@@ -228,7 +244,7 @@
     "description": "Tytuł strony, gdy użytkownik chce zakupić usługę."
   },
   "title.globalBuy": {
-    "message": "Ogólny doładowanie punktów Ace Data Cloud",
+    "message": "Ogólny doładowanie punktów {brand}",
     "description": "Tytuł strony, gdy użytkownik chce zakupić ogólną usługę."
   },
   "title.applicationRemainingCount": {
@@ -240,7 +256,7 @@
     "description": "Tytuł strony, gdy użytkownik chce zarządzać aplikacjami."
   },
   "title.applicationBalance": {
-    "message": "Punkty przypisane - {service}",
+    "message": "Dedykowane saldo - {service}",
     "description": "Komunikat wyświetlany użytkownikowi, gdy przegląda saldo aplikacji."
   },
   "title.count": {
@@ -256,8 +272,8 @@
     "description": "Tytuł strony, gdy użytkownik przegląda ogólne saldo."
   },
   "message.globalBalanceDescription": {
-    "message": "Po włączeniu 'Zezwól na ogólne saldo', w przypadku niewystarczającego salda instancji automatycznie zostanie użyte ogólne saldo.",
-    "description": "Komunikat wyjaśniający, że w przypadku niewystarczającego salda instancji automatycznie zostanie wykorzystane ogólne saldo."
+    "message": "Po włączeniu 'Zezwól na ogólne saldo', w przypadku niewystarczającego dedykowanego salda automatycznie zostanie użyte ogólne saldo.",
+    "description": "Komunikat wyjaśniający, że w przypadku niewystarczającego dedykowanego salda automatycznie zostanie wykorzystane ogólne saldo."
   },
   "button.service": {
     "message": "Obsługa klienta",

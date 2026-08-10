@@ -123,6 +123,22 @@
     "message": "Kutsut",
     "description": "Kutsu on API-palvelun kutsumiskertojen määrä, tämä on iso ja monikkomuoto."
   },
+  "unit.count": {
+    "message": "kerta",
+    "description": "Laskuriyksikkö (API-kutsujen lukumäärä), yksikkö."
+  },
+  "unit.Count": {
+    "message": "kerta",
+    "description": "Laskuriyksikkö (API-kutsujen lukumäärä), yksikkö."
+  },
+  "unit.counts": {
+    "message": "kertaa",
+    "description": "Laskuriyksikkö (API-kutsujen lukumäärä), monikko."
+  },
+  "unit.Counts": {
+    "message": "kertaa",
+    "description": "Laskuriyksikkö (API-kutsujen lukumäärä), monikko."
+  },
   "unit.MB": {
     "message": "MB",
     "description": "MB tarkoittaa megatavua, digitaalisen tiedon tallennusyksikkö."

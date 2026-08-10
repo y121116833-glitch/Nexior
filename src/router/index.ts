@@ -1,7 +1,9 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { type RouteLocationGeneric, type Router } from 'vue-router';
 import store from '@/store';
 import auth from './auth';
 import console from './console';
+import home from './home';
+import business from './business';
 import grok from './grok';
 import gemini from './gemini';
 import claude from './claude';
@@ -11,26 +13,35 @@ import chatgpt from './chatgpt';
 import midjourney from './midjourney';
 import distribution from './distribution';
 import download from './download';
+import order from './order';
 import qrart from './qrart';
 import luma from './luma';
 import pika from './pika';
 import kling from './kling';
 import veo from './veo';
 import sora from './sora';
+import maestro from './maestro';
+import poivelle from './poivelle';
+import digitalhuman from './digitalhuman';
 import pixverse from './pixverse';
 import flux from './flux';
 import hailuo from './hailuo';
-import headshots from './headshots';
+import minimax from './minimax';
 import suno from './suno';
 import producer from './producer';
 import nanobanana from './nanobanana';
 import openaiimage from './openaiimage';
 import seedream from './seedream';
 import seedance from './seedance';
+import grokvideo from './grokvideo';
+import omni from './omni';
 import serp from './serp';
 import wan from './wan';
-import site from './site';
-import profile from './profile';
+import fish from './fish';
+import webextrator from './webextrator';
+import codingBridge from './codingBridge';
+import settings from './settings';
+import share from './share';
 
 import {
   ROUTE_CHATGPT_CONVERSATION_NEW,
@@ -47,23 +58,45 @@ import {
   ROUTE_SUNO_INDEX,
   ROUTE_PRODUCER_INDEX,
   ROUTE_SEEDANCE_INDEX,
+  ROUTE_GROKVIDEO_INDEX,
+  ROUTE_OMNI_INDEX,
   ROUTE_LUMA_INDEX,
   ROUTE_HAILUO_INDEX,
+  ROUTE_MINIMAX_INDEX,
   ROUTE_KLING_INDEX,
   ROUTE_VEO_INDEX,
   ROUTE_SORA_INDEX,
+  ROUTE_MAESTRO_INDEX,
+  ROUTE_POIVELLE_INDEX,
+  ROUTE_DIGITALHUMAN_INDEX,
   ROUTE_PIXVERSE_INDEX,
   ROUTE_WAN_INDEX,
   ROUTE_SERP_INDEX,
+  ROUTE_FISH_TTS_INDEX,
+  ROUTE_WEBEXTRATOR_INDEX,
   ROUTE_NOT_FOUND
 } from './constants';
 import { getCookie } from 'typescript-cookie';
 import { I18N_DEFAULT_LOCALE } from '@/constants/i18n';
 import { getLocale, setI18nLanguage } from '@/i18n';
+import { getForcedLocale } from '@/utils/siteLocales';
+import { isIframeLoginEnabled } from '@/utils/loginMethod';
 import { updateSeo, setWebApplicationSchema, setOrganization, resetSeo } from '@/utils/seo';
 import { ensureStoreModule } from '@/store/lazy';
 import { evaluateUserIdGuard } from '@/utils/crossSiteUser';
 import { handleChunkLoadError } from '@/utils/chunkLoadError';
+import { loginRedirect } from '@/utils/login';
+import { isNative, isDesktop } from '@/utils/surface';
+
+// Sections that require a logged-in user — guests hitting these are sent to the
+// login flow (web: redirect preserving the target; native/desktop: in-app
+// popup). Everything else (AI service pages, home) is browsable as a guest;
+// login is deferred until they actually start an operation. Keep this list in
+// sync when adding account/billing-style routes.
+const AUTH_REQUIRED_PREFIXES = ['/console', '/distribution', '/settings', '/coding-bridge', '/poivelle'];
+
+const requiresLogin = (path: string): boolean =>
+  AUTH_REQUIRED_PREFIXES.some((prefix) => path === prefix || path.startsWith(`${prefix}/`));
 
 // SEO metadata per route path prefix
 const ROUTE_SEO: Record<string, { title: string; description: string; keywords: string[]; category: string }> = {
@@ -122,12 +155,6 @@ const ROUTE_SEO: Record<string, { title: string; description: string; keywords: 
     keywords: ['QR Art', 'AI QR Code', 'QR Code Generator', 'Artistic QR'],
     category: 'AI Image Generation'
   },
-  headshots: {
-    title: 'AI Headshots',
-    description: 'Generate professional AI headshots — perfect for LinkedIn, resumes, and business profiles.',
-    keywords: ['AI Headshots', 'Professional Photos', 'AI Portrait', 'LinkedIn Photo'],
-    category: 'AI Image Generation'
-  },
   nanobanana: {
     title: 'NanoBanana',
     description: 'Generate and edit AI images with NanoBanana — powered by Gemini for creative image generation.',
@@ -156,6 +183,27 @@ const ROUTE_SEO: Record<string, { title: string; description: string; keywords: 
     title: 'Sora',
     description: 'Generate AI videos with OpenAI Sora — create realistic videos from text descriptions.',
     keywords: ['Sora', 'OpenAI', 'AI Video', 'Video Generation', 'Text to Video'],
+    category: 'AI Video Generation'
+  },
+  maestro: {
+    title: 'Maestro',
+    description:
+      'Turn any article or topic into a captioned short video — script, visuals, voiceover and music, fully automated.',
+    keywords: ['Maestro', 'AI Video', 'Article to Video', 'Faceless Video', 'Short Video Generator'],
+    category: 'AI Video Generation'
+  },
+  poivelle: {
+    title: 'Poivelle',
+    description:
+      'Direct AI film production through a canonical project graph, shared by human editors, skills, agents, and production tools.',
+    keywords: ['Poivelle', 'AI Film Studio', 'AI Storyboard', 'AI Video Production', 'Creative Agent'],
+    category: 'AI Creative Production'
+  },
+  'digital-human': {
+    title: 'Digital Human',
+    description:
+      'Generate a talking-head video from a face video or photo and a voice — clone a voice, drive it with text or audio, and lip-sync it.',
+    keywords: ['Digital Human', 'Talking Head', 'Lip Sync', 'AI Avatar', 'Voice Clone', 'Text to Video'],
     category: 'AI Video Generation'
   },
   veo: {
@@ -188,10 +236,29 @@ const ROUTE_SEO: Record<string, { title: string; description: string; keywords: 
     keywords: ['Hailuo', 'MiniMax', 'AI Video', 'Video Generation'],
     category: 'AI Video Generation'
   },
+  minimax: {
+    title: 'MiniMax H3',
+    description: 'Generate MiniMax H3 videos from text, up to nine images, or up to three audio references.',
+    keywords: ['MiniMax H3', 'AI Video', 'Text to Video', 'Image to Video', 'Audio Guided Video'],
+    category: 'AI Video Generation'
+  },
   seedance: {
     title: 'Seedance',
     description: 'Generate AI dance videos with Seedance — AI-powered dance video generation by ByteDance.',
     keywords: ['Seedance', 'AI Video', 'Dance Video', 'ByteDance'],
+    category: 'AI Video Generation'
+  },
+  grokvideo: {
+    title: 'Grok Imagine Video',
+    description: 'Generate AI videos with Grok Imagine — text-to-video and image-to-video by xAI.',
+    keywords: ['Grok', 'Grok Imagine', 'AI Video', 'Text to Video', 'Image to Video', 'xAI'],
+    category: 'AI Video Generation'
+  },
+  omni: {
+    title: 'Omni Video',
+    description:
+      'Generate and edit AI videos with Omni (omni-flash) — text-to-video, image-to-video and video editing.',
+    keywords: ['Omni', 'omni-flash', 'AI Video', 'Text to Video', 'Image to Video', 'Video Editing', 'Gemini'],
     category: 'AI Video Generation'
   },
   wan: {
@@ -212,6 +279,12 @@ const ROUTE_SEO: Record<string, { title: string; description: string; keywords: 
     keywords: ['Producer', 'AI Music', 'Music Generation', 'FUZZ', 'AI Song'],
     category: 'AI Music Generation'
   },
+  fish: {
+    title: 'Fish Audio',
+    description: 'Generate natural speech and clone voices with Fish Audio — text-to-speech and voice cloning.',
+    keywords: ['Fish Audio', 'TTS', 'Text to Speech', 'Voice Cloning', 'AI Voice'],
+    category: 'AI Audio Generation'
+  },
   distribution: {
     title: 'Affiliate',
     description: 'Join the Ace Data Cloud affiliate program — earn commissions by referring AI services.',
@@ -224,6 +297,20 @@ const ROUTE_SEO: Record<string, { title: string; description: string; keywords: 
       'Search the web with Google — powered by SERP API. Get organic results, knowledge graphs, images, and more.',
     keywords: ['Search', 'Google Search', 'SERP', 'Web Search'],
     category: 'Web Search'
+  },
+  webextrator: {
+    title: 'WebExtrator',
+    description:
+      'Render and extract any web page with WebExtrator — get HTML, markdown, plain text, structured data, links, and screenshots from any URL.',
+    keywords: ['WebExtrator', 'Web Scraping', 'Web Render', 'Content Extraction', 'Markdown', 'Headless Browser'],
+    category: 'Web Data'
+  },
+  'coding-bridge': {
+    title: 'Coding Bridge',
+    description:
+      'Drive Claude Code, Codex, and GitHub Copilot on your own machine from the web — pair a local node and run coding agents remotely with per-tool approval.',
+    keywords: ['Coding Bridge', 'Claude Code', 'Codex', 'GitHub Copilot', 'Remote Agent', 'AI Coding'],
+    category: 'AI Coding'
   }
 };
 
@@ -251,18 +338,26 @@ const FEATURE_ROUTE_PRIORITY: Array<[string, string]> = [
   ['openaiimage', ROUTE_OPENAIIMAGE_INDEX],
   ['suno', ROUTE_SUNO_INDEX],
   ['producer', ROUTE_PRODUCER_INDEX],
+  ['fish', ROUTE_FISH_TTS_INDEX],
   ['veo', ROUTE_VEO_INDEX],
   ['sora', ROUTE_SORA_INDEX],
+  ['maestro', ROUTE_MAESTRO_INDEX],
+  ['poivelle', ROUTE_POIVELLE_INDEX],
+  ['digitalhuman', ROUTE_DIGITALHUMAN_INDEX],
   ['kling', ROUTE_KLING_INDEX],
   ['luma', ROUTE_LUMA_INDEX],
   ['hailuo', ROUTE_HAILUO_INDEX],
+  ['minimax', ROUTE_MINIMAX_INDEX],
   ['seedance', ROUTE_SEEDANCE_INDEX],
+  ['grokvideo', ROUTE_GROKVIDEO_INDEX],
+  ['omni', ROUTE_OMNI_INDEX],
   ['pixverse', ROUTE_PIXVERSE_INDEX],
   ['wan', ROUTE_WAN_INDEX],
-  ['serp', ROUTE_SERP_INDEX]
+  ['serp', ROUTE_SERP_INDEX],
+  ['webextrator', ROUTE_WEBEXTRATOR_INDEX]
 ];
 
-const getDefaultRoute = (): { name: string } => {
+export const getDefaultRoute = (): { name: string } => {
   const features = (store.state.site?.features ?? {}) as Record<string, { enabled?: boolean } | undefined>;
   for (const [key, name] of FEATURE_ROUTE_PRIORITY) {
     if (features[key]?.enabled) {
@@ -277,17 +372,14 @@ const getDefaultRoute = (): { name: string } => {
   return { name: ROUTE_CHATGPT_CONVERSATION_NEW };
 };
 
-const routes = [
+export const routes = [
   {
     path: '/',
-    redirect: () => getDefaultRoute()
+    redirect: (to: RouteLocationGeneric) => ({ ...getDefaultRoute(), query: to.query })
   },
-  {
-    path: '/chat/oauth/callback',
-    name: 'oauth-callback',
-    component: () => import('@/pages/chat/OAuthCallback.vue'),
-    meta: { auth: false }
-  },
+  home,
+  business,
+  order,
   console,
   auth,
   chatgpt,
@@ -302,105 +394,143 @@ const routes = [
   kling,
   veo,
   sora,
+  maestro,
+  poivelle,
+  digitalhuman,
   pixverse,
   flux,
   hailuo,
-  headshots,
+  minimax,
   suno,
   producer,
   nanobanana,
   openaiimage,
   seedream,
   seedance,
+  grokvideo,
+  omni,
   serp,
   wan,
+  fish,
+  webextrator,
+  codingBridge,
   midjourney,
   distribution,
   download,
-  site,
-  profile,
+  settings,
+  share,
   {
+    // Standalone full-screen 404 — no header/footer chrome.
     path: '/:pathMatch(.*)*',
     name: ROUTE_NOT_FOUND,
-    component: () => import('@/layouts/Index.vue'),
-    children: [
-      {
-        path: '',
-        component: () => import('@/pages/error/NotFound.vue'),
-        meta: { auth: false }
-      }
-    ]
+    component: () => import('@/pages/error/NotFound.vue'),
+    meta: { auth: false }
   }
 ];
 
-const router = createRouter({
-  history: createWebHistory(),
-  routes
-});
+// vite-ssg owns router creation (memory history at build, web history on the
+// client). Guards attach to the per-app router inside the ViteSSG setup.
+let activeRouter: Router | null = null;
+export const setActiveRouter = (r: Router) => {
+  activeRouter = r;
+};
+export const getActiveRouter = (): Router | null => activeRouter;
 
-router.onError((error) => {
-  handleChunkLoadError(error);
-});
+export function setupRouterGuards(router: Router) {
+  router.onError((error) => {
+    handleChunkLoadError(error);
+  });
 
-router.beforeEach(async (to, _from, next) => {
-  const locale = getLocale(getCookie('LOCALE') || I18N_DEFAULT_LOCALE);
-  await setI18nLanguage(locale);
-
-  // Cross-site identity guard: handle `?user_id=<id>` query param attached by
-  // outbound links from sibling sub-sites (auth / platform). See
-  // `src/utils/crossSiteUser.ts` for the full contract.
-  const decision = evaluateUserIdGuard(to);
-  if (decision.kind === 'strip') {
-    return next(decision.redirect);
-  }
-  if (decision.kind === 'mismatch') {
-    // Helper has already triggered a full-page SSO redirect; abort.
-    return next(false);
-  }
-
-  // Lazily register the per-app Vuex store module owned by this route. The
-  // mapping is `meta.appName` → store module name (set in each
-  // `src/router/<app>.ts`); routes without a per-app module (auth, console,
-  // profile, distribution, download, site) skip this branch entirely.
-  // Resolving the dynamic import here means the module's actions/mutations,
-  // its operator(s) and its model bindings are only fetched the first time
-  // the user navigates into that section of the app.
-  for (const matched of to.matched) {
-    const appName = matched.meta?.appName;
-    if (typeof appName === 'string' && appName) {
-      await ensureStoreModule(appName);
+  router.beforeEach(async (to, from, next) => {
+    // SSG build navigates the router to render each route; no cookies/i18n DOM
+    // then, so skip the client-only guard body and just proceed.
+    if (import.meta.env.SSR) {
+      return next();
     }
-  }
+    // A site-wide pin outranks the cookie (and therefore `?lang=`, which only
+    // ever writes the cookie). Applied here rather than at boot because the
+    // guard re-reads the cookie on every navigation.
+    const forcedLocale = getForcedLocale(store.state.site);
+    const locale = forcedLocale ?? getLocale(getCookie('LOCALE') || I18N_DEFAULT_LOCALE);
+    await setI18nLanguage(locale);
 
-  return next();
-});
+    // Cross-site identity guard: handle `?user_id=<id>` query param attached by
+    // outbound links from sibling sub-sites (auth / platform). See
+    // `src/utils/crossSiteUser.ts` for the full contract.
+    const decision = evaluateUserIdGuard(to);
+    if (decision.kind === 'strip') {
+      return next(decision.redirect);
+    }
+    if (decision.kind === 'mismatch') {
+      // Helper has already triggered a full-page SSO redirect; abort.
+      if (isIframeLoginEnabled() && !from.name) {
+        const { user_id: _userId, ...query } = to.query;
+        return next({ ...getDefaultRoute(), query, replace: true });
+      }
+      return next(false);
+    }
 
-router.afterEach((to) => {
-  // Determine the route prefix (e.g., /chatgpt/conversations/123 → chatgpt)
-  const prefix = to.path.split('/').filter(Boolean)[0] || '';
-  const seoData = ROUTE_SEO[prefix];
+    // Auth-required sections (console / distribution / settings / coding-bridge)
+    // need a logged-in user. Guests are sent to login instead of landing on a
+    // page whose data calls 401 and spins forever. The login flow preserves the
+    // intended destination so they return here after authenticating.
+    if (!store.getters.authenticated && requiresLogin(to.path)) {
+      if (isNative() || isDesktop() || isIframeLoginEnabled()) {
+        store.dispatch('login', { redirect: to.fullPath });
+        if (!from.name) {
+          return next({ ...getDefaultRoute(), query: to.query, replace: true });
+        }
+      } else {
+        loginRedirect({ redirect: to.fullPath });
+      }
+      return next(false);
+    }
 
-  if (seoData) {
-    updateSeo({
-      title: seoData.title,
-      description: seoData.description,
-      keywords: seoData.keywords
-    });
-    // Use the current origin so the WebApplication schema URL reflects the
-    // hostname the visitor is actually on (studio.acedata.cloud, hub.acedata.cloud, etc.).
-    const origin = (typeof window !== 'undefined' && window.location?.origin) || 'https://studio.acedata.cloud';
-    setWebApplicationSchema({
-      name: seoData.title,
-      description: seoData.description,
-      url: `${origin}/${prefix}`,
-      category: seoData.category
-    });
-  } else {
-    resetSeo();
-    setOrganization();
-  }
-});
+    // Lazily register the per-app Vuex store module owned by this route. The
+    // mapping is `meta.appName` → store module name (set in each
+    // `src/router/<app>.ts`); routes without a per-app module (auth, console,
+    // profile, distribution, download, site) skip this branch entirely.
+    // Resolving the dynamic import here means the module's actions/mutations,
+    // its operator(s) and its model bindings are only fetched the first time
+    // the user navigates into that section of the app.
+    for (const matched of to.matched) {
+      const appName = matched.meta?.appName;
+      if (typeof appName === 'string' && appName) {
+        await ensureStoreModule(appName);
+      }
+    }
 
-export default router;
+    return next();
+  });
+
+  router.afterEach((to) => {
+    if (import.meta.env.SSR) {
+      return;
+    }
+    // Determine the route prefix (e.g., /chatgpt/conversations/123 → chatgpt)
+    const prefix = to.path.split('/').filter(Boolean)[0] || '';
+    const seoData = ROUTE_SEO[prefix];
+
+    if (seoData) {
+      updateSeo({
+        title: seoData.title,
+        description: seoData.description,
+        keywords: seoData.keywords
+      });
+      // Use the current origin so the WebApplication schema URL reflects the
+      // hostname the visitor is actually on (studio.acedata.cloud, hub.acedata.cloud, etc.).
+      const origin = (typeof window !== 'undefined' && window.location?.origin) || 'https://studio.acedata.cloud';
+      setWebApplicationSchema({
+        name: seoData.title,
+        description: seoData.description,
+        url: `${origin}/${prefix}`,
+        category: seoData.category
+      });
+    } else {
+      resetSeo();
+      setOrganization();
+    }
+  });
+}
 
 export * from './constants';

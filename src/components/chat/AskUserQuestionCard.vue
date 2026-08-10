@@ -3,15 +3,16 @@
     <!-- Collapsed view: one-line summary per question after submit / restore -->
     <div v-if="collapsed" class="collapsed">
       <div v-for="(q, idx) in questions" :key="idx" class="collapsed-row">
-        <span class="check">✓</span>
+        <success-icon class="check" :size="'1em' as any" aria-hidden="true" focusable="false" />
         <span class="collapsed-q">{{ q.question }}</span>
-        <span class="collapsed-arrow">→</span>
+        <continue-icon class="collapsed-arrow" :size="'1em' as any" aria-hidden="true" focusable="false" />
         <span class="collapsed-a">{{ collapsedAnswerFor(q) }}</span>
       </div>
     </div>
 
-    <!-- Wizard view: one question at a time -->
-    <div v-else class="wizard">
+    <!-- Wizard view: one question at a time. Enter advances / submits (a
+         radio or the freeform textarea bubbles its keydown up to here). -->
+    <div v-else class="wizard" @keydown.enter="onEnter">
       <!-- Progress header -->
       <div class="progress">
         <div class="progress-meta">
@@ -32,11 +33,27 @@
         <div :key="currentIndex" class="pane">
           <div class="question-text">{{ currentQuestion.question }}</div>
           <div v-if="currentQuestion.multiSelect" class="multi-hint">
-            <span class="dot">●</span> {{ $t('chat.askUserQuestion.multiSelectHint') }}
+            <confirm-icon class="dot" :size="'1em' as any" aria-hidden="true" focusable="false" />
+            {{ $t('chat.askUserQuestion.multiSelectHint') }}
+          </div>
+
+          <!-- Freeform question: no options provided by tool payload. -->
+          <div v-if="isFreeformQuestion" class="other-wrap">
+            <el-input
+              v-model="otherTexts[currentIndex]"
+              type="textarea"
+              :rows="3"
+              :placeholder="$t('chat.askUserQuestion.placeholder')"
+              resize="none"
+            />
           </div>
 
           <!-- Single-select -->
-          <el-radio-group v-if="!currentQuestion.multiSelect" v-model="singleAnswers[currentIndex]" class="options">
+          <el-radio-group
+            v-else-if="!currentQuestion.multiSelect"
+            v-model="singleAnswers[currentIndex]"
+            class="options"
+          >
             <el-radio
               v-for="(opt, oIdx) in currentQuestion.options"
               :key="oIdx"
@@ -88,7 +105,6 @@
                 :rows="2"
                 :placeholder="$t('chat.askUserQuestion.placeholder')"
                 resize="none"
-                @keydown.enter.exact.prevent="onNext"
               />
             </div>
           </Transition>
@@ -98,7 +114,8 @@
       <!-- Actions -->
       <div class="actions">
         <el-button class="btn btn-back" text :disabled="currentIndex === 0" @click="onBack">
-          ← {{ $t('chat.askUserQuestion.back') }}
+          <back-icon :size="'1em' as any" aria-hidden="true" focusable="false" />
+          {{ $t('chat.askUserQuestion.back') }}
         </el-button>
         <el-button class="btn btn-skip" text @click="onSkip">
           {{ $t('chat.askUserQuestion.skipAll') }}
@@ -106,7 +123,8 @@
         <span class="spacer" />
         <el-button class="btn btn-next" type="primary" round :disabled="!canAdvance" @click="onNext">
           {{ isLastQuestion ? $t('chat.askUserQuestion.submit') : $t('chat.askUserQuestion.next') }}
-          <span class="arrow">{{ isLastQuestion ? '✓' : '→' }}</span>
+          <confirm-icon v-if="isLastQuestion" class="arrow" :size="'1em' as any" aria-hidden="true" focusable="false" />
+          <continue-icon v-else class="arrow" :size="'1em' as any" aria-hidden="true" focusable="false" />
         </el-button>
       </div>
     </div>
@@ -114,6 +132,7 @@
 </template>
 
 <script lang="ts">
+import { BackIcon, ConfirmIcon, ContinueIcon, SuccessIcon } from '@acedatacloud/core/icons/components';
 import { defineComponent, PropType } from 'vue';
 import { ElButton, ElCheckbox, ElCheckboxGroup, ElInput, ElRadio, ElRadioGroup } from 'element-plus';
 import { IAskUserQuestion, IAskUserQuestionPayload } from '@/models';
@@ -132,12 +151,16 @@ interface IData {
 export default defineComponent({
   name: 'AskUserQuestionCard',
   components: {
+    BackIcon,
+    ConfirmIcon,
+    ContinueIcon,
     ElButton,
     ElInput,
     ElRadio,
     ElRadioGroup,
     ElCheckbox,
-    ElCheckboxGroup
+    ElCheckboxGroup,
+    SuccessIcon
   },
   props: {
     /** Tool-use block id; sent back as `tool_use_id` on resume. */
@@ -189,7 +212,13 @@ export default defineComponent({
       if (this.questions.length === 0) return 0;
       return ((this.currentIndex + 1) / this.questions.length) * 100;
     },
+    isFreeformQuestion(): boolean {
+      return !Array.isArray(this.currentQuestion.options) || this.currentQuestion.options.length === 0;
+    },
     needsOtherInput(): boolean {
+      if (this.isFreeformQuestion) {
+        return false;
+      }
       const q = this.currentQuestion;
       const idx = this.currentIndex;
       if (q.multiSelect) {
@@ -233,6 +262,16 @@ export default defineComponent({
       }
       this.transitionName = 'slide-next';
       this.currentIndex += 1;
+    },
+    // Enter (without modifiers) advances or submits. Shift/Ctrl/Cmd+Enter keeps
+    // the default so the freeform textarea can still insert a newline, and IME
+    // composition Enter (confirming candidates) never triggers navigation.
+    onEnter(event: KeyboardEvent) {
+      if (event.isComposing || event.shiftKey || event.metaKey || event.ctrlKey || event.altKey) {
+        return;
+      }
+      event.preventDefault();
+      this.onNext();
     },
     onBack() {
       if (this.currentIndex === 0) return;
@@ -292,6 +331,18 @@ export default defineComponent({
   overflow: hidden;
 }
 
+// Bound the interactive card so it never grows past the viewport. The option
+// list scrolls internally (see `.options`) while the progress header and the
+// action row (Back / Next / Submit) stay pinned and always reachable — on a
+// phone they previously fell below the fold, leaving no clickable button.
+// A host can shrink the bound via `--auq-max-height` (the coding bridge docks
+// the card above its composer and caps it so the action bar is always on screen).
+.ask-user-question-card:not(.is-collapsed) {
+  display: flex;
+  flex-direction: column;
+  max-height: var(--auq-max-height, min(80vh, 620px));
+}
+
 .ask-user-question-card.is-collapsed {
   background: var(--el-fill-color-light);
   border: 1px solid var(--el-border-color-lighter);
@@ -318,6 +369,9 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   gap: 14px;
+  // Take the card's bounded height and let the pane/options shrink + scroll.
+  flex: 1 1 auto;
+  min-height: 0;
 }
 
 // ----- Progress -----
@@ -388,6 +442,9 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   gap: 10px;
+  // Fill the wizard's free space; `min-height: 0` lets `.options` scroll
+  // instead of forcing the card taller than its `max-height`.
+  flex: 1 1 auto;
   min-height: 0;
 }
 
@@ -412,8 +469,8 @@ export default defineComponent({
   font-weight: 500;
 
   .dot {
-    font-size: 6px;
-    line-height: 1;
+    width: 10px;
+    height: 10px;
   }
 }
 
@@ -424,6 +481,26 @@ export default defineComponent({
   flex-direction: column;
   gap: 8px;
   align-items: stretch;
+
+  // On short viewports (mobile webview) a long option list would push the
+  // action row — and the Submit button with it — below the fold. Let the list
+  // take the card's free space and scroll internally so the progress header
+  // and actions stay pinned; short lists keep their natural height.
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  // Leave room for the scrollbar so it doesn't overlap the option borders.
+  padding-right: 2px;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: var(--el-border-color);
+  }
 
   // Element Plus radios/checkboxes default to inline; stack and theme.
   :deep(.el-radio),
@@ -565,7 +642,8 @@ export default defineComponent({
 
   .arrow {
     margin-left: 4px;
-    display: inline-block;
+    width: 14px;
+    height: 14px;
     transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
@@ -659,7 +737,9 @@ export default defineComponent({
 
 .check {
   color: var(--el-color-success);
-  font-weight: 700;
+  width: 14px;
+  height: 14px;
+  flex: none;
 }
 
 .collapsed-q {
@@ -668,6 +748,9 @@ export default defineComponent({
 
 .collapsed-arrow {
   color: var(--el-text-color-placeholder);
+  width: 14px;
+  height: 14px;
+  flex: none;
 }
 
 .collapsed-a {

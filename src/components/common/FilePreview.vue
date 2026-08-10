@@ -6,12 +6,12 @@
       <div
         class="wrapper relative w-[35px] h-[35px] flex items-center justify-center rounded-[10px] text-white bg-[#10a37f] m-auto"
       >
-        <font-awesome-icon icon="fa-regular fa-file-alt" />
+        <file-text-icon :size="'1em' as any" aria-hidden="true" focusable="false" />
         <el-progress
-          v-show="percentage && percentage < 100"
+          v-show="isUploading"
           type="circle"
           :stroke-width="3"
-          :percentage="percentage"
+          :percentage="displayPercentage"
           :width="25"
           class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[25px] h-[25px] z-[10] m-auto"
         />
@@ -22,25 +22,30 @@
     >
       <span class="text-xs font-bold truncate">{{ name }}</span>
     </div>
-    <div
+    <button
       v-if="closable"
+      type="button"
       class="close absolute cursor-pointer top-[5px] right-[5px] bg-[rgba(0,0,0,0.7)] text-white w-[15px] rounded-full h-[15px] flex text-[10px] text-center items-center justify-center"
+      :aria-label="$t('common.button.close')"
+      :title="$t('common.button.close')"
+      @click="$emit('remove')"
     >
-      <font-awesome-icon icon="fa-solid fa-xmark" class="icon icon-close" @click="$emit('remove')" />
-    </div>
+      <close-icon class="icon icon-close" :size="'1em' as any" aria-hidden="true" focusable="false" />
+    </button>
   </div>
 </template>
 
 <script lang="ts">
+import { CloseIcon, FileTextIcon } from '@acedatacloud/core/icons/components';
 import { defineComponent } from 'vue';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { ElProgress } from 'element-plus';
 import { isImageUrl } from '@/utils/is';
 
 export default defineComponent({
   name: 'FilePreview',
   components: {
-    FontAwesomeIcon,
+    CloseIcon,
+    FileTextIcon,
     ElProgress
   },
   props: {
@@ -60,6 +65,14 @@ export default defineComponent({
     }
   },
   emits: ['remove'],
+  computed: {
+    isUploading(): boolean {
+      return typeof this.percentage === 'number' && this.percentage < 100;
+    },
+    displayPercentage(): number {
+      return typeof this.percentage === 'number' ? this.percentage : 0;
+    }
+  },
   methods: {
     isImageUrl
   }

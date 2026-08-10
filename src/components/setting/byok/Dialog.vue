@@ -12,6 +12,7 @@
           v-model="form.provider"
           :placeholder="$t('byok.field.provider')"
           :disabled="!!credential"
+          popper-class="byok-provider-select-popper"
           class="w-full"
         >
           <el-option v-for="opt in providers" :key="opt.id" :label="opt.label" :value="opt.id">
@@ -54,8 +55,13 @@
 
     <div v-if="testResult" :class="['test-result', testResult.ok ? 'ok' : 'fail']">
       <p class="test-result-title">
-        <span v-if="testResult.ok">✓ {{ $t('byok.test.success') }}</span>
-        <span v-else>✗ {{ $t('byok.test.failure') }}</span>
+        <span v-if="testResult.ok"
+          ><success-icon :size="'1em' as any" aria-hidden="true" focusable="false" />
+          {{ $t('byok.test.success') }}</span
+        >
+        <span v-else
+          ><error-icon :size="'1em' as any" aria-hidden="true" focusable="false" /> {{ $t('byok.test.failure') }}</span
+        >
       </p>
       <dl class="test-result-detail">
         <dt>{{ $t('byok.test.endpoint') }}</dt>
@@ -88,6 +94,7 @@
 </template>
 
 <script lang="ts">
+import { ErrorIcon, SuccessIcon } from '@acedatacloud/core/icons/components';
 import { defineComponent, type PropType } from 'vue';
 import {
   ElButton,
@@ -122,13 +129,15 @@ interface ITestResult {
 export default defineComponent({
   name: 'BYOKDialog',
   components: {
+    ErrorIcon,
     ElButton,
     ElDialog,
     ElForm,
     ElFormItem,
     ElInput,
     ElOption,
-    ElSelect
+    ElSelect,
+    SuccessIcon
   },
   props: {
     visible: { type: Boolean, default: false },
@@ -370,7 +379,6 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   line-height: 1.3;
-  padding: 4px 0;
   gap: 2px;
 }
 
@@ -408,6 +416,17 @@ export default defineComponent({
 .test-result-title {
   margin: 0 0 6px;
   font-weight: 600;
+
+  span {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
 }
 
 .test-result-detail {
@@ -433,6 +452,22 @@ export default defineComponent({
     background: rgba(0, 0, 0, 0.04);
     padding: 1px 6px;
     border-radius: 4px;
+  }
+}
+</style>
+
+<style lang="scss">
+// Element Plus teleports the select popper to <body>, so scoped styles
+// can't reach it. The default .el-select-dropdown__item has a fixed
+// 34px height / line-height that clips our 2-line custom option slot
+// (provider name + description), causing the description to overlap
+// the next option. Unset both for this dialog's popper only.
+.byok-provider-select-popper {
+  .el-select-dropdown__item {
+    height: auto;
+    line-height: 1.4;
+    padding-top: 8px;
+    padding-bottom: 8px;
   }
 }
 </style>

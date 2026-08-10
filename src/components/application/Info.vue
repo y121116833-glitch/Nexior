@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="flex flex-col min-w-0">
-      <el-icon class="check"><check /></el-icon>
+      <el-icon class="check"><confirm-icon :size="'1em' as any" aria-hidden="true" focusable="false" /></el-icon>
       <div v-if="showId" class="app-id-row">
         <div class="icon !mb-0 flex-shrink-0">
-          <font-awesome-icon icon="fa-solid fa-wallet" />
+          <wallet-icon :size="'1em' as any" aria-hidden="true" focusable="false" />
         </div>
         <div class="app-id-line">
           <span class="app-id-label">{{ $t('application.field.id') }}:</span>
@@ -13,15 +13,25 @@
         </div>
       </div>
       <div v-else class="icon">
-        <font-awesome-icon icon="fa-solid fa-wallet" />
+        <wallet-icon :size="'1em' as any" aria-hidden="true" focusable="false" />
       </div>
       <div class="text-left">
         <p class="description">
           <span v-if="!application.service">{{ $t('application.title.globalBalance') }}</span>
           <span v-else>{{ $t('application.title.applicationBalance', { service: application.service?.title }) }}</span>
+          <el-tag
+            v-if="application.role === 'grantee'"
+            class="shared-badge"
+            size="small"
+            type="warning"
+            effect="dark"
+            round
+          >
+            {{ $t('application.badge.shared') }}
+          </el-tag>
         </p>
         <p class="value">
-          {{ application?.remaining_amount?.toFixed(2) }}
+          {{ remainingAmountText }}
           {{ $t(`service.unit.` + (application?.service?.unit || 'credit') + 's') }}
         </p>
         <p class="description2">
@@ -35,12 +45,12 @@
       </div>
     </div>
     <div class="actions">
-      <el-button size="small" round @click.stop="$emit('usage', application)">
-        <font-awesome-icon icon="fa-solid fa-chart-line" class="mr-1 text-[11px]" />
+      <el-button v-if="showUsage" size="small" round @click.stop="$emit('usage', application)">
+        <analytics-icon class="mr-1 text-[11px]" :size="'1em' as any" aria-hidden="true" focusable="false" />
         {{ $t('application.button.usage') }}
       </el-button>
-      <el-button type="primary" round size="small" @click.stop="$emit('buy', application)">
-        <font-awesome-icon icon="fa-solid fa-coins" class="mr-1 text-[11px]" />
+      <el-button v-if="showPayment" type="primary" round size="small" @click.stop="$emit('buy', application)">
+        <credits-icon class="mr-1 text-[11px]" :size="'1em' as any" aria-hidden="true" focusable="false" />
         {{ $t('application.button.buyMore') }}
       </el-button>
     </div>
@@ -48,21 +58,24 @@
 </template>
 
 <script lang="ts">
-import { IApplication } from '@/models';
+import { IApplication, IServiceType } from '@/models';
 import { defineComponent } from 'vue';
-import { ElButton, ElIcon } from 'element-plus';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { Check } from '@element-plus/icons-vue';
+import { ElButton, ElIcon, ElTag } from 'element-plus';
+import { AnalyticsIcon, ConfirmIcon, CreditsIcon, WalletIcon } from '@acedatacloud/core/icons/components';
 import CopyToClipboard from '@/components/common/CopyToClipboard.vue';
+import { isIOS, isRechargeDisabled } from '@/utils';
 
 export default defineComponent({
   name: 'ApplicationInfo',
   components: {
-    FontAwesomeIcon,
+    AnalyticsIcon,
+    ConfirmIcon,
+    CreditsIcon,
     ElButton,
-    Check,
     ElIcon,
-    CopyToClipboard
+    ElTag,
+    CopyToClipboard,
+    WalletIcon
   },
   props: {
     application: {
@@ -78,7 +91,35 @@ export default defineComponent({
       default: false
     }
   },
-  emits: ['buy', 'usage']
+  emits: ['buy', 'usage'],
+  computed: {
+    showUsage(): boolean {
+      return !this.application?.service || this.application.service.type === IServiceType.API;
+    },
+    // On iOS the only Apple-buyable entity is the global 积分 wallet, so show
+    // "Top Up" for the global application (per-service apps have no Apple
+    // products). Keyed on scope (always present) rather than packages, which
+    // isn't serialized in every view.
+    showPayment(): boolean {
+      if (this.application.role === 'grantee' || isRechargeDisabled(this.$store.getters.site)) {
+        return false;
+      }
+      if (!isIOS()) {
+        return true;
+      }
+      if (this.application?.scope === 'Global') {
+        return true;
+      }
+      return (this.application?.packages || []).some((p) => p?.metadata?.apple_product_id);
+    },
+    remainingAmountText(): string {
+      const amount = Number(this.application?.remaining_amount ?? 0);
+      if (!Number.isFinite(amount) || amount < 0) {
+        return '0.00';
+      }
+      return amount.toFixed(2);
+    }
+  }
 });
 </script>
 
@@ -181,21 +222,36 @@ export default defineComponent({
 .icon {
   height: 40px;
   width: 40px;
-  line-height: 40px;
+  display: grid;
+  place-items: center;
   border-radius: 50%;
   background-color: var(--el-bg-color-page);
-  text-align: center;
   margin-bottom: 10px;
   color: var(--el-color-primary);
+
+  :deep(svg) {
+    display: block;
+    width: 18px;
+    height: 18px;
+  }
 }
 
 .value {
   font-weight: 600;
   font-size: 30px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 .description {
   color: var(--el-text-color-regular);
   font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.shared-badge {
+  margin-left: 2px;
 }
 .description2 {
   color: var(--el-text-color-secondary);

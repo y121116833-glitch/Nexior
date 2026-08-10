@@ -63,12 +63,27 @@
               <tool-activity
                 v-if="
                   item.type === 'tool_use' &&
+                  item.execution !== 'browser' &&
                   !(
                     item.tool_name === 'ask_user_question' &&
+                    (item.status === 'awaiting_input' || item.status === 'done')
+                  ) &&
+                  !(
+                    item.tool_name === 'request_user_consent' &&
+                    (item.status === 'awaiting_input' || item.status === 'done')
+                  ) &&
+                  !(
+                    item.tool_name === 'request_action_confirmation' &&
                     (item.status === 'awaiting_input' || item.status === 'done')
                   )
                 "
                 :item="item"
+              />
+              <browser-tool-activity
+                v-if="item.type === 'tool_use' && item.execution === 'browser'"
+                :item="item"
+                @stop-session="$emit('stopBrowserSession', $event)"
+                @recovery="$emit('browserRecovery', $event)"
               />
               <ask-user-question-card
                 v-if="
@@ -88,6 +103,53 @@
                 :tool-use-id="item.tool_id || ''"
                 :payload="askUserQuestionPayloadFromBlock(item)"
                 :collapsed="true"
+                :previous-output="item.output || ''"
+              />
+              <connector-consent-card
+                v-if="
+                  item.type === 'tool_use' &&
+                  item.tool_name === 'request_user_consent' &&
+                  item.status === 'awaiting_input' &&
+                  item.pending_consent_request
+                "
+                :tool-use-id="item.tool_id || ''"
+                :payload="item.pending_consent_request"
+                :resolved="false"
+                @submit="onConnectorConsentSubmit"
+                @authorize="onConnectorConsentAuthorize"
+              />
+              <connector-consent-card
+                v-if="
+                  item.type === 'tool_use' &&
+                  item.tool_name === 'request_user_consent' &&
+                  item.status === 'done' &&
+                  consentPayloadFromBlock(item)
+                "
+                :tool-use-id="item.tool_id || ''"
+                :payload="consentPayloadFromBlock(item)!"
+                :resolved="true"
+                :previous-output="item.output || ''"
+              />
+              <action-confirmation-card
+                v-if="
+                  item.type === 'tool_use' &&
+                  item.tool_name === 'request_action_confirmation' &&
+                  item.status === 'awaiting_input' &&
+                  item.pending_action_confirmation
+                "
+                :payload="item.pending_action_confirmation"
+                :resolved="false"
+                @submit="onActionConfirmationSubmit(item, $event)"
+              />
+              <action-confirmation-card
+                v-if="
+                  item.type === 'tool_use' &&
+                  item.tool_name === 'request_action_confirmation' &&
+                  item.status === 'done' &&
+                  actionConfirmationPayloadFromBlock(item)
+                "
+                :payload="actionConfirmationPayloadFromBlock(item)!"
+                :resolved="true"
                 :previous-output="item.output || ''"
               />
               <entity-card v-if="item.type === 'card' && item.card" :card="item.card" />
@@ -124,17 +186,18 @@
         class="operations"
       >
         <edit-message
-          v-if="message.role === 'user' && !isEditing && !Array.isArray(message.content)"
+          v-if="!readonly && message.role === 'user' && !isEditing && !Array.isArray(message.content)"
           class="btn-edit"
           @click="startEditing"
         />
         <copy-to-clipboard
-          v-if="copyableText && (message.state === messageState.FINISHED || message.state === messageState.FAILED)"
+          v-if="copyableText && message.state !== messageState.PENDING && message.state !== messageState.ANSWERING"
           :content="copyableText"
           class="btn-copy"
         />
         <restart-to-generate
           v-if="
+            !readonly &&
             (message.state === messageState.FINISHED || message.state === messageState.FAILED) &&
             message.role === 'assistant' &&
             message === messages[messages.length - 1]
@@ -143,14 +206,24 @@
           :messages="messages"
           @restart="onRestart"
         />
+        <report-button
+          v-if="
+            message.role === 'assistant' &&
+            message.state !== messageState.PENDING &&
+            message.state !== messageState.ANSWERING
+          "
+          class="btn-report"
+          service="chat"
+          :snapshot="{ answer: copyableText }"
+        />
       </div>
     </div>
     <div v-else class="error-card">
       <div class="error-content">
-        <font-awesome-icon icon="fa-solid fa-circle-exclamation" class="error-icon" />
+        <error-icon class="error-icon" :size="'1em' as any" aria-hidden="true" focusable="false" />
         <span class="error-text">{{ errorText }}</span>
       </div>
-      <el-button v-if="showBuyMore" round type="primary" class="btn-topup" size="small" @click="onBuyMore">
+      <el-button v-if="showBuyMore && !readonly" round type="primary" class="btn-topup" size="small" @click="onBuyMore">
         {{ $t('common.button.buyMore') }}
       </el-button>
     </div>
@@ -158,22 +231,31 @@
 </template>
 
 <script lang="ts">
+import { ErrorIcon } from '@acedatacloud/core/icons/components';
 import { defineComponent } from 'vue';
 import AnsweringMark from './AnsweringMark.vue';
-import copy from 'copy-to-clipboard';
 import { ElButton, ElImage, ElInput } from 'element-plus';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import MarkdownRenderer from '@/components/common/MarkdownRenderer.vue';
-import { IApplication, IChatMessage, IChatMessageState } from '@/models';
-import type { IAskUserQuestionPayload, IChatMessageContentItem } from '@/models';
+import { IApplication, IChatMessage, IChatMessageState, IChatModelGroup } from '@/models';
+import type {
+  IActionConfirmationPayload,
+  IActionConfirmationResult,
+  IAskUserQuestionPayload,
+  IChatMessageContentItem,
+  IConsentRequestPayload
+} from '@/models';
 import CopyToClipboard from '@/components/common/CopyToClipboard.vue';
 import RestartToGenerate from './RestartToGenerate.vue';
+import ReportButton from '@/components/common/ReportButton.vue';
 import EditMessage from './EditMessage.vue';
 import FilePreview from '@/components/common/FilePreview.vue';
 import ToolActivity from './ToolActivity.vue';
+import BrowserToolActivity from './BrowserToolActivity.vue';
 import EntityCard from './EntityCard.vue';
 import ThinkingBlock from './ThinkingBlock.vue';
 import AskUserQuestionCard from './AskUserQuestionCard.vue';
+import ConnectorConsentCard from './ConnectorConsentCard.vue';
+import ActionConfirmationCard from './ActionConfirmationCard.vue';
 import {
   ERROR_CODE_API_ERROR,
   ERROR_CODE_BAD_REQUEST,
@@ -188,9 +270,9 @@ import {
   ERROR_CODE_BUSY
 } from '@/constants';
 import { ROUTE_CONSOLE_APPLICATION_EXTRA } from '@/router';
+import { isIOS, isRechargeDisabled } from '@/utils';
 
 interface IData {
-  copied: boolean;
   isEditing: boolean;
   questionValue: string;
   messageState: typeof IChatMessageState;
@@ -199,20 +281,24 @@ interface IData {
 export default defineComponent({
   name: 'Message',
   components: {
+    ErrorIcon,
     EditMessage,
     CopyToClipboard,
     RestartToGenerate,
+    ReportButton,
     AnsweringMark,
     MarkdownRenderer,
     FilePreview,
     ToolActivity,
+    BrowserToolActivity,
     EntityCard,
     ThinkingBlock,
     AskUserQuestionCard,
+    ConnectorConsentCard,
+    ActionConfirmationCard,
     ElButton,
     ElImage,
-    ElInput,
-    FontAwesomeIcon
+    ElInput
   },
   props: {
     messages: {
@@ -227,12 +313,41 @@ export default defineComponent({
     application: {
       type: Object as () => IApplication | undefined,
       required: true
+    },
+    /**
+     * Read-only rendering for the public /share/:id page: hides the
+     * owner-only actions (edit, regenerate, top-up) so an anonymous viewer
+     * sees the transcript but cannot act on it.
+     */
+    readonly: {
+      type: Boolean,
+      default: false
+    },
+    /**
+     * Assistant-avatar model group for contexts where the chat store isn't
+     * the source of truth (the shared page has no active chat session).
+     * Falls back to the store when absent.
+     */
+    modelGroupOverride: {
+      type: Object as () => IChatModelGroup | undefined,
+      required: false,
+      default: undefined
     }
   },
-  emits: ['stop', 'edit', 'restart', 'answerAskUserQuestion', 'skipAskUserQuestion'],
+  emits: [
+    'stop',
+    'edit',
+    'restart',
+    'answerAskUserQuestion',
+    'skipAskUserQuestion',
+    'respondConnectorConsent',
+    'respondActionConfirmation',
+    'authorizeConnector',
+    'stopBrowserSession',
+    'browserRecovery'
+  ],
   data(): IData {
     return {
-      copied: false,
       isEditing: false,
       questionValue: this.message.content as string,
       messageState: IChatMessageState
@@ -240,7 +355,10 @@ export default defineComponent({
   },
   computed: {
     modelGroup() {
-      return this.$store.state.chat.modelGroup;
+      // Prefer an explicit override (shared page); otherwise read the active
+      // chat session. Optional chaining guards the case where the chat store
+      // module isn't registered (anonymous /share/:id route).
+      return this.modelGroupOverride || this.$store.state.chat?.modelGroup;
     },
     // Plain-text view of `message.content` for the copy button. Assistant
     // messages are now stored as IChatMessageContentItem[] (text + tool_use
@@ -292,7 +410,14 @@ export default defineComponent({
       }
     },
     showBuyMore() {
-      return this.message.role === ROLE_ASSISTANT && this.message.error?.code === ERROR_CODE_USED_UP;
+      // Payment flows live on the web, not inside the iOS bundle. Hide the
+      // in-chat "Top Up" entry on iOS so it never routes to a payment page
+      // that renders empty there (matches showPayment in the console pages).
+      // Also hidden when the site admin disabled recharge entirely.
+      if (this.application?.role === 'grantee' || isRechargeDisabled(this.$store.getters.site)) {
+        return false;
+      }
+      return !isIOS() && this.message.role === ROLE_ASSISTANT && this.message.error?.code === ERROR_CODE_USED_UP;
     }
   },
   watch: {},
@@ -326,15 +451,6 @@ export default defineComponent({
     onSubmit() {
       this.$emit('edit', this.message, this.questionValue);
     },
-    onCopy() {
-      copy(this.message.content!.toString(), {
-        debug: true
-      });
-      this.copied = true;
-      setTimeout(() => {
-        this.copied = false;
-      }, 3000);
-    },
     onBuyMore() {
       this.$router.push({
         name: ROUTE_CONSOLE_APPLICATION_EXTRA,
@@ -357,6 +473,26 @@ export default defineComponent({
       const input = item.input as { questions?: unknown } | undefined;
       const qs = (input?.questions as IAskUserQuestionPayload['questions']) || [];
       return { questions: qs };
+    },
+    onConnectorConsentSubmit(payload: { tool_use_id: string; output: string }) {
+      this.$emit('respondConnectorConsent', payload);
+    },
+    onConnectorConsentAuthorize(payload: { tool_use_id: string; entry: { connector: string; install_url?: string } }) {
+      this.$emit('authorizeConnector', payload);
+    },
+    consentPayloadFromBlock(item: IChatMessageContentItem): IConsentRequestPayload | null {
+      // Done blocks shouldn't carry `pending_consent_request` per the
+      // contract, but the resolved summary still needs a payload. We can't
+      // reconstruct one from `input` (which only carries `requirements`),
+      // so if it's already been stripped we return null and the template
+      // suppresses the collapsed card.
+      return item.pending_consent_request ?? null;
+    },
+    onActionConfirmationSubmit(item: IChatMessageContentItem, result: IActionConfirmationResult) {
+      this.$emit('respondActionConfirmation', { tool_use_id: item.tool_id || '', result });
+    },
+    actionConfirmationPayloadFromBlock(item: IChatMessageContentItem): IActionConfirmationPayload | null {
+      return item.pending_action_confirmation ?? null;
     }
   }
 });
@@ -432,6 +568,27 @@ export default defineComponent({
     min-width: 0;
   }
 
+  // Below `sm` (640px) tighten the author gutter and bubble padding so
+  // assistant/user content has more horizontal room on narrow phones.
+  // `.author` width drops 44 -> 36 (12px gained back, including its
+  // 8px right padding -> 4px). `.content` horizontal padding drops
+  // 20 -> 14 (12px gained inside the bubble). Net ~24px of extra text
+  // width on a 360px viewport, which gets rid of the awkward 1-2 word
+  // last line that the audit flagged on iPhone SE.
+  @media (max-width: 640px) {
+    .author {
+      width: 36px;
+      padding-right: 4px;
+      .avatar {
+        width: 28px;
+        height: 28px;
+      }
+    }
+    .main {
+      width: calc(100% - 36px);
+    }
+  }
+
   &.assistant {
     align-items: start;
     .content {
@@ -482,6 +639,12 @@ export default defineComponent({
     max-width: 800px;
     margin-bottom: 4px;
     line-height: 1.6;
+    @media (max-width: 640px) {
+      // Pair the tighter author gutter above with a tighter bubble so
+      // the gain is visible — drops the user-bubble side padding from
+      // 20 to 14 (~12px more text width on a 360px screen).
+      padding: 10px 14px;
+    }
     .image {
       max-width: 100%;
       max-height: 300px;
@@ -519,17 +682,44 @@ export default defineComponent({
     // source of truth for spacing and the icons line up cleanly.
     :deep(.icon-copy),
     :deep(.icon-check),
-    :deep(.icon-sync) {
+    :deep(.icon-sync),
+    :deep(.btn-report) {
       margin-left: 0;
+    }
+    // ReportButton is sized for the 24px action chips on result cards; here
+    // the row is icon-only, so drop that sizing and inherit this row's.
+    :deep(.report-entry) {
+      min-height: 0;
+      margin-bottom: 0;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s ease;
+    }
+    :deep(.btn-report) {
+      padding: 0;
+      font-size: inherit;
+      color: inherit;
     }
   }
 
-  &:hover {
+  &:hover,
+  &:focus-within {
     .operations {
       color: var(--el-text-color-regular);
       .btn-edit {
         visibility: visible;
       }
+      :deep(.report-entry) {
+        opacity: 1;
+        pointer-events: auto;
+      }
+    }
+  }
+
+  @media (hover: none) {
+    .operations :deep(.report-entry) {
+      opacity: 1;
+      pointer-events: auto;
     }
   }
 }

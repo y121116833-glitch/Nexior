@@ -8,8 +8,8 @@
     "description": "Videon generoimiseen käytettävä kehotus"
   },
   "description.prompt": {
-    "message": "Kuvaile videota, jonka haluat generoida, voit liittää SeeDance-parametreja (esim.: --rs 720p --rt 16:9 --dur 5).",
-    "description": "Kehotuksen syöttöohje"
+    "message": "Kuvaile, mitä videota haluat luoda. Jos haluat, että hahmo puhuu: lataa kuva alla olevaan \"viittauskuva\" -ruutuun (ei \"ensimmäinen kehys\"), kirjoita repliikit selkeästi lainausmerkkeihin vihjeessä, esimerkiksi hahmo kuvassa 1 katsoo kameraan ja sanoo: \"sinun repliikkisi\", ja kytke \"generoi ääni\" päälle. Voit lisätä parametreja (kuten --rs 720p --rt 16:9 --dur 5).",
+    "description": "Vihjeen syöttöselitys"
   },
   "placeholder.prompt": {
     "message": "Kuvaile videota…",
@@ -40,8 +40,8 @@
     "description": "Äänen generoimisen valintatunnus"
   },
   "description.generateAudio": {
-    "message": "Kun tämä on päällä, videoon liitetään ääni. Vain seedance-1.5-pro-malli tukee, kustannus noin 2-kertainen.",
-    "description": "Äänen generoimisen ohje"
+    "message": "Kun tämä on päällä, video sisältää ääntä. Jos haluat, että hahmo puhuu, sinun on: ladattava hahmon kuva \"viittauskuva\" -ruutuun + kytkettävä tämä päälle + kirjoitettava repliikit lainausmerkkeihin vihjeessä. Vain seedance-1.5-pro / seedance-2.0 sarjat tukevat, kustannus noin 2-kertainen.",
+    "description": "Äänen generoinnin selitys"
   },
   "name.resolution": {
     "message": "Resoluutio",
@@ -58,6 +58,14 @@
   "model.seedance15pro": {
     "message": "doubao-seedance-1.5-pro",
     "description": "SeeDance 1.5 Pro -malli"
+  },
+  "model.seedance20": {
+    "message": "doubao-seedance-2.0",
+    "description": "SeeDance 2.0 malli"
+  },
+  "model.seedance20Fast": {
+    "message": "doubao-seedance-2.0-fast",
+    "description": "SeeDance 2.0 Fast malli"
   },
   "model.seedance10liteT2v": {
     "message": "doubao-seedance-1.0-lite-t2v",
@@ -92,20 +100,20 @@
     "description": "Viimeisen kehyksen palautuksen ohje"
   },
   "name.firstFrame": {
-    "message": "Ensimmäinen kehyskuva",
-    "description": "Ensimmäisen kehyksen kuvan lataustunnus"
+    "message": "Ensimmäinen kehyskuva (kuvan tehoste)",
+    "description": "Ensimmäisen kehyksen kuvan latausmerkintä"
   },
   "description.firstFrame": {
-    "message": "Valinnainen. Lataa viite/ensimmäinen kehyskuva.",
-    "description": "Ensimmäisen kehyksen kuvan ohje"
+    "message": "Ensimmäinen kehys: lataamasi kuva tulee videon ensimmäiseksi kehykseksi, ja kuva alkaa liikkua siitä. Sopii \"saamaan kuva liikkumaan\", mutta hahmo ei puhu eikä ole suun liikettä. Jos haluat, että hahmo puhuu, käytä alla olevaa \"viittauskuvaa\".",
+    "description": "Ensimmäisen kehyksen kuvan selitys"
   },
   "name.lastFrame": {
     "message": "Viimeinen kehyskuva",
     "description": "Viimeisen kehyksen kuvan lataustunnus"
   },
   "description.lastFrame": {
-    "message": "Valinnainen. Lataa viimeinen kehyskuva (vaatii ensimmäisen kehyksen).",
-    "description": "Viimeisen kehyksen kuvan ohje"
+    "message": "Viimeinen kehys: määritä videon viimeinen kehys (yhdistettävä ensimmäiseen kehykseen). Käytetään lukitsemaan kuva, joka alkaa tietystä kuvasta ja päättyy tiettyyn kuvaan.",
+    "description": "Viimeisen kehyksen kuvan selitys"
   },
   "button.generate": {
     "message": "Generoi",
@@ -147,6 +155,26 @@
     "message": "Voit ladata enintään 1 kuvan",
     "description": "Latausrajan ylitysviesti"
   },
+  "name.required": {
+    "message": "Pakollinen",
+    "description": "Pakollinen merkintä"
+  },
+  "message.modelUnsupported": {
+    "message": "Valittua mallia ei tueta, valitse uudelleen.",
+    "description": "Ei tuettujen mallien ilmoitus"
+  },
+  "message.modelRequiresImage": {
+    "message": "Tämä malli vaatii ensimmäisen kehyksen kuvan lataamista videon luomiseksi.",
+    "description": "Kuvasta video -malli tarvitsee kuvasyötteen"
+  },
+  "message.modelRejectsImage": {
+    "message": "Tämä malli tukee vain tekstistä videota, poista ladattu kuva.",
+    "description": "Tekstistä video -malli ei hyväksy kuvasyöttöä"
+  },
+  "message.resolutionNotSupported": {
+    "message": "Tätä resoluutiota ei tueta nykyisellä mallilla.",
+    "description": "Resoluutio ei ole tuettujen mallien ilmoitus"
+  },
   "message.uploadError": {
     "message": "Lataus epäonnistui",
     "description": "Latauksen epäonnistumisviesti"
@@ -186,5 +214,73 @@
   "name.status": {
     "message": "Tila",
     "description": "Tilatunnus"
+  },
+  "name.ratio": {
+    "message": "Kuvasuhde",
+    "description": "Kuvasuhteen otsikko"
+  },
+  "description.ratio": {
+    "message": "Valitse luotavan videon kuvasuhde.",
+    "description": "Kuvasuhteen kuvaus"
+  },
+  "description.resolution": {
+    "message": "Valitse luotavan videon tarkkuus.",
+    "description": "Tarkkuuden kuvaus"
+  },
+  "ratio.adaptive": {
+    "message": "Mukautuva",
+    "description": "Mukautuva kuvasuhdevalinta"
+  },
+  "name.cameraFixed": {
+    "message": "Lukitse kamera",
+    "description": "Lukitse kamera -kytkimen otsikko"
+  },
+  "description.cameraFixed": {
+    "message": "Päällä kamera pysyy paikallaan videon ajan.",
+    "description": "Lukitse kamera -kuvaus"
+  },
+  "name.seed": {
+    "message": "Siemen",
+    "description": "Satunnaissiemenen otsikko"
+  },
+  "description.seed": {
+    "message": "Satunnaissiemen toistettavia tuloksia varten. Jätä tyhjäksi satunnaisuutta varten.",
+    "description": "Satunnaissiemenen kuvaus"
+  },
+  "placeholder.seed": {
+    "message": "Automaattinen",
+    "description": "Satunnainen siemenpaikka"
+  },
+  "model.seedance20Mini": {
+    "message": "doubao-seedance-2.0-mini",
+    "description": "SeeDance 2.0 Mini -malli"
+  },
+  "name.referenceImage": {
+    "message": "Viittauskuva (antaa hahmon puhua)",
+    "description": "Viittauskuvan latausmerkintä (Seedance 2.0)"
+  },
+  "description.referenceImage": {
+    "message": "Mahdollistaa, että kuvassa oleva hahmo puhuu videossa ja synkronoi suun liikettä (puhe / digitaalinen henkilö ensisijaisesti, säilyttää hahmon ilmeen). Jos haluat, että hahmo puhuu, lataa kuva tänne, ei \"ensimmäiseen kehykseen\". Käytä yhdessä vihjeen lainausmerkkirepliikkien + \"generoi ääni\" kanssa. Voit ladata 1-9 kuvaa. Vain Seedance 2.0 sarja. Huom: ei voi käyttää samanaikaisesti \"ensimmäisen/viimeisen kehyksen kuvan\" kanssa.",
+    "description": "Viittauskuvan selitys"
+  },
+  "name.referenceAudio": {
+    "message": "Viittausääni (sävy/taustamusiikki)",
+    "description": "Viittausäänen latausmerkintä (Seedance 2.0)"
+  },
+  "description.referenceAudio": {
+    "message": "Anna videon lainata tätä äänitallennetta äänen sävyä tai taustamusiikkia (yhdistettävä viittauskuvan kanssa, jotta hahmo puhuu kyseisellä äänellä). Vain viittauskuvan tai viittausvideon kanssa käytettävä, ei voi ladata vain ääntä. Voit ladata 1-3 pätkää. Vain Seedance 2.0 sarja.",
+    "description": "Viittausäänen selitys"
+  },
+  "name.referenceVideo": {
+    "message": "Viittausvideo",
+    "description": "Viittausvideon lataustunniste (Seedance 2.0)"
+  },
+  "description.referenceVideo": {
+    "message": "Mahdollistaa mallin lainata tämän videon liikkeitä/kameraliikkeitä/tyyliä/ääniefektejä, luodaksesi uuden videon. Voit ladata 1-3 pätkää. Vain Seedance 2.0 sarja.",
+    "description": "Viittausvideon selitys"
+  },
+  "message.audioRequiresReference": {
+    "message": "Viittausääntä ei voi käyttää yksin, lataa samalla viittauskuva tai viittausvideo.",
+    "description": "Varoitus, kun viittausäänellä ei ole paritettu kuvaa/videota"
   }
 }

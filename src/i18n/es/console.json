@@ -127,10 +127,6 @@
     "message": "Token de plataforma",
     "description": "Texto en el menú del sitio web, el token de plataforma se refiere al token utilizado para acceder a la plataforma Ace Data Cloud"
   },
-  "menu.publishIndex": {
-    "message": "Centro de Publicación",
-    "description": "Texto en el menú del sitio web, el centro de publicación se refiere al lugar donde los usuarios publican contenido"
-  },
   "menu.platformRankIndex": {
     "message": "Ranking de Plataforma",
     "description": "Texto en el menú del sitio web, el ranking de plataforma se refiere a la lista de ganancias recomendadas por los usuarios"
@@ -146,5 +142,17 @@
   "menu.revenueAnalysis": {
     "message": "Análisis de Ingresos",
     "description": "Texto en el menú del sitio web, acceso al análisis de ingresos visible solo para administradores"
+  },
+  "menu.connectors": {
+    "message": "Conectores",
+    "description": "Texto en el menú del sitio web, los conectores se refieren a los servicios de terceros a los que el usuario se conecta."
+  },
+  "menu.skills": {
+    "message": "Habilidades",
+    "description": "Texto en el menú del sitio web, habilidades se refiere a las habilidades de agente que el usuario ha instalado."
+  },
+  "menu.browserDevices": {
+    "message": "Dispositivos del navegador",
+    "description": "Texto en el menú del sitio web, los dispositivos del navegador se refieren a las extensiones del navegador que el usuario ha emparejado."
   }
 }

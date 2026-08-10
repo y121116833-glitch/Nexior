@@ -11,6 +11,10 @@
     "message": "Odwiedź subdomenę teraz",
     "description": "Tytuł okna dialogowego pytającego, czy przejść do nowo utworzonej subdomeny"
   },
+  "title.openSite": {
+    "message": "Otwórz podstronę",
+    "description": "Tytuł okna potwierdzenia otwarcia podstrony."
+  },
   "field.slug": {
     "message": "Prefiks subdomeny",
     "description": "Tytuł pola wejściowego slug dla subdomeny"
@@ -18,6 +22,14 @@
   "field.origin": {
     "message": "Domena subdomeny",
     "description": "Kolumna domeny w liście subdomen"
+  },
+  "field.defaultLabel": {
+    "message": "Domyślny",
+    "description": "Etykieta wyświetlana obok domyślnej subdomeny w oknie otwierania podstrony."
+  },
+  "field.customLabel": {
+    "message": "Niestandardowy",
+    "description": "Etykieta wyświetlana obok niestandardowej nazwy hosta (BYO) w oknie otwierania podstrony."
   },
   "field.title": {
     "message": "Tytuł subdomeny",
@@ -51,6 +63,10 @@
     "message": "Zarządzaj",
     "description": "Przycisk do przejścia do ustawień subdomeny"
   },
+  "button.delete": {
+    "message": "Usuń",
+    "description": "Przycisk usuwania podstrony"
+  },
   "message.indexTip": {
     "message": "Twórz niezależne subdomeny dla swojej marki pod główną stroną. Każda subdomena może mieć swoje logo, tytuł i zestaw funkcji, bez potrzeby osobnego budowania kodu źródłowego.",
     "description": "Opis na stronie zarządzania subdomenami"
@@ -79,6 +95,10 @@
     "message": "Nie udało się utworzyć subdomeny, spróbuj ponownie później.",
     "description": "Błąd podczas tworzenia"
   },
+  "message.slugTaken": {
+    "message": "Poddomena {origin} jest już używana, wybierz inną i spróbuj ponownie.",
+    "description": "Podczas tworzenia podstrony, podany slug jest już zajęty (backend zwraca kod=duplication)"
+  },
   "message.loadFailed": {
     "message": "Nie udało się załadować listy subdomen.",
     "description": "Błąd podczas ładowania listy"
@@ -86,6 +106,22 @@
   "message.openNowConfirm": {
     "message": "Subdomena {origin} została utworzona. Czy chcesz teraz ją otworzyć, aby kontynuować konfigurację?",
     "description": "Czy otworzyć od razu po utworzeniu"
+  },
+  "message.openSiteHint": {
+    "message": "Ten podstrona jest powiązana z wieloma domenami, wybierz adres, który chcesz otworzyć, a my otworzymy go w nowej karcie.",
+    "description": "Wskazówka w oknie dialogowym otwierania podstrony wyjaśniająca wybór adresu URL."
+  },
+  "message.deleteConfirm": {
+    "message": "Usunąć podstronę {origin}? Użytkownicy nie będą już mogli uzyskać dostępu przez tę domenę, a tej operacji nie można cofnąć.",
+    "description": "Prośba o potwierdzenie przed usunięciem podstrony"
+  },
+  "message.deleted": {
+    "message": "Podstrona {origin} została usunięta.",
+    "description": "Komunikat sukcesu po usunięciu podstrony"
+  },
+  "message.deleteFailed": {
+    "message": "Nie udało się usunąć podstrony, spróbuj ponownie później.",
+    "description": "Domyślny komunikat błędu, gdy żądanie DELETE się nie powiedzie"
   },
   "title.domains": {
     "message": "Dostosowana domena dla {origin}",
@@ -155,6 +191,10 @@
     "message": "Nie udało się utworzyć domeny, spróbuj ponownie później.",
     "description": "Błąd podczas tworzenia"
   },
+  "message.domainTaken": {
+    "message": "Domena {hostname} została już dodana. Użyj innej domeny.",
+    "description": "Wyświetlane, gdy wybrana nazwa hosta jest już powiązana z witryną (backend zwraca code=duplication)."
+  },
   "message.domainsLoadFailed": {
     "message": "Nie udało się załadować listy domen.",
     "description": "Błąd podczas ładowania listy domen"
@@ -165,30 +205,34 @@
   },
   "message.domainFailed": {
     "message": "Weryfikacja domeny lub uruchomienie nie powiodło się.",
-    "description": "Failed 状态兑底文案"
+    "description": "Komunikat zastępczy dla statusu niepowodzenia"
   },
   "message.domainVerifyFailed": {
     "message": "Weryfikacja nie powiodła się, sprawdź, czy rekord CNAME wskazuje na nasz serwer proxy i czy propagacja DNS została zakończona.",
-    "description": "verify 接口 4xx"
+    "description": "Błąd dla odpowiedzi 4xx z interfejsu verify"
   },
   "message.domainDeleteConfirm": {
     "message": "Czy na pewno chcesz odłączyć {hostname}? Po odłączeniu użytkownicy nie będą mogli uzyskać dostępu do twojej podstrony z tej domeny.",
-    "description": "删除确认"
+    "description": "Potwierdzenie usunięcia powiązania domeny"
   },
   "message.domainDeleteFailed": {
     "message": "Usunięcie domeny nie powiodło się.",
-    "description": "DELETE 接口 5xx"
+    "description": "Błąd dla odpowiedzi 5xx z żądania DELETE"
   },
   "status.pending": {
     "message": "Do weryfikacji",
-    "description": "Pending 状态标签：czekanie na dodanie CNAME i kliknięcie „Zweryfikuj teraz”"
+    "description": "Etykieta statusu pending: oczekiwanie na dodanie CNAME i kliknięcie „Zweryfikuj teraz”"
   },
   "status.active": {
     "message": "Aktywna",
-    "description": "Active 状态标签"
+    "description": "Etykieta statusu active"
   },
   "status.failed": {
     "message": "Niepowodzenie",
-    "description": "Failed 状态标签"
+    "description": "Etykieta statusu failed"
+  },
+  "message.recordNameHint": {
+    "message": "Wskazówka: u większości dostawców DNS (DNSPod, Cloudflare, Aliyun, Tencent Cloud itd.) pole „Host\" / „Nazwa\" przyjmuje tylko przedrostek subdomeny. Na przykład przy podpinaniu studio.your-brand.com wpisujesz tylko studio; przy podpinaniu samej domeny głównej (np. your-brand.com) użyj jako hosta znaku {'@'}. Dostawcy oczekujący pełnego FQDN (AWS Route 53, Bind itp.) przyjmują wartość pokazaną w powyższej tabeli bez zmian.",
+    "description": "Wskazówka pod tabelą rekordów DNS wyjaśniająca, co należy wpisać w polu Host/Nazwa u typowych dostawców DNS (przedrostek subdomeny / @ / pełny FQDN)."
   }
 }

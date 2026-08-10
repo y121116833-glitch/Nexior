@@ -1,7 +1,7 @@
 <template>
   <layout>
     <template #config>
-      <config-panel @generate="onGenerate" />
+      <config-panel :identity-token="credential?.token" @generate="onGenerate" />
     </template>
     <template #result>
       <recent-panel ref="recentPanel" :loading="loading" @reach-top="onReachTop" />
@@ -15,19 +15,27 @@ import Layout from '@/layouts/Nanobanana.vue';
 import ConfigPanel from '@/components/nanobanana/ConfigPanel.vue';
 import { nanobananaOperator } from '@/operators';
 import { instrumentGeneration } from '@/plugins/telemetry';
-import { INanobananaGenerateRequest, Status } from '@/models';
-import { ElMessage } from 'element-plus';
-import { ERROR_CODE_USED_UP, NANOBANANA_DEFAULT_RESOLUTION, NANOBANANA_MODEL_NANO_BANANA_PRO, getWebhookCallbackUrl } from '@/constants';
+import { Status } from '@/models';
+import { ElMessage, ElMessageBox } from 'element-plus';
+import { ERROR_CODE_USED_UP } from '@/constants';
 import RecentPanel from '@/components/nanobanana/RecentPanel.vue';
 import { INanobananaTask } from '@/models';
 import { loadPreviousPage } from '@/utils/pagination';
-
-const CALLBACK_URL = getWebhookCallbackUrl('nanobanana');
+import { uploadTrackerProviderMixin, ensureNoPendingUpload, ensureLoggedIn } from '@/utils';
+import { isScenarioX402Enabled, scenarioPaymentState } from '@/utils/x402/scenarioPayment';
+import {
+  X402PaymentCancelledError,
+  type X402PaymentQuote,
+  type X402WalletContext,
+  resolveX402WalletContext
+} from '@/operators/x402';
+import { buildNanobananaRequest } from '@/utils/x402/imageRequests';
 
 interface IData {
   task: INanobananaTask | undefined;
   job: number;
   loading: boolean;
+  walletTaskIds: string[];
 }
 
 export default defineComponent({
@@ -37,12 +45,14 @@ export default defineComponent({
     Layout,
     RecentPanel
   },
+  mixins: [uploadTrackerProviderMixin],
   inject: ['initialized'],
   data(): IData {
     return {
       task: undefined,
       job: 0,
-      loading: false
+      loading: false,
+      walletTaskIds: []
     };
   },
   computed: {
@@ -63,9 +73,20 @@ export default defineComponent({
     },
     tasks() {
       return this.$store.state.nanobanana?.tasks;
+    },
+    walletMode(): boolean {
+      return isScenarioX402Enabled() && scenarioPaymentState('nanobanana').mode === 'wallet';
     }
   },
   watch: {
+    walletMode: {
+      async handler(value: boolean, oldValue: boolean | undefined) {
+        if (oldValue === undefined || value === oldValue) return;
+        this.$store.commit('nanobanana/setTasks', undefined);
+        await this.onGetTasks();
+        await this.onScrollDown();
+      }
+    },
     tasks: {
       handler(value, oldValue) {
         if (value?.items?.length > oldValue?.items?.length) {
@@ -129,51 +150,66 @@ export default defineComponent({
         console.debug('loading');
         return;
       }
-      console.debug('start onGetTasks', payload);
       const { limit = 20, createdAtMin, createdAtMax } = payload || {};
-      console.debug('limit', limit, 'createdAtMin', createdAtMin, 'createdAtMax', createdAtMax);
       await this.$store.dispatch('nanobanana/getTasks', {
         limit,
         createdAtMin,
-        createdAtMax
+        createdAtMax,
+        ...(this.walletMode && !this.credential?.token ? { mode: 'x402', ids: this.walletTaskIds } : {})
       });
     },
     async onGenerate() {
-      const cfg: any = { ...(this.config || {}) };
-      const hasReferenceImages = Array.isArray(cfg?.image_urls) && cfg.image_urls.length > 0;
-      delete cfg.action;
-      // If creating new images, omit reference images from payload
-      if (!hasReferenceImages && 'image_urls' in cfg) {
-        delete cfg.image_urls;
-      }
-      if (!cfg?.aspect_ratio) {
-        delete cfg.aspect_ratio;
-      }
-      if (cfg?.model !== NANOBANANA_MODEL_NANO_BANANA_PRO && 'resolution' in cfg) {
-        delete cfg.resolution;
-      }
-      if (cfg?.model === NANOBANANA_MODEL_NANO_BANANA_PRO && !cfg?.resolution) {
-        cfg.resolution = NANOBANANA_DEFAULT_RESOLUTION;
-      }
-      const request = {
-        ...cfg,
-        action: hasReferenceImages ? 'edit' : 'generate',
-        callback_url: CALLBACK_URL
-      } as INanobananaGenerateRequest;
-      const token = this.credential?.token;
-      if (!token) {
-        console.error('no token specified');
+      if (
+        !ensureNoPendingUpload(
+          this.uploadTracker,
+          (k) => this.$t(k) as string,
+          (m) => ElMessage.warning(m)
+        )
+      ) {
         return;
       }
+      const request = buildNanobananaRequest(this.config);
+      let operation: Promise<unknown>;
+      if (this.walletMode) {
+        const wallet = this.getWalletContext();
+        if (!wallet) {
+          ElMessage.warning(this.$t('common.x402Scenario.connectWalletFirst'));
+          return;
+        }
+        operation = nanobananaOperator.generate(request, {
+          mode: 'x402',
+          x402: {
+            wallet,
+            confirm: (quote) => this.confirmWalletPayment(quote),
+            identityToken: this.credential?.token
+          }
+        });
+      } else {
+        if (!ensureLoggedIn()) return;
+        const token = this.credential?.token;
+        if (!token) {
+          console.error('no token specified');
+          return;
+        }
+        operation = nanobananaOperator.generate(request, { token });
+      }
+
       ElMessage.info(this.$t('nanobanana.message.startingTask'));
-      instrumentGeneration('nanobanana', nanobananaOperator.generate(request, { token }))
-        .then(() => {
+      instrumentGeneration('nanobanana', operation)
+        .then((response: any) => {
+          const taskId = response?.data?.task_id;
+          if (this.walletMode && !this.credential?.token && taskId && !this.walletTaskIds.includes(taskId)) {
+            this.walletTaskIds.unshift(taskId);
+          }
           ElMessage.success(this.$t('nanobanana.message.startTaskSuccess'));
         })
         .catch((error) => {
+          if (error instanceof X402PaymentCancelledError) return;
           const response = error?.response?.data;
           if (response?.error?.code === ERROR_CODE_USED_UP) {
             ElMessage.error(this.$t('nanobanana.message.usedUp'));
+          } else if (this.walletMode) {
+            ElMessage.error(`${this.$t('common.x402Scenario.paymentFailed')} ${error?.message || ''}`.trim());
           } else {
             ElMessage.error(this.$t('nanobanana.message.startTaskFailed') + (response?.error?.message || ''));
           }
@@ -184,6 +220,22 @@ export default defineComponent({
             await this.onScrollDown();
           }, 1000);
         });
+    },
+    getWalletContext(): X402WalletContext | undefined {
+      return resolveX402WalletContext((this as any).$wallet);
+    },
+    async confirmWalletPayment(quote: X402PaymentQuote): Promise<boolean> {
+      return ElMessageBox.confirm(
+        this.$t('common.x402Scenario.confirmPayment', { amount: quote.amountUsdc }),
+        this.$t('order.message.x402ConfirmTitle'),
+        {
+          confirmButtonText: this.$t('order.message.x402WalletPayCta'),
+          cancelButtonText: this.$t('common.button.cancel'),
+          type: 'warning'
+        }
+      )
+        .then(() => true)
+        .catch(() => false);
     },
     getTasksScrollElement(): HTMLElement | undefined {
       const panel = this.$refs.recentPanel as any;

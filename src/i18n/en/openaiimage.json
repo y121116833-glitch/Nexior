@@ -51,28 +51,32 @@
     "message": "Size",
     "description": "Output image size"
   },
+  "size.auto": {
+    "message": "Auto",
+    "description": "Size option: auto — the model picks the aspect ratio from your prompt"
+  },
   "description.size": {
     "message": "Output image size. Supported values vary by model: gpt-image-1 / gpt-image-1.5 only accept 1024x1024, 1536x1024, 1024x1536. gpt-image-2 additionally supports 1792x1024, 1024x1792 and 2K/4K presets, and allows custom dimensions.",
     "description": "Size description"
   },
   "sizeGroup.standard1k": {
-    "message": "1K Standard (base rate)",
-    "description": "Heading for the 1K size group billed at the base rate"
+    "message": "1K Standard",
+    "description": "Heading for the 1K size group"
   },
   "sizeGroup.preset2k": {
-    "message": "2K Presets (1.5× rate)",
-    "description": "Heading for the 2K size group billed at 1.5×"
+    "message": "2K Presets",
+    "description": "Heading for the 2K size group"
   },
   "sizeGroup.preset4k": {
-    "message": "4K Presets (1.5× rate)",
-    "description": "Heading for the 4K size group billed at 1.5×"
+    "message": "4K Presets",
+    "description": "Heading for the 4K size group"
   },
   "name.customSize": {
     "message": "Custom Size",
     "description": "Custom-size toggle label"
   },
   "description.customSize": {
-    "message": "Enable to set width and height freely (gpt-image-2 only). Each side must be a multiple of 16, the longer side ≤ 3840, and total pixels ≤ 8,294,400. Non-1K standard sizes are billed at 1.5× the base rate.",
+    "message": "Enable to set width and height freely (gpt-image-2 only). Each side must be a multiple of 16, the longer side ≤ 3840, and total pixels ≤ 8,294,400.",
     "description": "Custom-size toggle description"
   },
   "name.width": {
@@ -112,7 +116,7 @@
     "description": "Model parameter description"
   },
   "description.imageUrls": {
-    "message": "Upload 1-5 reference images to enter edit mode.",
+    "message": "Upload 1-16 reference images to enter edit mode.",
     "description": "Image URLs parameter description"
   },
   "status.pending": {
@@ -139,6 +143,10 @@
     "message": "Starting task...",
     "description": "Message indicating task is starting"
   },
+  "message.promptRequired": {
+    "message": "Please enter a prompt",
+    "description": "Error message when the prompt is missing"
+  },
   "message.startTaskSuccess": {
     "message": "Successfully initiated generation task",
     "description": "Task successfully created"
@@ -152,7 +160,7 @@
     "description": "Exhausted credits message"
   },
   "message.uploadImageExceed": {
-    "message": "You can upload a maximum of 5 images",
+    "message": "You can upload a maximum of {count} images",
     "description": "Image count exceeds limit"
   },
   "message.uploadImageError": {
@@ -174,5 +182,9 @@
   "model.gptImage2": {
     "message": "gpt-image-2",
     "description": "gpt-image-2 model option"
+  },
+  "model.gptImage2Official": {
+    "message": "gpt-image-2 (Official)",
+    "description": "gpt-image-2 official-relay model option"
   }
 }

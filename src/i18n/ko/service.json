@@ -123,6 +123,22 @@
     "message": "호출",
     "description": "호출은 API 서비스가 호출된 횟수로, 대문자와 복수형입니다."
   },
+  "unit.count": {
+    "message": "회",
+    "description": "호출 횟수 단위 (API 호출 수)"
+  },
+  "unit.Count": {
+    "message": "회",
+    "description": "호출 횟수 단위 (API 호출 수)"
+  },
+  "unit.counts": {
+    "message": "회",
+    "description": "호출 횟수 단위 (API 호출 수, 복수형)"
+  },
+  "unit.Counts": {
+    "message": "회",
+    "description": "호출 횟수 단위 (API 호출 수, 복수형)"
+  },
   "unit.MB": {
     "message": "MB",
     "description": "MB는 메가바이트를 의미하며, 디지털 정보 저장 단위입니다."

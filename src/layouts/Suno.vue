@@ -1,7 +1,7 @@
 <template>
   <div class="main flex flex-row flex-1">
     <div
-      class="config w-[320px] flex-none h-full overflow-y-auto bg-[var(--app-sidebar-bg)] border-r border-[var(--app-border-subtle)]"
+      class="config w-[320px] flex-none h-full min-h-0 overflow-hidden flex flex-col bg-[var(--app-sidebar-bg)] border-r border-[var(--app-border-subtle)]"
     >
       <slot name="config" />
     </div>
@@ -11,40 +11,50 @@
     <div class="preview h-full w-[300px] flex flex-col">
       <slot name="preview" />
     </div>
-    <el-button circle class="menu" @click="drawer = true">
-      <font-awesome-icon icon="fa-solid fa-magic" />
+    <el-button
+      v-show="!tasksEmpty"
+      circle
+      class="menu"
+      :aria-label="$t('common.button.openMenu')"
+      :title="$t('common.button.openMenu')"
+      @click="drawer = true"
+    >
+      <magic-icon :size="'1em' as any" aria-hidden="true" focusable="false" />
     </el-button>
-    <el-drawer v-model="drawer" direction="ltr" :with-header="false" size="340px" class="drawer">
+    <el-drawer v-model="drawer" direction="ltr" :with-header="false" size="340px" class="drawer generator-drawer">
       <slot name="config" />
     </el-drawer>
   </div>
 </template>
 
 <script lang="ts">
+import { MagicIcon } from '@acedatacloud/core/icons/components';
 import { defineComponent } from 'vue';
 import { ElDrawer, ElButton } from 'element-plus';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import taskDrawerMixin from '@/utils/taskDrawerMixin';
 
 export default defineComponent({
   name: 'LayoutSuno',
   components: {
+    MagicIcon,
     ElDrawer,
-    ElButton,
-    FontAwesomeIcon
+    ElButton
   },
-  data() {
-    return {
-      drawer: false,
-      preview: false
-    };
-  },
-  computed: {}
+  mixins: [taskDrawerMixin]
 });
 </script>
 
 <style lang="scss" scoped>
 .menu {
   display: none;
+}
+
+// On laptops (≤1180px) the 320 + flex + 300 layout crushes the song list —
+// drop the detail preview here so the list keeps a usable width.
+@media (max-width: 1180px) {
+  .main .preview {
+    display: none;
+  }
 }
 
 @media (max-width: 767px) {
@@ -62,7 +72,7 @@ export default defineComponent({
       display: block;
       position: absolute;
       right: 8px;
-      top: 45px;
+      top: calc(45px + var(--app-safe-area-top));
       z-index: 1000;
     }
   }

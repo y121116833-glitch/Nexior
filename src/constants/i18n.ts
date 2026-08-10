@@ -21,8 +21,11 @@ export const I18N_SUPPORTED_LOCALES = [
   { value: 'sr', label: 'Српски' }
 ];
 
+export type I18nLocaleOption = (typeof I18N_SUPPORTED_LOCALES)[number];
+
 export const I18N_SCOPES = [
   'index',
+  'intro',
   'api',
   'application',
   'qrart',
@@ -31,17 +34,23 @@ export const I18N_SCOPES = [
   'kling',
   'veo',
   'sora',
+  'maestro',
+  'poivelle',
+  'digitalhuman',
   'pixverse',
   'flux',
   'nanobanana',
   'openaiimage',
   'seedream',
   'seedance',
+  'grokvideo',
+  'omni',
   'hailuo',
+  'minimax',
   'wan',
-  'headshots',
   'suno',
   'producer',
+  'fish',
   'coin',
   'common',
   'console',
@@ -57,6 +66,11 @@ export const I18N_SCOPES = [
   'midjourney',
   'serp',
   'connector',
+  'connection',
+  'skill',
   'byok',
-  'subsite'
+  'subsite',
+  'webextrator',
+  'codingBridge',
+  'realtime'
 ];

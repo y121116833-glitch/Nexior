@@ -8,23 +8,21 @@
       <div class="meta">
         <div v-if="card.title" class="title" :title="card.title">{{ card.title }}</div>
         <div v-if="card.duration" class="sub">{{ formattedDuration }}</div>
-        <audio class="player" controls preload="metadata" :src="card.url" />
+        <audio class="player" controls preload="metadata" :src="card.url" @error="onMediaError" />
         <div class="actions">
           <a class="download" :href="card.url" target="_blank" rel="noopener noreferrer">
-            <font-awesome-icon icon="fa-solid fa-arrow-down" />
+            <down-icon :size="'1em' as any" aria-hidden="true" focusable="false" />
             {{ $t('common.button.download') }}
           </a>
         </div>
       </div>
     </div>
 
-    <!-- Video — rendered as an iframe by default. The aichat2 worker
-         normalizes YouTube watch URLs to the canonical embed form, and
-         iframes also play direct media URLs (browser shows its native
-         video viewer) so a single renderer covers both. -->
+    <!-- Video -->
     <div v-else-if="cardType === 'video'" class="video-card">
       <div class="frame">
         <iframe
+          v-if="videoUsesIframe"
           class="player"
           :src="card.url"
           :title="card.title || ''"
@@ -33,7 +31,9 @@
           referrerpolicy="strict-origin-when-cross-origin"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowfullscreen
+          @error="onMediaError"
         />
+        <video v-else class="player" controls preload="metadata" :src="card.url" @error="onMediaError" />
       </div>
       <div v-if="card.title || card.duration" class="meta">
         <span v-if="card.title" class="title" :title="card.title">{{ card.title }}</span>
@@ -52,6 +52,7 @@
         :initial-index="0"
         :hide-on-click-modal="true"
         :preview-teleported="true"
+        @error="onMediaError"
       >
         <template #placeholder>
           <div class="image-placeholder" />
@@ -72,30 +73,46 @@
       rel="noopener noreferrer"
       :title="card.title || card.url"
     >
-      <font-awesome-icon class="icon" :icon="fileIcon" />
+      <component :is="fileIcon" class="icon" :size="'1em' as any" aria-hidden="true" focusable="false" />
       <div class="info">
         <div class="title">{{ card.title || cleanFileName }}</div>
         <div class="sub">{{ card.mimeType || hostname }}</div>
       </div>
-      <font-awesome-icon class="open" icon="fa-solid fa-arrow-up-right-from-square" />
+      <external-link-icon class="open" :size="'1em' as any" aria-hidden="true" focusable="false" />
     </a>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType } from 'vue';
+import {
+  DownIcon,
+  ExternalLinkIcon,
+  FileArchiveIcon,
+  FileIcon,
+  FileSpreadsheetIcon,
+  FileTextIcon
+} from '@acedatacloud/core/icons/components';
+import { defineComponent, type Component, type PropType } from 'vue';
 import { ElImage } from 'element-plus';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import type { IChatCard } from '@/models';
+
+interface IData {
+  mediaFailed: boolean;
+}
 
 export default defineComponent({
   name: 'EntityCard',
-  components: { ElImage, FontAwesomeIcon },
+  components: { DownIcon, ElImage, ExternalLinkIcon },
   props: {
     card: {
       type: Object as PropType<IChatCard>,
       required: true
     }
+  },
+  data(): IData {
+    return {
+      mediaFailed: false
+    };
   },
   computed: {
     /** Normalize the card type into one of the primary renderers. The
@@ -103,6 +120,7 @@ export default defineComponent({
      * folded back into `video` so historical cards still render — the
      * worker no longer flips type, see PlatformService #827. */
     cardType(): 'audio' | 'video' | 'image' | 'file' {
+      if (this.mediaFailed) return 'file';
       const t = (this.card.type || '').toLowerCase();
       if (t === 'audio' || t === 'image') return t;
       if (t === 'video' || t === 'embed') return 'video';
@@ -110,6 +128,18 @@ export default defineComponent({
       if (this.card.mimeType?.startsWith('video/')) return 'video';
       if (this.card.mimeType?.startsWith('image/')) return 'image';
       return 'file';
+    },
+    mediaKey(): string {
+      return [this.card.url, this.card.type, this.card.mimeType || ''].join('\u0000');
+    },
+    videoUsesIframe(): boolean {
+      if ((this.card.type || '').toLowerCase() === 'embed') return true;
+      try {
+        const url = new URL(this.card.url);
+        return url.pathname.split('/').includes('embed');
+      } catch {
+        return false;
+      }
     },
     formattedDuration(): string {
       const total = this.card.duration ?? 0;
@@ -136,14 +166,24 @@ export default defineComponent({
         return '';
       }
     },
-    fileIcon(): string {
+    fileIcon(): Component {
       const mime = (this.card.mimeType || '').toLowerCase();
-      if (mime.includes('pdf')) return 'fa-solid fa-file-pdf';
-      if (mime.includes('word') || mime.includes('msword')) return 'fa-solid fa-file-word';
-      if (mime.includes('sheet') || mime.includes('excel') || mime.includes('csv')) return 'fa-solid fa-file-excel';
-      if (mime.includes('zip') || mime.includes('compressed')) return 'fa-solid fa-file-zipper';
-      if (mime.startsWith('text/')) return 'fa-solid fa-file-lines';
-      return 'fa-solid fa-file';
+      if (mime.includes('word') || mime.includes('msword') || mime.includes('pdf') || mime.startsWith('text/')) {
+        return FileTextIcon;
+      }
+      if (mime.includes('sheet') || mime.includes('excel') || mime.includes('csv')) return FileSpreadsheetIcon;
+      if (mime.includes('zip') || mime.includes('compressed')) return FileArchiveIcon;
+      return FileIcon;
+    }
+  },
+  watch: {
+    mediaKey(): void {
+      this.mediaFailed = false;
+    }
+  },
+  methods: {
+    onMediaError(): void {
+      this.mediaFailed = true;
     }
   }
 });

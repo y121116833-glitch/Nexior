@@ -11,6 +11,10 @@
     "message": "Visita subito il sottodominio",
     "description": "Titolo della finestra di dialogo che chiede se si desidera passare subito dopo la creazione"
   },
+  "title.openSite": {
+    "message": "Apri sottosito",
+    "description": "Title of the open-subsite confirmation dialog."
+  },
   "field.slug": {
     "message": "Prefisso del sottodominio",
     "description": "Titolo del campo di input per il slug del sottodominio"
@@ -18,6 +22,14 @@
   "field.origin": {
     "message": "Dominio del sottodominio",
     "description": "Colonna del dominio nella lista dei sottodomini"
+  },
+  "field.defaultLabel": {
+    "message": "Predefinito",
+    "description": "Tag rendered next to the default subdomain in the open-subsite dialog."
+  },
+  "field.customLabel": {
+    "message": "Personalizzato",
+    "description": "Tag rendered next to a custom (BYO) hostname in the open-subsite dialog."
   },
   "field.title": {
     "message": "Titolo del sottodominio",
@@ -51,6 +63,10 @@
     "message": "Gestisci",
     "description": "Pulsante per accedere alle impostazioni del sottodominio"
   },
+  "button.delete": {
+    "message": "Elimina",
+    "description": "Button to delete a subsite"
+  },
   "message.indexTip": {
     "message": "Crea sottodomini di marchi indipendenti sotto il sito principale, ogni sottodominio può avere il proprio logo, titolo e funzionalità, senza necessità di costruire codice sorgente separato.",
     "description": "Testo esplicativo della pagina di gestione dei sottodomini"
@@ -79,6 +95,10 @@
     "message": "Creazione del sottodominio fallita, riprova più tardi.",
     "description": "Messaggio di errore nella creazione"
   },
+  "message.slugTaken": {
+    "message": "Il sottodominio {origin} è già in uso, prova con un altro.",
+    "description": "Quando si crea un sottodominio, il slug è già occupato (il backend restituisce code=duplication)"
+  },
   "message.loadFailed": {
     "message": "Caricamento della lista dei sottodomini fallito.",
     "description": "Errore nel caricamento della lista"
@@ -86,6 +106,22 @@
   "message.openNowConfirm": {
     "message": "Il sottodominio {origin} è stato creato. Vuoi aprirlo ora per continuare la configurazione?",
     "description": "Conferma per aprire subito dopo la creazione"
+  },
+  "message.openSiteHint": {
+    "message": "Questo sottosito è collegato a più domini, seleziona l'indirizzo da aprire, lo apriremo in una nuova scheda.",
+    "description": "Suggerimento nel corpo della finestra di dialogo del sottosito che spiega il selettore di URL."
+  },
+  "message.deleteConfirm": {
+    "message": "Eliminare il sottosito {origin}? Gli utenti non potranno più accedervi tramite questo dominio e l'azione non è reversibile.",
+    "description": "Confirmation prompt before deleting a subsite"
+  },
+  "message.deleted": {
+    "message": "Il sottosito {origin} è stato eliminato.",
+    "description": "Success message after deleting a subsite"
+  },
+  "message.deleteFailed": {
+    "message": "Impossibile eliminare il sottosito, riprovare più tardi.",
+    "description": "Fallback error message when DELETE fails"
   },
   "title.domains": {
     "message": "Dominio personalizzato per {origin}",
@@ -155,6 +191,10 @@
     "message": "Creazione del dominio fallita, riprova più tardi.",
     "description": "Errore nella creazione del dominio"
   },
+  "message.domainTaken": {
+    "message": "Il dominio {hostname} è già stato aggiunto. Utilizza un dominio diverso.",
+    "description": "Mostrato quando l'hostname scelto è già associato a un sito (il backend restituisce code=duplication)."
+  },
   "message.domainsLoadFailed": {
     "message": "Caricamento della lista dei domini fallito.",
     "description": "Errore nel caricamento della lista dei domini"
@@ -190,5 +230,9 @@
   "status.failed": {
     "message": "Fallito",
     "description": "Etichetta di stato fallito"
+  },
+  "message.recordNameHint": {
+    "message": "Suggerimento: nella maggior parte dei provider DNS (DNSPod, Cloudflare, Aliyun, Tencent Cloud, ecc.) il campo \"Host\" / \"Nome\" accetta solo il prefisso del sottodominio. Ad esempio, quando si associa studio.your-brand.com si inserisce solo studio; quando si associa il dominio radice (ad es. your-brand.com), usa {'@'} come host. I provider che richiedono un FQDN completo (AWS Route 53, Bind, ecc.) accettano così com'è il valore mostrato nella tabella sopra.",
+    "description": "Suggerimento sotto la tabella dei record DNS che spiega cosa inserire nel campo Host/Nome nei provider DNS più comuni (prefisso del sottodominio / @ / FQDN completo)"
   }
 }

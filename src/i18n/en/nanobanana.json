@@ -56,8 +56,8 @@
     "description": "Resolution of the generated image"
   },
   "description.resolutionProOnly": {
-    "message": "Resolution settings are only supported for nano-banana-pro.",
-    "description": "Resolution options are effective only for pro models"
+    "message": "nano-banana-2 and nano-banana-pro support 1K/2K/4K; nano-banana and nano-banana-2-lite are 1K only.",
+    "description": "Resolution options are effective only for nano-banana-2 and pro models"
   },
   "description.prompt": {
     "message": "Prompt for generating or editing images",
@@ -68,7 +68,7 @@
     "description": "Description of the action parameter"
   },
   "description.model": {
-    "message": "Model used for generating images. Default is nano-banana. nano-banana-pro is an alias for gemini-3-pro-image, nano-banana is an alias for gemini-2.5-flash-image.",
+    "message": "Model used for generating images. Default is nano-banana. nano-banana-2-lite is an alias for gemini-3.1-flash-lite-image and only supports 1K fast generation.",
     "description": "Description of the model parameter"
   },
   "description.imageUrls": {

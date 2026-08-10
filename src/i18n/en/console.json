@@ -124,12 +124,8 @@
     "description": "Text in the website menu referring to cryptocurrency integration"
   },
   "menu.platformTokenIndex": {
-    "message": "Platform Token",
-    "description": "Text in the website menu, platform token refers to the token used to access the Ace Data Cloud platform"
-  },
-  "menu.publishIndex": {
-    "message": "Publishing Center",
-    "description": "Text in the website menu, the Publishing Center refers to the central area where users publish content."
+    "message": "Account Token",
+    "description": "Text in the website menu, account token (previously 'platform token') refers to the token used to access the Ace Data Cloud account"
   },
   "menu.platformRankIndex": {
     "message": "Platform Rankings",
@@ -146,5 +142,17 @@
   "menu.revenueAnalysis": {
     "message": "Revenue Analysis",
     "description": "Text in the website menu, a revenue analysis entry visible only to administrators."
+  },
+  "menu.connectors": {
+    "message": "Connectors",
+    "description": "网站菜单中的文本，连接器指的是用户连接的第三方服务"
+  },
+  "menu.skills": {
+    "message": "Skills",
+    "description": "网站菜单中的文本，技能指的是用户安装的 Agent Skill"
+  },
+  "menu.browserDevices": {
+    "message": "Browser Devices",
+    "description": "网站菜单中的文本，浏览器设备指的是用户已配对的浏览器扩展"
   }
 }

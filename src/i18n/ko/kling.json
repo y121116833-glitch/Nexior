@@ -55,6 +55,10 @@
     "message": "std 성능 우선, pro 화질 우선",
     "description": "motion mode 说明"
   },
+  "description.motionModel": {
+    "message": "Kling 3.0은 화질이 더 높지만 초당 요금도 높고, Kling 2.6은 가성비가 좋습니다.",
+    "description": "motion model version description"
+  },
   "description.keepOriginalSound": {
     "message": "켜면 참조 비디오의 원음이 유지됩니다; 끄면 출력 비디오에 원본 오디오가 포함되지 않습니다.",
     "description": "keep_original_sound 说明"
@@ -70,6 +74,10 @@
   "message.motionMissingInputs": {
     "message": "인물 이미지와 모션 참조 비디오를 모두 업로드해 주세요.",
     "description": "Motion Control 缺少输入时的提示"
+  },
+  "message.motionPricingNote": {
+    "message": "생성된 영상의 초 단위로 청구되며, 최종 금액은 참조 영상 길이에 따라 달라집니다.",
+    "description": "Explains that Motion Control is billed per second"
   },
   "inspiration.title": {
     "message": "영감 및 프리셋",
@@ -415,6 +423,14 @@
     "message": "비디오 모드",
     "description": "비디오를 생성하는 데 사용되는 모드"
   },
+  "name.motionModel": {
+    "message": "모델 버전",
+    "description": "The Kling model version used for motion control"
+  },
+  "name.perSecond": {
+    "message": "초",
+    "description": "Unit suffix for per-second pricing"
+  },
   "name.effect": {
     "message": "비디오 효과",
     "description": "다양한 버전 또는 스타일의 모델 간 전환에 사용되는 스타일 매개변수의 이름"
@@ -490,6 +506,14 @@
   "description.cameraControlDisabled4k": {
     "message": "4K 모드가 선택되어 카메라 제어를 사용할 수 없습니다. std / pro로 전환한 후 다시 활성화하세요.",
     "description": "카메라 제어가 비활성화된 이유"
+  },
+  "description.cameraControlDisabledImage2Video": {
+    "message": "첫 프레임 참조 이미지를 업로드한 후에는 카메라 제어를 사용할 수 없습니다. 첫 프레임 참조 이미지를 제거한 후 다시 사용해 주세요.",
+    "description": "카메라 제어가 비활성화된 이유 (image2video)"
+  },
+  "description.cameraControlNotSupported": {
+    "message": "현재 모델/모드/길이가 카메라 제어를 지원하지 않습니다. 설정을 조정한 후 다시 활성화해 주세요.",
+    "description": "카메라 제어가 비활성화된 이유 (모델이 지원하지 않음)"
   },
   "status.pending": {
     "message": "대기 중",
@@ -694,5 +718,129 @@
   "message.noTasks": {
     "message": "역사적 작업이 없습니다. 왼쪽에서 비디오 생성 버튼을 클릭하세요",
     "description": "작업이 없을 때의 메시지"
+  },
+  "tab.talkingPhoto": {
+    "message": "말하는 사진",
+    "description": "Tab label: Talking Photo"
+  },
+  "name.talkingPhotoImage": {
+    "message": "인물 사진",
+    "description": "Talking Photo portrait image input"
+  },
+  "name.talkingPhotoAudio": {
+    "message": "구동 오디오",
+    "description": "Talking Photo driving audio input"
+  },
+  "name.talkingPhotoPrompt": {
+    "message": "모션 프롬프트(선택)",
+    "description": "Talking Photo optional motion prompt"
+  },
+  "description.talkingPhotoImage": {
+    "message": "선명한 정면 인물 사진을 업로드하세요. 자동으로 움직이며 말하게 됩니다.",
+    "description": "Talking Photo portrait image help text"
+  },
+  "description.talkingPhotoAudio": {
+    "message": "오디오 클립(mp3/wav, 5MB 이하)을 업로드하세요. 인물이 오디오에 맞춰 입을 맞춥니다.",
+    "description": "Talking Photo driving audio help text"
+  },
+  "description.talkingPhotoPrompt": {
+    "message": "선택: 원하는 표정/동작을 설명하세요. 예: «카메라를 부드럽게 바라보기».",
+    "description": "Talking Photo motion prompt help text"
+  },
+  "placeholder.talkingPhotoPrompt": {
+    "message": "예: 부드럽고, 차분하고, 자연스럽고, 미세한 머리 움직임",
+    "description": "Talking Photo prompt input placeholder"
+  },
+  "button.generateTalkingPhoto": {
+    "message": "말하는 사진 생성",
+    "description": "Talking Photo generate button"
+  },
+  "button.uploadAudio": {
+    "message": "오디오 업로드",
+    "description": "Talking Photo upload audio button"
+  },
+  "message.talkingPhotoMissingInputs": {
+    "message": "먼저 인물 사진과 구동 오디오를 업로드하세요.",
+    "description": "Talking Photo missing inputs warning"
+  },
+  "message.uploadAudioExceed": {
+    "message": "오디오 파일은 하나만 업로드할 수 있습니다.",
+    "description": "Talking Photo audio count limit warning"
+  },
+  "message.uploadAudioError": {
+    "message": "오디오 업로드에 실패했습니다. 다시 시도하세요.",
+    "description": "Talking Photo audio upload error"
+  },
+  "name.referenceVideo": {
+    "message": "참조 비디오",
+    "description": "양식 필드 레이블: Omni 비디오 편집의 참조/편집 대기 비디오"
+  },
+  "description.omniReferenceVideo": {
+    "message": "Kling O1 및 V3 Omni에 적합합니다. 편집 또는 기존 비디오 참조를 위해 MP4/MOV(720–2160px, 3–10초, ≤200MB)를 업로드하면 자동으로 프롬프트가 추가됩니다 <<<video_1>>>.",
+    "description": "Omni 참조 비디오 업로드 도움말 텍스트"
+  },
+  "name.referenceImages": {
+    "message": "참조 이미지",
+    "description": "Omni 참조 이미지 필드 레이블"
+  },
+  "description.referenceImages": {
+    "message": "Kling O1 및 V3 Omni에 적합합니다. 최대 7개의 참조 이미지를 업로드할 수 있으며, 참조 비디오가 있을 경우 최대 4개까지 가능합니다. 프롬프트 인용 태그가 자동으로 추가됩니다.",
+    "description": "Omni 참조 이미지 도움말 텍스트"
+  },
+  "button.uploadReferenceImages": {
+    "message": "이미지 업로드",
+    "description": "Omni 참조 이미지 업로드 버튼"
+  },
+  "message.referenceImagesExceed": {
+    "message": "아직 {count}개의 참조 이미지를 업로드할 수 있습니다.",
+    "description": "참조 이미지 수량 안내"
+  },
+  "message.referenceImagesError": {
+    "message": "참조 이미지 업로드에 실패했습니다. 다시 시도해주세요.",
+    "description": "참조 이미지 업로드 오류"
+  },
+  "name.referenceVideoType": {
+    "message": "비디오 용도",
+    "description": "참조 비디오 유형 레이블"
+  },
+  "name.referenceVideoFeature": {
+    "message": "특징 참조",
+    "description": "특징 참조 비디오 옵션"
+  },
+  "name.referenceVideoBase": {
+    "message": "원본 비디오 편집",
+    "description": "기본 비디오 편집 옵션"
+  },
+  "message.referenceVideoImageLimit": {
+    "message": "참조 비디오가 있을 경우 최대 4개의 참조 이미지를 지원합니다. 초과 이미지를 먼저 제거해주세요.",
+    "description": "참조 비디오와 이미지 수량 충돌"
+  },
+  "message.referenceImagesTotalLimit": {
+    "message": "이 요청은 최대 {count}장의 참조 이미지를 지원하며, 첫 프레임과 마지막 프레임도 총 수에 포함됩니다.",
+    "description": "참조 이미지 총 수 제한 알림"
+  },
+  "message.baseVideoFrameConflict": {
+    "message": "편집 중인 기본 비디오는 첫 프레임 또는 마지막 프레임과 동시에 사용할 수 없습니다.",
+    "description": "기본 비디오와 첫/마지막 프레임 간의 충돌 알림"
+  },
+  "button.uploadReferenceVideo": {
+    "message": "비디오 업로드",
+    "description": "참조 비디오를 업로드하는 버튼"
+  },
+  "message.referenceVideoExceed": {
+    "message": "최대 1개의 참조 비디오만 업로드할 수 있습니다",
+    "description": "1개 이상의 참조 비디오를 업로드할 때의 오류 메시지"
+  },
+  "message.referenceVideoError": {
+    "message": "참조 비디오 업로드 실패, 나중에 다시 시도해 주세요",
+    "description": "참조 비디오 업로드 실패 시의 오류 메시지"
+  },
+  "message.referenceVideoTypeFailed": {
+    "message": "업로드하는 파일은 MP4 또는 MOV 형식이어야 합니다!",
+    "description": "참조 비디오 형식이 MP4/MOV가 아닐 때의 오류 메시지"
+  },
+  "message.referenceVideoSizeExceed": {
+    "message": "업로드하는 파일 크기는 200MB를 초과할 수 없습니다!",
+    "description": "참조 비디오가 200MB를 초과할 때의 오류 메시지"
   }
 }

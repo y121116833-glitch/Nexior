@@ -5,16 +5,41 @@ export interface ISeedanceImageInput {
   role?: SeedanceImageRole;
 }
 
+export interface ISeedanceMediaInput {
+  url: string;
+}
+
+/** Native multimodal content item forwarded to /seedance/videos when a request
+ * carries reference audio or video (the flat images[] path is image-only). */
+export interface ISeedanceContentItem {
+  type: 'text' | 'image_url' | 'audio_url' | 'video_url';
+  text?: string;
+  role?: SeedanceImageRole;
+  image_url?: { url: string };
+  audio_url?: { url: string };
+  video_url?: { url: string };
+}
+
+export type SeedanceResolution = '480p' | '720p' | '1080p' | '4k';
+export type SeedanceRatio = '16:9' | '4:3' | '1:1' | '3:4' | '9:16' | '21:9' | 'adaptive';
+
 export interface ISeedanceConfig {
   model?: string;
   prompt?: string;
   images?: ISeedanceImageInput[];
+  audios?: ISeedanceMediaInput[];
+  videos?: ISeedanceMediaInput[];
   duration?: number;
+  resolution?: SeedanceResolution;
+  ratio?: SeedanceRatio;
+  seed?: number;
+  camerafixed?: boolean;
   generate_audio?: boolean;
   service_tier?: 'default' | 'flex';
   return_last_frame?: boolean;
   execution_expires_after?: number;
   callback_url?: string;
+  async?: boolean;
   mirror?: boolean;
 }
 
@@ -22,12 +47,20 @@ export interface ISeedanceGenerateRequest {
   model?: string;
   prompt?: string;
   images?: ISeedanceImageInput[];
+  audios?: ISeedanceMediaInput[];
+  videos?: ISeedanceMediaInput[];
+  content?: ISeedanceContentItem[];
   duration?: number;
+  resolution?: SeedanceResolution;
+  ratio?: SeedanceRatio;
+  seed?: number;
+  camerafixed?: boolean;
   generate_audio?: boolean;
   service_tier?: 'default' | 'flex';
   return_last_frame?: boolean;
   execution_expires_after?: number;
   callback_url?: string;
+  async?: boolean;
   mirror?: boolean;
 }
 

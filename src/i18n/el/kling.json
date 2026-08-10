@@ -55,6 +55,10 @@
     "message": "std προτεραιότητα απόδοσης, pro προτεραιότητα ποιότητας.",
     "description": "motion mode 说明"
   },
+  "description.motionModel": {
+    "message": "Το Kling 3.0 έχει υψηλότερη ποιότητα αλλά υψηλότερη τιμή ανά δευτερόλεπτο· το Kling 2.6 είναι πιο οικονομικό.",
+    "description": "motion model version description"
+  },
   "description.keepOriginalSound": {
     "message": "Ενεργοποιώντας, διατηρείτε τον πρωτότυπο ήχο του βίντεο αναφοράς. Απενεργοποιώντας, το παραγόμενο βίντεο δεν περιλαμβάνει τον πρωτότυπο ήχο.",
     "description": "keep_original_sound 说明"
@@ -70,6 +74,10 @@
   "message.motionMissingInputs": {
     "message": "Παρακαλώ ανεβάστε ταυτόχρονα την εικόνα προσώπου και το βίντεο αναφοράς κίνησης.",
     "description": "Motion Control 缺少输入时的提示"
+  },
+  "message.motionPricingNote": {
+    "message": "Χρέωση ανά δευτερόλεπτο του παραγόμενου βίντεο· το τελικό ποσό εξαρτάται από τη διάρκεια του βίντεο αναφοράς.",
+    "description": "Explains that Motion Control is billed per second"
   },
   "inspiration.title": {
     "message": "Έμπνευση και Προεπιλογές",
@@ -415,6 +423,14 @@
     "message": "Λειτουργία βίντεο",
     "description": "Η λειτουργία που θα χρησιμοποιηθεί για την παραγωγή του βίντεο"
   },
+  "name.motionModel": {
+    "message": "Έκδοση μοντέλου",
+    "description": "The Kling model version used for motion control"
+  },
+  "name.perSecond": {
+    "message": "δευτερόλεπτο",
+    "description": "Unit suffix for per-second pricing"
+  },
   "name.effect": {
     "message": "Εφέ βίντεο",
     "description": "Το όνομα της παραμέτρου στυλ για εναλλαγή μεταξύ διαφορετικών εκδόσεων ή στυλ μοντέλων"
@@ -490,6 +506,14 @@
   "description.cameraControlDisabled4k": {
     "message": "Επιλέχθηκε η λειτουργία 4K, ο έλεγχος κίνησης δεν είναι διαθέσιμος, παρακαλώ αλλάξτε σε std / pro και ενεργοποιήστε ξανά",
     "description": "Λόγος απενεργοποίησης του ελέγχου κίνησης"
+  },
+  "description.cameraControlDisabledImage2Video": {
+    "message": "Μετά τη μεταφόρτωση της πρώτης καρέ αναφοράς, ο έλεγχος κάμερας δεν υποστηρίζεται. Αφαιρέστε το πρώτο καρέ αναφοράς για να χρησιμοποιήσετε ξανά.",
+    "description": "Αιτία απενεργοποίησης του ελέγχου κάμερας (image2video)"
+  },
+  "description.cameraControlNotSupported": {
+    "message": "Ο τρέχων μοντέλο/λειτουργία/διάρκεια δεν υποστηρίζει τον έλεγχο κάμερας. Προσαρμόστε τις ρυθμίσεις πριν το ενεργοποιήσετε.",
+    "description": "Αιτία απενεργοποίησης του ελέγχου κάμερας (μοντέλο δεν υποστηρίζει)"
   },
   "status.pending": {
     "message": "Σε αναμονή",
@@ -694,5 +718,129 @@
   "message.noTasks": {
     "message": "Δεν υπάρχουν ιστορικές εργασίες, παρακαλώ κάντε κλικ για να δημιουργήσετε βίντεο αριστερά",
     "description": "Μήνυμα όταν δεν υπάρχουν εργασίες"
+  },
+  "tab.talkingPhoto": {
+    "message": "Ομιλούσα Φωτογραφία",
+    "description": "Tab label: Talking Photo"
+  },
+  "name.talkingPhotoImage": {
+    "message": "Φωτογραφία πορτρέτου",
+    "description": "Talking Photo portrait image input"
+  },
+  "name.talkingPhotoAudio": {
+    "message": "Ήχος καθοδήγησης",
+    "description": "Talking Photo driving audio input"
+  },
+  "name.talkingPhotoPrompt": {
+    "message": "Προτροπή κίνησης (προαιρετικό)",
+    "description": "Talking Photo optional motion prompt"
+  },
+  "description.talkingPhotoImage": {
+    "message": "Ανεβάστε ένα καθαρό μετωπικό πορτρέτο· θα κινηθεί και θα μιλήσει.",
+    "description": "Talking Photo portrait image help text"
+  },
+  "description.talkingPhotoAudio": {
+    "message": "Ανεβάστε ένα ηχητικό κλιπ (mp3/wav, ≤5MB)· ο χαρακτήρας συγχρονίζει τα χείλη του.",
+    "description": "Talking Photo driving audio help text"
+  },
+  "description.talkingPhotoPrompt": {
+    "message": "Προαιρετικό: περιγράψτε την επιθυμητή έκφραση/κίνηση, π.χ. «κοιτάξτε απαλά την κάμερα».",
+    "description": "Talking Photo motion prompt help text"
+  },
+  "placeholder.talkingPhotoPrompt": {
+    "message": "π.χ. απαλό, ήρεμο, φυσικό, ελαφριά κίνηση κεφαλιού",
+    "description": "Talking Photo prompt input placeholder"
+  },
+  "button.generateTalkingPhoto": {
+    "message": "Δημιουργία ομιλούσας φωτογραφίας",
+    "description": "Talking Photo generate button"
+  },
+  "button.uploadAudio": {
+    "message": "Μεταφόρτωση ήχου",
+    "description": "Talking Photo upload audio button"
+  },
+  "message.talkingPhotoMissingInputs": {
+    "message": "Ανεβάστε πρώτα μια φωτογραφία πορτρέτου και έναν ήχο καθοδήγησης.",
+    "description": "Talking Photo missing inputs warning"
+  },
+  "message.uploadAudioExceed": {
+    "message": "Επιτρέπεται μόνο ένα αρχείο ήχου.",
+    "description": "Talking Photo audio count limit warning"
+  },
+  "message.uploadAudioError": {
+    "message": "Η μεταφόρτωση ήχου απέτυχε, δοκιμάστε ξανά.",
+    "description": "Talking Photo audio upload error"
+  },
+  "name.referenceVideo": {
+    "message": "Αναφορά βίντεο",
+    "description": "Ετικέτα πεδίου φόρμας: Αναφορά/βίντεο προς επεξεργασία στο Omni Video Editor"
+  },
+  "description.omniReferenceVideo": {
+    "message": "Ισχύει για Kling O1 και V3 Omni. Ανέβασμα ενός MP4/MOV (720–2160px, 3–10 δευτερόλεπτα, ≤200MB) για επεξεργασία ή αναφορά υπάρχοντος βίντεο, οι ετικέτες θα προστεθούν αυτόματα <<<video_1>>>.",
+    "description": "Βοηθητικό κείμενο για ανέβασμα βίντεο αναφοράς Omni"
+  },
+  "name.referenceImages": {
+    "message": "Εικόνες αναφοράς",
+    "description": "Ετικέτα πεδίου εικόνων αναφοράς Omni"
+  },
+  "description.referenceImages": {
+    "message": "Ισχύει για Kling O1 και V3 Omni. Μπορείτε να ανεβάσετε έως 7 εικόνες αναφοράς; αν υπάρχει βίντεο αναφοράς, έως 4 εικόνες. Οι ετικέτες αναφοράς θα προστεθούν αυτόματα.",
+    "description": "Βοηθητικό κείμενο για εικόνες αναφοράς Omni"
+  },
+  "button.uploadReferenceImages": {
+    "message": "Ανέβασμα εικόνας",
+    "description": "Κουμπί για ανέβασμα αναφοράς εικόνας Omni"
+  },
+  "message.referenceImagesExceed": {
+    "message": "Μπορείτε να ανεβάσετε ακόμη {count} εικόνες αναφοράς.",
+    "description": "Υπόδειξη για τον αριθμό εικόνων αναφοράς"
+  },
+  "message.referenceImagesError": {
+    "message": "Η ανέβασμα εικόνας αναφοράς απέτυχε, παρακαλώ δοκιμάστε ξανά.",
+    "description": "Σφάλμα κατά την ανέβασμα εικόνας αναφοράς"
+  },
+  "name.referenceVideoType": {
+    "message": "Χρήση βίντεο",
+    "description": "Ετικέτα τύπου βίντεο αναφοράς"
+  },
+  "name.referenceVideoFeature": {
+    "message": "Χαρακτηριστικό αναφοράς",
+    "description": "Επιλογές βίντεο χαρακτηριστικού αναφοράς"
+  },
+  "name.referenceVideoBase": {
+    "message": "Επεξεργασία αρχικού βίντεο",
+    "description": "Βασικές επιλογές επεξεργασίας βίντεο"
+  },
+  "message.referenceVideoImageLimit": {
+    "message": "Όταν υπάρχει βίντεο αναφοράς, υποστηρίζονται έως 4 εικόνες αναφοράς, παρακαλώ αφαιρέστε τις επιπλέον εικόνες.",
+    "description": "Σύγκρουση αριθμού βίντεο αναφοράς και εικόνων"
+  },
+  "message.referenceImagesTotalLimit": {
+    "message": "Αυτή η αίτηση υποστηρίζει το πολύ {count} αναφορικές εικόνες, συμπεριλαμβανομένων των αρχικών και τελικών καρέ.",
+    "description": "Ειδοποίηση περιορισμού συνολικού αριθμού αναφορικών εικόνων."
+  },
+  "message.baseVideoFrameConflict": {
+    "message": "Το βασικό βίντεο που περιμένει επεξεργασία δεν μπορεί να χρησιμοποιηθεί ταυτόχρονα με την αρχική ή την τελική καρέ.",
+    "description": "Ειδοποίηση σύγκρουσης μεταξύ του βασικού βίντεο και των αρχικών/τελικών καρέ."
+  },
+  "button.uploadReferenceVideo": {
+    "message": "Ανέβασμα βίντεο",
+    "description": "Το κουμπί για την ανέβασμα αναφοράς βίντεο"
+  },
+  "message.referenceVideoExceed": {
+    "message": "Μπορείτε να ανεβάσετε μόνο 1 αναφορά βίντεο",
+    "description": "Μήνυμα σφάλματος όταν προσπαθείτε να ανεβάσετε περισσότερα από 1 αναφορά βίντεο"
+  },
+  "message.referenceVideoError": {
+    "message": "Η ανέβασμα του αναφοράς βίντεο απέτυχε, παρακαλώ δοκιμάστε ξανά αργότερα",
+    "description": "Μήνυμα σφάλματος όταν η ανέβασμα του αναφοράς βίντεο αποτυγχάνει"
+  },
+  "message.referenceVideoTypeFailed": {
+    "message": "Το ανεβασμένο αρχείο πρέπει να είναι σε μορφή MP4 ή MOV!",
+    "description": "Μήνυμα σφάλματος όταν η μορφή του αναφοράς βίντεο δεν είναι MP4/MOV"
+  },
+  "message.referenceVideoSizeExceed": {
+    "message": "Το μέγεθος του αρχείου δεν μπορεί να υπερβαίνει τα 200MB!",
+    "description": "Μήνυμα σφάλματος όταν το αναφορά βίντεο υπερβαίνει τα 200MB"
   }
 }

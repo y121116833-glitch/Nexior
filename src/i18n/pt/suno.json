@@ -216,8 +216,8 @@
     "description": "Texto do botão para substituir um trecho da música"
   },
   "button.mashup": {
-    "message": "Mashup",
-    "description": "Texto do botão para fazer mashup de várias músicas"
+    "message": "Misturar",
+    "description": "Texto do botão para misturar várias músicas"
   },
   "button.generate_lyrics": {
     "message": "Gerar Letra",
@@ -240,8 +240,8 @@
     "description": "Modelo para geração de música"
   },
   "name.instrumental": {
-    "message": "Instrumental",
-    "description": "Geração de música instrumental sem vocal"
+    "message": "Música Instrumental",
+    "description": "Gerar música instrumental sem voz"
   },
   "name.referenceAudios": {
     "message": "Músicas de Referência",
@@ -319,6 +319,10 @@
     "message": "Influência do Estilo",
     "description": "Controla o impacto do estilo no resultado gerado"
   },
+  "name.duration": {
+    "message": "Duração da música",
+    "description": "Controla a duração alvo da música gerada"
+  },
   "name.variationCategory": {
     "message": "Tipo de Variação",
     "description": "Controla a diversidade das variações geradas"
@@ -335,9 +339,13 @@
     "message": "Razão da Falha",
     "description": "Razão pela qual a tarefa falhou"
   },
+  "name.failure": {
+    "message": "Falha na geração",
+    "description": "Título para falha na tarefa do Suno"
+  },
   "name.status": {
     "message": "Status",
-    "description": "Status da tarefa"
+    "description": "O status da tarefa"
   },
   "name.traceId": {
     "message": "ID de Rastreamento",
@@ -388,15 +396,19 @@
     "description": "Descrição do seletor de gênero da voz"
   },
   "description.weirdness": {
-    "message": "Quanto maior o valor, mais criativa e experimental será a música (0-100)",
+    "message": "Quanto maior o valor, mais criativa e experimental será a música (0-1)",
     "description": "Descrição do parâmetro de criatividade"
   },
   "description.styleInfluence": {
-    "message": "Quanto maior o valor, maior a influência do estilo sobre o resultado gerado (0-100)",
+    "message": "Quanto maior o valor, maior a influência do estilo sobre o resultado gerado (0-1)",
     "description": "Descrição do parâmetro de influência do estilo"
   },
+  "description.duration": {
+    "message": "Especifique a duração desejada da música (segundos), o suporte varia entre os modelos, a duração real pode ter pequenas variações.",
+    "description": "Descrição do parâmetro de duração da música."
+  },
   "description.audioWeight": {
-    "message": "Peso da música original sobre o resultado ao fazer uma cover (0-100)",
+    "message": "Peso da música original sobre o resultado ao fazer uma cover (0-1)",
     "description": "Descrição do parâmetro de peso da música original"
   },
   "description.lyricPrompt": {
@@ -494,6 +506,10 @@
   "message.startingTask": {
     "message": "Iniciando tarefa...",
     "description": "Mensagem ao iniciar a tarefa de geração de música"
+  },
+  "message.promptRequired": {
+    "message": "Por favor, insira a palavra-chave ou informações da música",
+    "description": "Mensagem de erro quando a entrada para a geração de música está faltando."
   },
   "message.startingUploadAudio": {
     "message": "Fazendo upload da música personalizada...",
@@ -767,6 +783,22 @@
     "message": "Digite instruções de modificação, por exemplo: torne as letras mais alegres...",
     "description": "Placeholder para entrada de aprimoramento de letras"
   },
+  "placeholder.lyricsTheme": {
+    "message": "Exemplo: uma balada suave sobre saudade no outono",
+    "description": "Placeholder do campo de entrada de tema para geração de letras pelo AI"
+  },
+  "message.lyricsThemePromptTitle": {
+    "message": "Geração de Letras por AI",
+    "description": "Título do pop-up de entrada para geração de letras pelo AI"
+  },
+  "message.lyricsThemePromptMessage": {
+    "message": "Descreva o tema ou a história que esta música quer expressar, o AI gerará a letra com base nisso",
+    "description": "Texto explicativo no pop-up de entrada para geração de letras pelo AI"
+  },
+  "message.lyricsThemeRequired": {
+    "message": "Por favor, descreva o tema da música primeiro",
+    "description": "Mensagem de validação quando o campo de tema está vazio"
+  },
   "message.enhancingLyrics": {
     "message": "Aprimorando letras...",
     "description": "Mensagem durante o aprimoramento das letras"
@@ -805,11 +837,11 @@
   },
   "filter.typeVocal": {
     "message": "Vocal",
-    "description": "Tipo: Com vocal"
+    "description": "Tipo: Contém Voz"
   },
   "filter.typeInstrumental": {
-    "message": "Instrumental",
-    "description": "Tipo: Instrumental"
+    "message": "Música Instrumental",
+    "description": "Tipo: Música Instrumental"
   },
   "filter.duration": {
     "message": "Duração",

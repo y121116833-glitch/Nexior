@@ -1,11 +1,15 @@
 {
   "type.period": {
-    "message": "Period",
+    "message": "Период",
     "description": "Period usluge."
   },
   "type.usage": {
     "message": "Količina",
     "description": "Količina usluge."
+  },
+  "badge.shared": {
+    "message": "Дељено",
+    "description": "Ознака на листи апликација која означава да је апликацију тренутном кориснику овластио неко други, а не да је у његовом власништву."
   },
   "field.expiredAt": {
     "message": "Datum isteka",
@@ -48,7 +52,7 @@
     "description": "Zahtev za uslugu."
   },
   "field.status": {
-    "message": "Status",
+    "message": "Статус",
     "description": "Status zahteva."
   },
   "field.id": {
@@ -134,6 +138,18 @@
   "message.applySuccessfully": {
     "message": "Zahtev je uspešno podnet",
     "description": "Poruka koja se prikazuje kada je korisnik uspešno podneo zahtev za ovu uslugu."
+  },
+  "message.applyFailed": {
+    "message": "Неуспешно активирање бесплатног пробног периода, освежите страницу и покушајте поново.",
+    "description": "Приказује се када аутоматска глобална пријава није успела."
+  },
+  "message.welcomeWithCredits": {
+    "message": "🎉 Добро дошли у {brand}! Поклонили смо вам {credits} кредита, које можете користити за све услуге.",
+    "description": "Приказује се добродошлица након успешне аутоматске глобалне пријаве или приликом првог уласка. {credits} означава преостали број кредита глобалне пријаве."
+  },
+  "message.welcomeNoCredits": {
+    "message": "🎉 Добро дошли у {brand}! Ваш налог је спреман за коришћење свих услуга.",
+    "description": "Приказује се добродошлица када нема доступних бесплатних кредита за глобалну пријаву."
   },
   "message.notApplied": {
     "message": "Niste podneli zahtev za ovu uslugu, molimo vas da podnesete zahtev pre korišćenja.",
@@ -228,7 +244,7 @@
     "description": "Када корисник жели да купи услугу, заглавље странице."
   },
   "title.globalBuy": {
-    "message": "Ace Data Cloud општа допуна поена",
+    "message": "{brand} општа допуна поена",
     "description": "Када корисник жели да купи општу услугу, заглавље странице."
   },
   "title.applicationRemainingCount": {
@@ -240,7 +256,7 @@
     "description": "Када корисник жели да управља захтевима, заглавље странице."
   },
   "title.applicationBalance": {
-    "message": "Посебни поени - {service}",
+    "message": "Наменски биланс - {service}",
     "description": "Када корисник прегледа стање захтева, приказује се порука."
   },
   "title.count": {
@@ -256,7 +272,7 @@
     "description": "Када корисник прегледа општу равнотежу, заглавље странице."
   },
   "message.globalBalanceDescription": {
-    "message": "Када је „дозволите општу равнотежу“ укључено, недостатак стања инстанце аутоматски ће користити општу равнотежу.",
+    "message": "Када је „дозволите општу равнотежу“ укључено, недостатак наменског стања аутоматски ће користити општу равнотежу.",
     "description": "Порука која објашњава да ће се општа равнотежа аутоматски користити када стање инстанце није довољно."
   },
   "button.service": {

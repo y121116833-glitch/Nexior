@@ -28,7 +28,7 @@
     "description": "Razlog neuspeha zadatka"
   },
   "name.status": {
-    "message": "Status",
+    "message": "Статус",
     "description": "Status zadatka"
   },
   "name.traceId": {
@@ -44,7 +44,7 @@
     "description": "Uputstvo za generisanje/uređivanje"
   },
   "name.openaiimageBot": {
-    "message": "OpenAI Image Bot",
+    "message": "OpenAI Image бот",
     "description": "Ime OpenAI Image robota"
   },
   "name.size": {
@@ -55,6 +55,54 @@
     "message": "Izlazne dimenzije za generisanje slika, uobičajene vrednosti: 1024x1024, 1536x1024, 1024x1536.",
     "description": "Objašnjenje dimenzija"
   },
+  "sizeGroup.standard1k": {
+    "message": "1K standard",
+    "description": "Naslov grupe veličina 1K"
+  },
+  "sizeGroup.preset2k": {
+    "message": "2K предлошци",
+    "description": "Naslov grupe veličina 2K"
+  },
+  "sizeGroup.preset4k": {
+    "message": "4K предлошци",
+    "description": "Naslov grupe veličina 4K"
+  },
+  "name.customSize": {
+    "message": "Prilagođena veličina",
+    "description": "Oznaka za prekidač prilagođene veličine"
+  },
+  "description.customSize": {
+    "message": "Omogućeno, možete slobodno postaviti širinu i visinu (samo podržano za gpt-image-2). Mora biti deljivo sa 16, najduža stranica ≤ 3840, ukupni pikseli ≤ 8.294.400.",
+    "description": "Objašnjenje za prilagođenu veličinu"
+  },
+  "name.width": {
+    "message": "Širina",
+    "description": "Oznaka za polje unosa širine"
+  },
+  "name.height": {
+    "message": "Visina",
+    "description": "Oznaka za polje unosa visine"
+  },
+  "error.customSizePositive": {
+    "message": "Širina i visina moraju biti pozitivni celobrojni brojevi",
+    "description": "Prilagođena veličina mora biti pozitivan ceo broj"
+  },
+  "error.customSizeMultiple": {
+    "message": "Širina i visina moraju biti deljive sa {multiple}",
+    "description": "Prilagođena veličina mora biti deljiva sa 16"
+  },
+  "error.customSizeMin": {
+    "message": "Širina i visina ne smeju biti manje od {min}",
+    "description": "Donja granica za prilagođenu veličinu"
+  },
+  "error.customSizeMax": {
+    "message": "Najduža stranica ne sme biti veća od {max}",
+    "description": "Gornja granica najduže stranice za prilagođenu veličinu"
+  },
+  "error.customSizePixels": {
+    "message": "Ukupan broj piksela ne sme prelaziti {pixels}",
+    "description": "Gornja granica ukupnih piksela za prilagođenu veličinu"
+  },
   "description.prompt": {
     "message": "Uputstvo za generisanje ili uređivanje slike",
     "description": "Opis uputstva"
@@ -64,7 +112,7 @@
     "description": "Objašnjenje parametra model"
   },
   "description.imageUrls": {
-    "message": "Otpremite 1-5 referentnih slika da biste ušli u režim uređivanja.",
+    "message": "Otpremite 1-16 referentnih slika da biste ušli u režim uređivanja.",
     "description": "Objašnjenje parametra image_urls"
   },
   "status.pending": {
@@ -91,6 +139,10 @@
     "message": "Pokreće se zadatak...",
     "description": "Poruka za početak zadatka"
   },
+  "message.promptRequired": {
+    "message": "Унесите упутство",
+    "description": "Порука о грешци када недостаје упутство"
+  },
   "message.startTaskSuccess": {
     "message": "Zadatak za generisanje uspešno pokrenut",
     "description": "Zadatak je uspešno kreiran"
@@ -104,7 +156,7 @@
     "description": "Poruka o potrošenim bodovima"
   },
   "message.uploadImageExceed": {
-    "message": "Maksimalno možete otpremiti 5 slika",
+    "message": "Maksimalno možete otpremiti {count} slika",
     "description": "Prekoračenje broja slika"
   },
   "message.uploadImageError": {
@@ -112,7 +164,7 @@
     "description": "Neuspeh pri otpremanju"
   },
   "name.model": {
-    "message": "Model",
+    "message": "Модел",
     "description": "Oznaka za izbor OpenAI modela slika"
   },
   "model.gptImage1": {
@@ -126,5 +178,13 @@
   "model.gptImage2": {
     "message": "gpt-image-2",
     "description": "Opcija modela gpt-image-2"
+  },
+  "model.gptImage2Official": {
+    "message": "gpt-image-2 (Zvanično)",
+    "description": "Opcija modela gpt-image-2 (zvanični relej)"
+  },
+  "size.auto": {
+    "message": "Аутоматски",
+    "description": "Опција величине: аутоматски — модел бира однос страна на основу вашег упита"
   }
 }

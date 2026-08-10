@@ -10,11 +10,20 @@
         <el-col :span="24">
           <el-card shadow="hover" class="card">
             <el-row>
-              <el-col class="max-w-4xl mx-auto">
+              <el-col v-if="!showPayment" class="max-w-4xl mx-auto">
+                <el-empty :description="$t('common.message.noData')" />
+              </el-col>
+              <el-col v-else class="max-w-4xl mx-auto">
                 <p class="introduction">
                   {{ $t('console.subscription.title') }}
                 </p>
                 <el-skeleton v-if="loading" />
+                <div v-else-if="loadFailed" class="text-center">
+                  <el-empty :description="$t('common.message.noData')" />
+                  <el-button type="primary" round @click="onInitialize">
+                    {{ $t('common.button.refresh') }}
+                  </el-button>
+                </div>
                 <el-row v-else :gutter="15" class="subscriptions">
                   <el-col
                     v-for="(item, index) in subscriptions"
@@ -24,28 +33,49 @@
                   >
                     <el-card
                       shadow="hover"
-                      :class="{ subscription: true, active: subscription?.name === item.name }"
-                      @click="subscription = item"
+                      :class="{
+                        subscription: true,
+                        active: subscription?.name === item.name,
+                        disabled: !item.available
+                      }"
+                      @click="item.available && (subscription = item)"
                     >
                       <h4 class="name">
                         {{ item.label }}
                         <el-tag v-if="item.tag" type="warning">{{ item.tag }}</el-tag>
                       </h4>
                       <h2 class="price">
-                        {{ getPriceString({ value: item.price }) }}
+                        <template v-if="item.price !== undefined">{{ getPriceString({ value: item.price }) }}</template>
+                        <span v-else class="text-[var(--el-text-color-secondary)]">{{
+                          $t('common.message.noData')
+                        }}</span>
                       </h2>
                       <p class="description">{{ item.description }}</p>
                       <div class="benefits">
                         <div v-for="(benefit, benefitIndex) in item.benefits" :key="benefitIndex" class="benefit">
-                          <font-awesome-icon v-if="benefit.enabled" icon="fa-solid fa-check" class="icon icon-check" />
-                          <font-awesome-icon v-else icon="fa-solid fa-xmark" class="icon icon-xmark" />
+                          <confirm-icon
+                            v-if="benefit.enabled"
+                            class="icon icon-check"
+                            :size="'1em' as any"
+                            aria-hidden="true"
+                            focusable="false"
+                          />
+                          <close-icon
+                            v-else
+                            class="icon icon-xmark"
+                            :size="'1em' as any"
+                            aria-hidden="true"
+                            focusable="false"
+                          />
                           <span> {{ benefit.content }}</span>
                         </div>
                       </div>
                       <div class="operations">
                         <el-button
+                          v-if="showPayment"
                           class="btn btn-subscribe"
                           :type="subscription?.name === item?.name ? 'primary' : ''"
+                          :disabled="!item.available"
                           round
                           @click="onCreateOrder(item)"
                           >{{ $t('common.button.buy') }}</el-button
@@ -54,7 +84,7 @@
                     </el-card>
                   </el-col>
                 </el-row>
-                <div v-if="!loading" class="extra">
+                <div v-if="!loading && !loadFailed && showPayment" class="extra">
                   <span>{{ $t('console.message.doNotWantSubscribe') }}</span>
                   <el-button type="primary" class="btn btn-extra" round size="small" @click="onBuyExtra">
                     {{ $t('console.message.buyExtra') }}
@@ -70,14 +100,15 @@
 </template>
 
 <script lang="ts">
+import { CloseIcon, ConfirmIcon } from '@acedatacloud/core/icons/components';
 import { defineComponent } from 'vue';
 import { IService, IApplication, IApplicationType, IOrderDetailResponse, IPackageType, IPackage } from '@/models';
-import { ElRow, ElCol, ElCard, ElSkeleton, ElMessage, ElButton, ElTag } from 'element-plus';
+import { ElRow, ElCol, ElCard, ElSkeleton, ElMessage, ElButton, ElTag, ElEmpty } from 'element-plus';
 import { applicationOperator, orderOperator, serviceOperator } from '@/operators';
-import { getPriceString } from '@/utils';
+import { getPriceString, applyMarkup, getApplicationMarkupRatio } from '@/utils';
+import { isIOS, isRechargeDisabled } from '@/utils';
 import { track } from '@/plugins/telemetry';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { ROUTE_CONSOLE_APPLICATION_EXTRA, ROUTE_CONSOLE_ORDER_DETAIL } from '@/router';
+import { ROUTE_CONSOLE_APPLICATION_EXTRA, ROUTE_CONSOLE_ORDER_DETAIL, ROUTE_CONSOLE_APPLICATION_LIST } from '@/router';
 
 interface ISubscription {
   name: string;
@@ -87,6 +118,7 @@ interface ISubscription {
   duration: number;
   benefits?: { enabled: boolean; content: string }[];
   description?: string;
+  available?: boolean;
 }
 
 interface IData {
@@ -95,6 +127,7 @@ interface IData {
   services: IService[];
   type: string;
   loading: boolean;
+  loadFailed: boolean;
   creating: boolean;
   subscription: ISubscription | undefined;
 }
@@ -102,12 +135,14 @@ interface IData {
 export default defineComponent({
   name: 'ConsoleSubscriptionBuy',
   components: {
+    CloseIcon,
+    ConfirmIcon,
     ElSkeleton,
     ElRow,
     ElTag,
     ElCol,
     ElCard,
-    FontAwesomeIcon,
+    ElEmpty,
     ElButton
   },
   data(): IData {
@@ -118,6 +153,7 @@ export default defineComponent({
       type: IApplicationType.PERIOD,
       services: [],
       loading: false,
+      loadFailed: false,
       creating: false,
       subscription: undefined
     };
@@ -128,6 +164,18 @@ export default defineComponent({
     },
     applicationId() {
       return this.$route.params?.id?.toString();
+    },
+    // App Store Review Guideline 3.1.1: on iOS the whole paid catalog
+    // (packages, prices and buy buttons) is hidden — Apple flags merely
+    // displaying non-IAP paid content, not just the purchase action.
+    showPayment(): boolean {
+      return !isIOS();
+    },
+    effectiveMarkupRatio(): number | undefined {
+      return getApplicationMarkupRatio(this.application2, this.site);
+    },
+    pricingAvailable(): boolean {
+      return this.effectiveMarkupRatio !== undefined;
     },
     subscriptions(): ISubscription[] {
       const items: ISubscription[] = [
@@ -155,8 +203,10 @@ export default defineComponent({
         console.log('item', item);
         const pkgs = this.getPackages(item.duration);
         console.log('pkgs', pkgs);
-        if (pkgs) {
-          item.price = pkgs.reduce((acc, pkg) => acc + pkg.price, 0);
+        item.available = pkgs.length > 0 && this.effectiveMarkupRatio !== undefined;
+        if (item.available) {
+          const subtotal = pkgs.reduce((acc, pkg) => acc + pkg.price, 0);
+          item.price = applyMarkup(subtotal, this.effectiveMarkupRatio!);
         }
         for (const pkg of pkgs) {
           if (!item.benefits) {
@@ -183,15 +233,34 @@ export default defineComponent({
     }
   },
   async mounted() {
-    this.loading = true;
-    await this.onFetchApplication();
-    // fetch the real period application
-    await this.onFetchApplication2();
-    await this.onCreateApplications();
-    this.loading = false;
-    this.subscription = this.subscriptions[2];
+    // Site admin disabled recharge: block the direct/bookmarked subscribe
+    // page too, not just the entry buttons.
+    if (isRechargeDisabled(this.$store.getters.site)) {
+      this.$router.replace({ name: ROUTE_CONSOLE_APPLICATION_LIST });
+      return;
+    }
+    await this.onInitialize();
   },
   methods: {
+    async onInitialize() {
+      this.loading = true;
+      this.loadFailed = false;
+      try {
+        await this.onFetchApplication();
+        if (this.application?.role === 'grantee') {
+          this.$router.replace({ name: ROUTE_CONSOLE_APPLICATION_LIST });
+          return;
+        }
+        // Fetch or create the Period Application used by order creation.
+        await this.onFetchApplication2();
+        await this.onCreateApplications();
+        this.subscription = this.subscriptions.find((item) => item.available);
+      } catch {
+        this.loadFailed = true;
+      } finally {
+        this.loading = false;
+      }
+    },
     getPriceString,
     onBuyExtra() {
       this.$router.push({
@@ -265,6 +334,8 @@ export default defineComponent({
       console.debug('application2', this.application2);
     },
     onCreateOrder(subscription: ISubscription) {
+      const packages = this.getPackages(subscription.duration);
+      if (!this.pricingAvailable || !subscription.available || packages.length === 0) return;
       this.subscription = subscription;
       this.creating = true;
       if (!this.application2 || !this.application2.id) {
@@ -280,7 +351,7 @@ export default defineComponent({
       orderOperator
         .create({
           application_ids: [this.application2.id],
-          package_ids: this.getPackages(subscription.duration).map((p) => p.id),
+          package_ids: packages.map((p) => p.id),
           description: this.service?.title + ' - ' + subscription.label
         })
         .then(({ data: data }: { data: IOrderDetailResponse }) => {

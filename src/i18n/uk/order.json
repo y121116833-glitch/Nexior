@@ -79,6 +79,18 @@
     "message": "Будь ласка, відкрийте WeChat на телефоні та відскануйте для завершення оплати",
     "description": "Повідомлення про допомогу з оплатою через WeChat."
   },
+  "message.wechatPayMobileGuide": {
+    "message": "Поточний браузер не підтримує прямий виклик WeChat Pay. Будь ласка, скопіюйте посилання нижче та відкрийте його в WeChat, щоб продовжити оплату.",
+    "description": "Текст підказки, що відображається в мобільному браузері, який не є WeChat."
+  },
+  "button.copyPayLink": {
+    "message": "Скопіювати платіжне посилання",
+    "description": "Кнопка для копіювання URL поточної сторінки в буфер обміну, щоб користувач міг вставити його в WeChat."
+  },
+  "message.wechatPayMobileHint": {
+    "message": "Після успішного копіювання відкрийте WeChat, вставте посилання в будь-який чат або верхнє поле пошуку, натисніть на посилання, щоб завершити оплату.",
+    "description": "Додаткова підказка під кнопкою копіювання посилання."
+  },
   "message.free": {
     "message": "Безкоштовно",
     "description": "Повідомлення про безкоштовне замовлення."
@@ -86,6 +98,18 @@
   "message.buyInExternalUrl": {
     "message": "Будь ласка, завершіть оплату за зовнішнім посиланням",
     "description": "Повідомлення про оплату за зовнішнім посиланням."
+  },
+  "message.applePayProcessing": {
+    "message": "Завершуємо покупку через App Store…",
+    "description": "Message while the Apple in-app purchase is processing."
+  },
+  "message.applePayFailed": {
+    "message": "Платіж у App Store не завершено. Спробуйте ще раз.",
+    "description": "Message when the Apple in-app purchase fails."
+  },
+  "message.applePayUnavailable": {
+    "message": "Цей пакет не можна придбати в застосунку.",
+    "description": "Message when Apple in-app purchase is unavailable for the package."
   },
   "message.updateFailed": {
     "message": "Не вдалося оновити",
@@ -134,6 +158,10 @@
   "title.stripe": {
     "message": "Stripe",
     "description": "Заголовок, що відображається на сайті, що вказує на оплату через Stripe."
+  },
+  "title.card": {
+    "message": "Банківська картка",
+    "description": "Заголовок, що відображається на сайті, який вказує на оплату банківською карткою (кредитною/дебетовою)."
   },
   "title.manageOrder": {
     "message": "Управління замовленнями",
@@ -371,6 +399,10 @@
     "message": "Solana гаманець",
     "description": "Заголовок картки підключення Solana гаманця."
   },
+  "message.publicPayNotFound": {
+    "message": "Замовлення не знайдено або термін його дії минув.",
+    "description": "Shown on public pay page when the order GET returns 404."
+  },
   "message.x402WalletStatusDetected": {
     "message": "Виявлено",
     "description": "Мітка статусу гаманця, що виявлений/встановлений."
@@ -502,5 +534,45 @@
   "title.updateDiscount": {
     "message": "Оновити знижку",
     "description": "Заголовок вікна редагування знижки."
+  },
+  "message.wechatPayLongPressTip": {
+    "message": "Утримуйте QR-код нижче та виберіть 'Розпізнати QR-код', щоб завершити оплату в WeChat.",
+    "description": "Tip shown above the Native QR on mobile-WeChat. The user long-presses to recognise the `weixin://wxpay/bizpayurl` URL and pays without leaving WeChat."
+  },
+  "message.wechatPayMobileScanTip": {
+    "message": "Збережіть або зробіть скріншот нижче QR-коду, відкрийте WeChat, натисніть «Сканувати», виберіть у правому верхньому куті альбом, оберіть щойно збережене зображення, щоб завершити оплату.",
+    "description": "Текст, що відображається над QR-кодом у мобільному браузері, не пов'язаному з WeChat. Інструктує користувачів зберегти зображення QR-коду та використовувати функцію альбому у WeChat для сканування та завершення оплати."
+  },
+  "message.creditsValue": {
+    "message": "{value} кредитів",
+    "description": "Display of credits amount for an order, e.g. '5 credits'. {value} is the formatted credit number."
+  },
+  "title.totalOrders": {
+    "message": "Загальна кількість замовлень",
+    "description": "Загальна картка: загальна кількість замовлень за поточними умовами фільтрації."
+  },
+  "title.totalSpent": {
+    "message": "Загальні витрати",
+    "description": "Загальна картка: загальна сума замовлень за поточними умовами фільтрації."
+  },
+  "title.finishedOrders": {
+    "message": "Завершені замовлення",
+    "description": "Загальна картка: кількість завершених замовлень."
+  },
+  "title.pendingOrders": {
+    "message": "Замовлення на оплату",
+    "description": "Загальна картка: кількість замовлень, що чекають на оплату."
+  },
+  "button.export": {
+    "message": "Експортувати CSV",
+    "description": "Текст кнопки: експортувати замовлення у форматі CSV за поточними умовами фільтрації."
+  },
+  "field.allStates": {
+    "message": "Усі статуси",
+    "description": "Плейсхолдер для випадаючого списку статусів: означає, що статуси не обмежені."
+  },
+  "field.allPayWays": {
+    "message": "Усі способи оплати",
+    "description": "Плейсхолдер для випадаючого списку способів оплати: означає, що способи оплати не обмежені."
   }
 }

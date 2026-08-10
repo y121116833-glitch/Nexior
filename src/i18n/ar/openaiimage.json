@@ -51,9 +51,61 @@
     "message": "الحجم",
     "description": "حجم الصورة الناتجة"
   },
+  "size.auto": {
+    "message": "تلقائي",
+    "description": "خيارات الحجم: تلقائي، يتم اختيار نسبة العرض إلى الارتفاع المناسبة بواسطة النموذج بناءً على نص التوجيه."
+  },
   "description.size": {
     "message": "حجم الإخراج المستخدم لإنشاء الصورة، القيم الشائعة: 1024x1024، 1536x1024، 1024x1536.",
     "description": "وصف الحجم"
+  },
+  "sizeGroup.standard1k": {
+    "message": "الإعداد القياسي 1K",
+    "description": "عنوان مجموعة حجم 1K"
+  },
+  "sizeGroup.preset2k": {
+    "message": "إعدادات 2K المسبقة",
+    "description": "عنوان مجموعة حجم 2K"
+  },
+  "sizeGroup.preset4k": {
+    "message": "إعدادات 4K المسبقة",
+    "description": "عنوان مجموعة حجم 4K"
+  },
+  "name.customSize": {
+    "message": "حجم مخصص",
+    "description": "علامة تبديل الحجم المخصص"
+  },
+  "description.customSize": {
+    "message": "عند التفعيل، يمكنك ضبط العرض والارتفاع بحرية (يدعمه gpt-image-2 فقط). يجب أن يكون مضاعفًا للعدد 16، والجانب الأطول ≤ 3840، وإجمالي وحدات البكسل ≤ 8,294,400.",
+    "description": "وصف الحجم المخصص"
+  },
+  "name.width": {
+    "message": "عرض",
+    "description": "علامة حقل إدخال العرض"
+  },
+  "name.height": {
+    "message": "ارتفاع",
+    "description": "علامة حقل إدخال الارتفاع"
+  },
+  "error.customSizePositive": {
+    "message": "يجب أن تكون الأبعاد أعداد صحيحة موجبة",
+    "description": "يجب أن تكون الأبعاد المخصصة أعداد صحيحة موجبة"
+  },
+  "error.customSizeMultiple": {
+    "message": "يجب أن يكون العرض والارتفاع مضاعفات {multiple}",
+    "description": "يجب أن تكون الأبعاد المخصصة مضاعفات 16"
+  },
+  "error.customSizeMin": {
+    "message": "لا يمكن أن يكون العرض والارتفاع أقل من {min}",
+    "description": "حد أدنى للحجم المخصص"
+  },
+  "error.customSizeMax": {
+    "message": "لا يمكن أن يتجاوز أقصى طول {max}",
+    "description": "حد أقصى لطول الجانب في الحجم المخصص"
+  },
+  "error.customSizePixels": {
+    "message": "لا يمكن أن يتجاوز إجمالي البكسل {pixels}",
+    "description": "حد أقصى لإجمالي بكسل الحجم المخصص"
   },
   "description.prompt": {
     "message": "نص التوليد أو التحرير للصورة",
@@ -64,7 +116,7 @@
     "description": "وصف معلمة النموذج"
   },
   "description.imageUrls": {
-    "message": "قم بتحميل 1-5 صور مرجعية للدخول في وضع التحرير.",
+    "message": "قم بتحميل 1-16 صور مرجعية للدخول في وضع التحرير.",
     "description": "وصف معلمة image_urls"
   },
   "status.pending": {
@@ -91,6 +143,10 @@
     "message": "جارٍ بدء المهمة...",
     "description": "رسالة بدء المهمة"
   },
+  "message.promptRequired": {
+    "message": "يرجى إدخال كلمة التوجيه",
+    "description": "رسالة خطأ عند عدم وجود كلمة التوجيه"
+  },
   "message.startTaskSuccess": {
     "message": "تم بدء مهمة التوليد بنجاح",
     "description": "تم إنشاء المهمة بنجاح"
@@ -104,7 +160,7 @@
     "description": "رسالة نفاد النقاط"
   },
   "message.uploadImageExceed": {
-    "message": "يمكنك تحميل ما يصل إلى 5 صور",
+    "message": "يمكنك تحميل ما يصل إلى {count} صور",
     "description": "تجاوز عدد الصور الحد المسموح به"
   },
   "message.uploadImageError": {
@@ -126,5 +182,9 @@
   "model.gptImage2": {
     "message": "gpt-image-2",
     "description": "خيار نموذج gpt-image-2"
+  },
+  "model.gptImage2Official": {
+    "message": "gpt-image-2 (رسمي)",
+    "description": "خيار نموذج gpt-image-2 عبر التوصيل الرسمي"
   }
 }

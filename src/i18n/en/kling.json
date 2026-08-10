@@ -32,8 +32,8 @@
     "description": "Character orientation option: Follow Video"
   },
   "name.keepOriginalSound": {
-    "message": "Keep Original Audio",
-    "description": "keep_original_sound toggle"
+    "message": "Keep Original Sound",
+    "description": "Keep reference video audio switch label"
   },
   "description.motionImage": {
     "message": "Upload a character reference image; elements like character and background in the generated video will reference this.",
@@ -55,6 +55,10 @@
     "message": "std prioritizes performance, pro prioritizes quality.",
     "description": "motion mode description"
   },
+  "description.motionModel": {
+    "message": "Kling 3.0 has higher quality but a higher per-second price; Kling 2.6 is more cost-effective.",
+    "description": "motion model version description"
+  },
   "description.keepOriginalSound": {
     "message": "Enabling keeps the original audio from the reference video; disabling outputs a video without the original audio.",
     "description": "keep_original_sound description"
@@ -70,6 +74,10 @@
   "message.motionMissingInputs": {
     "message": "Please upload both the character image and motion reference video.",
     "description": "Prompt when inputs are missing in Motion Control"
+  },
+  "message.motionPricingNote": {
+    "message": "Billed per second of the generated video; the final amount scales with the reference video length.",
+    "description": "Explains that Motion Control is billed per second"
   },
   "inspiration.title": {
     "message": "Inspiration and Presets",
@@ -415,6 +423,14 @@
     "message": "Video Mode",
     "description": "The mode used to generate the video"
   },
+  "name.motionModel": {
+    "message": "Model Version",
+    "description": "The Kling model version used for motion control"
+  },
+  "name.perSecond": {
+    "message": "second",
+    "description": "Unit suffix for per-second pricing, e.g. \"1.20 Credit/second\""
+  },
   "name.effect": {
     "message": "Video Effect",
     "description": "The name of the style parameter used to switch between different versions or styles of the model"
@@ -513,7 +529,7 @@
   },
   "placeholder.select": {
     "message": "Select",
-    "description": "Placeholder text in the selection field"
+    "description": "Placeholder text for select fields"
   },
   "placeholder.paddingLevel": {
     "message": "Please select...",
@@ -703,8 +719,128 @@
     "message": "No historical tasks, please click on the left to generate a video",
     "description": "Message when there are no tasks"
   },
-  "placeholder.select": {
-    "message": "Select",
-    "description": "Placeholder text for select fields"
+  "tab.talkingPhoto": {
+    "message": "Talking Photo",
+    "description": "Tab label: Talking Photo"
+  },
+  "name.talkingPhotoImage": {
+    "message": "Portrait Photo",
+    "description": "Talking Photo portrait image input"
+  },
+  "name.talkingPhotoAudio": {
+    "message": "Driving Audio",
+    "description": "Talking Photo driving audio input"
+  },
+  "name.talkingPhotoPrompt": {
+    "message": "Motion Prompt (optional)",
+    "description": "Talking Photo optional motion prompt"
+  },
+  "description.talkingPhotoImage": {
+    "message": "Upload a clear frontal portrait; it will be animated and made to speak.",
+    "description": "Talking Photo portrait image help text"
+  },
+  "description.talkingPhotoAudio": {
+    "message": "Upload an audio clip (mp3/wav, <=5MB); the character lip-syncs to it.",
+    "description": "Talking Photo driving audio help text"
+  },
+  "description.talkingPhotoPrompt": {
+    "message": "Optional: describe the desired expression/motion, e.g. \"look gently at the camera\".",
+    "description": "Talking Photo motion prompt help text"
+  },
+  "placeholder.talkingPhotoPrompt": {
+    "message": "e.g. gentle, calm, natural, subtle head movement",
+    "description": "Talking Photo prompt input placeholder"
+  },
+  "button.generateTalkingPhoto": {
+    "message": "Generate Talking Photo",
+    "description": "Talking Photo generate button"
+  },
+  "button.uploadAudio": {
+    "message": "Upload Audio",
+    "description": "Talking Photo upload audio button"
+  },
+  "message.talkingPhotoMissingInputs": {
+    "message": "Please upload a portrait photo and a driving audio first.",
+    "description": "Talking Photo missing inputs warning"
+  },
+  "message.uploadAudioExceed": {
+    "message": "Only one audio file is allowed.",
+    "description": "Talking Photo audio count limit warning"
+  },
+  "message.uploadAudioError": {
+    "message": "Audio upload failed, please retry.",
+    "description": "Talking Photo audio upload error"
+  },
+  "name.referenceVideo": {
+    "message": "Reference Video",
+    "description": "Form field label: reference/editable video for Omni video editing"
+  },
+  "description.omniReferenceVideo": {
+    "message": "For Kling O1 and V3 Omni. Upload one MP4/MOV (720-2160px, 3-10s, <=100MB) to edit or reference an existing video. The prompt automatically cites it as <<<video_1>>>.",
+    "description": "Help text for the Omni reference video uploader"
+  },
+  "name.referenceImages": {
+    "message": "Reference Images",
+    "description": "Form field label for Omni reference images"
+  },
+  "description.referenceImages": {
+    "message": "For Kling O1 and V3 Omni. Upload up to 7 reference images, or up to 4 when a reference video is present. Prompt tokens are added automatically.",
+    "description": "Help text for Omni reference images"
+  },
+  "button.uploadReferenceImages": {
+    "message": "Upload Images",
+    "description": "Button to upload Omni reference images"
+  },
+  "message.referenceImagesExceed": {
+    "message": "You can upload {count} more reference images.",
+    "description": "Reference image count warning"
+  },
+  "message.referenceImagesError": {
+    "message": "Reference image upload failed. Please retry.",
+    "description": "Reference image upload error"
+  },
+  "name.referenceVideoType": {
+    "message": "Video Usage",
+    "description": "Reference video type label"
+  },
+  "name.referenceVideoFeature": {
+    "message": "Reference",
+    "description": "Feature reference video option"
+  },
+  "name.referenceVideoBase": {
+    "message": "Edit Source",
+    "description": "Base video editing option"
+  },
+  "message.referenceVideoImageLimit": {
+    "message": "A reference video supports at most 4 reference images. Remove extra images first.",
+    "description": "Reference video image count conflict"
+  },
+  "message.referenceImagesTotalLimit": {
+    "message": "This request supports at most {count} reference images, including first and last frames.",
+    "description": "Total reference image limit warning"
+  },
+  "message.baseVideoFrameConflict": {
+    "message": "An editable base video cannot be combined with first or last frames.",
+    "description": "Base video and frame conflict warning"
+  },
+  "button.uploadReferenceVideo": {
+    "message": "Upload Video",
+    "description": "Button to upload the reference video"
+  },
+  "message.referenceVideoExceed": {
+    "message": "You can upload a maximum of 1 reference video",
+    "description": "Error when more than one reference video is uploaded"
+  },
+  "message.referenceVideoError": {
+    "message": "Reference video upload failed, please try again later",
+    "description": "Error when the reference video upload fails"
+  },
+  "message.referenceVideoTypeFailed": {
+    "message": "Uploaded file must be in MP4 or MOV format!",
+    "description": "Error when the reference video is not MP4/MOV"
+  },
+  "message.referenceVideoSizeExceed": {
+    "message": "Uploaded file size cannot exceed {max}!",
+    "description": "Error when the reference video exceeds the upload size limit"
   }
 }

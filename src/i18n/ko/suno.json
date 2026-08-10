@@ -319,6 +319,10 @@
     "message": "스타일 영향력",
     "description": "스타일이 생성 결과에 미치는 영향 정도 조절"
   },
+  "name.duration": {
+    "message": "곡 길이",
+    "description": "생성할 곡의 목표 길이를 제어합니다."
+  },
   "name.variationCategory": {
     "message": "변형 유형",
     "description": "생성 변형의 다양성 정도 조절"
@@ -334,6 +338,10 @@
   "name.failureReason": {
     "message": "실패 원인",
     "description": "작업 실패의 원인"
+  },
+  "name.failure": {
+    "message": "생성 실패",
+    "description": "Suno 작업 실패 제목"
   },
   "name.status": {
     "message": "상태",
@@ -388,15 +396,19 @@
     "description": "목소리 성별 선택기 설명"
   },
   "description.weirdness": {
-    "message": "값이 높을수록 생성되는 음악이 더 창의적이고 실험적입니다 (0-100)",
+    "message": "값이 높을수록 생성되는 음악이 더 창의적이고 실험적입니다 (0-1)",
     "description": "창의성 매개변수 설명"
   },
   "description.styleInfluence": {
-    "message": "값이 높을수록 스타일 태그가 생성 결과에 미치는 영향이 커집니다 (0-100)",
+    "message": "값이 높을수록 스타일 태그가 생성 결과에 미치는 영향이 커집니다 (0-1)",
     "description": "스타일 영향력 매개변수 설명"
   },
+  "description.duration": {
+    "message": "원하는 곡 길이(초)를 지정하세요. 모델에 따라 지원 정도가 다르며, 실제 길이는 약간의 변동이 있을 수 있습니다.",
+    "description": "곡 길이 매개변수에 대한 설명"
+  },
   "description.audioWeight": {
-    "message": "커버할 때 원곡이 결과에 미치는 영향의 비율 (0-100)",
+    "message": "커버할 때 원곡이 결과에 미치는 영향의 비율 (0-1)",
     "description": "원곡 비율 매개변수 설명"
   },
   "description.lyricPrompt": {
@@ -494,6 +506,10 @@
   "message.startingTask": {
     "message": "작업 시작 중...",
     "description": "음악 생성 작업 시작 시 메시지"
+  },
+  "message.promptRequired": {
+    "message": "프롬프트 또는 음악 정보를 입력하세요",
+    "description": "음악 생성 입력이 누락되었을 때의 오류 메시지"
   },
   "message.startingUploadAudio": {
     "message": "사용자 정의 음악 업로드 중...",
@@ -766,6 +782,22 @@
   "placeholder.enhanceLyrics": {
     "message": "수정 지시어 입력, 예: 가사를 더 경쾌하게...",
     "description": "가사 강화 입력 자리 표시자"
+  },
+  "placeholder.lyricsTheme": {
+    "message": "예: 가을의 그리움을 담은 부드러운 포크송",
+    "description": "AI 가사 생성 주제 입력란 플레이스홀더"
+  },
+  "message.lyricsThemePromptTitle": {
+    "message": "AI 가사 생성",
+    "description": "AI 가사 생성 입력창 제목"
+  },
+  "message.lyricsThemePromptMessage": {
+    "message": "노래가 전달하고자 하는 주제나 이야기를 설명해 주세요. AI가 이를 바탕으로 가사를 생성합니다.",
+    "description": "AI 가사 생성 입력창에 대한 안내 텍스트"
+  },
+  "message.lyricsThemeRequired": {
+    "message": "먼저 노래 주제를 설명해 주세요",
+    "description": "주제 입력이 비어 있을 때의 검증 안내 메시지"
   },
   "message.enhancingLyrics": {
     "message": "가사 강화 중...",

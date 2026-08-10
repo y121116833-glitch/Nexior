@@ -347,6 +347,10 @@
     "message": "Inserisci una frase che descriva l'immagine da generare, ad esempio: un gatto carino. Parametri aggiuntivi sovrascriveranno i parametri preset predefiniti",
     "description": "Testo segnaposto nel campo di input"
   },
+  "message.promptRequired": {
+    "message": "Inserisci il prompt",
+    "description": "Messaggio di errore quando il prompt è mancante"
+  },
   "message.uploadReferencesExceed": {
     "message": "Puoi caricare al massimo 5 immagini",
     "description": "Messaggio di errore quando il numero di immagini caricate supera il limite"
@@ -549,11 +553,11 @@
   },
   "type.link": {
     "message": "Link",
-    "description": "Tipo di contenuto per generare un codice QR"
+    "description": "Tipo di contenuto utilizzato per generare un codice QR"
   },
   "type.email": {
     "message": "Email",
-    "description": "Tipo di contenuto per generare un codice QR"
+    "description": "Tipo di contenuto utilizzato per generare un codice QR"
   },
   "type.phone": {
     "message": "Telefono",
@@ -561,6 +565,6 @@
   },
   "type.sms": {
     "message": "SMS",
-    "description": "Tipo di contenuto per generare un codice QR"
+    "description": "Tipo di contenuto utilizzato per generare un codice QR"
   }
 }

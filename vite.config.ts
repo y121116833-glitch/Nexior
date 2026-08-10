@@ -1,9 +1,39 @@
+/// <reference types="vitest/config" />
 import { type ConfigEnv, defineConfig, loadEnv } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import replace from '@rollup/plugin-replace';
 import * as path from 'path';
+import { createRequire } from 'module';
+import { configDefaults } from 'vitest/config';
+
+const pkg = createRequire(import.meta.url)('./package.json') as { version: string };
 
 const normalizeModuleId = (id: string) => id.replace(/\\/g, '/');
+
+// Strip comments from the built HTML. They are useful in source but a scanner
+// flags any containing words like FROM/QUERY/USER as information disclosure
+// (CASA 2026-07-20 #6 — it matched `// Priority: query …` and `// Resolve the
+// user's …` inside our inline boot scripts, not just HTML comments).
+// Conditional comments are preserved; `//` lines are only dropped when the
+// whole line is a comment, so URLs and regex literals are untouched.
+const stripHtmlComments = () => ({
+  name: 'strip-html-comments',
+  enforce: 'post' as const,
+  transformIndexHtml: {
+    order: 'post' as const,
+    handler: (html: string) =>
+      html
+        .replace(/<!--(?!\[if|<!)(?:(?!-->)[\s\S])*-->\n?\s*/g, '')
+        .replace(/<script(?![^>]*\bsrc=)([^>]*)>([\s\S]*?)<\/script>/g, (match, attrs, body) => {
+          if (/\btype=["']?(application\/(ld\+)?json|importmap)/i.test(attrs)) return match;
+          const stripped = body
+            .split('\n')
+            .filter((line: string) => !/^\s*\/\//.test(line))
+            .join('\n');
+          return `<script${attrs}>${stripped}</script>`;
+        })
+  }
+});
 
 const vendorChunkRules: Array<[chunkName: string, matches: (normalizedId: string) => boolean]> = [
   // NOTE: We deliberately do NOT define a `vendor-web3` chunk here. Forcing
@@ -67,14 +97,45 @@ export default defineConfig((config: ConfigEnv) => {
       vue(),
       replace({
         preventAssignment: true
-      })
+      }),
+      stripHtmlComments()
     ],
+    // Inject the package version as a plain global for ALL surfaces. Read via
+    // `__APP_VERSION__` (telemetry release tag + desktop version gate). Do NOT
+    // define onto import.meta.env.* — Vite manages that namespace and the key
+    // can be clobbered.
+    define: {
+      __APP_VERSION__: JSON.stringify(pkg.version)
+    },
+    // Keep the Playwright Electron E2E specs (e2e/) out of the vitest run —
+    // they use @playwright/test, not vitest, and are driven by `playwright test`.
+    test: {
+      exclude: [...configDefaults.exclude, 'e2e/**']
+    },
+    // vite-ssg: only used by `npm run build:ssg`. Plain `npm run build` ignores
+    // this and produces today's SPA. Pre-renders are served behind features=ssr.
+    ssgOptions: {
+      script: 'async',
+      formatting: 'minify',
+      dirStyle: 'nested',
+      // Nexior is a client-only app (no SEO landing); SSG the login page as the
+      // SSR-safe entry. Broad app-page SSG needs per-component window guards.
+      includedRoutes: () => ['/auth/login']
+    },
+    ssr: {
+      // Bundle (don't externalize) deps Node can't load during the SSG render:
+      // raw .css imports + Capacitor plugins that ship extensionless ESM imports.
+      noExternal: ['vue-dark-switch', /^@capacitor\//, /^@capacitor-community\//]
+    },
     resolve: {
       alias: {
         '@': path.resolve(__dirname, './src')
       }
     },
     build: {
+      // Desktop (Electron) builds go to a dedicated outDir so they never share
+      // or overwrite the web `dist/` (each surface owns its own output).
+      outDir: process.env.VITE_SURFACE === 'desktop' ? 'dist-electron' : 'dist',
       // Computing gzip size for ~10 MB of chunks blows past the 2 GB V8
       // heap on Cloudflare Workers Builds. The report is stdout-only,
       // so disabling it costs nothing functional and shaves ~15 s off

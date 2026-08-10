@@ -125,7 +125,7 @@
   },
   "button.addAudio": {
     "message": "+ Audio",
-    "description": "Przycisk otwierający okno dialogowe dodawania audio (przeglądanie lub nagrywanie)"
+    "description": "Przycisk do otwierania okna dodawania audio (przeglądanie lub nagrywanie)"
   },
   "button.startRecord": {
     "message": "Rozpocznij nagrywanie",
@@ -217,7 +217,7 @@
   },
   "button.mashup": {
     "message": "Mashup",
-    "description": "Tekst przycisku do tworzenia mashupu"
+    "description": "Tekst przycisku do łączenia wielu utworów"
   },
   "button.generate_lyrics": {
     "message": "Generuj tekst",
@@ -319,6 +319,10 @@
     "message": "Wpływ stylu",
     "description": "Kontrola wpływu stylu na wynik generacji"
   },
+  "name.duration": {
+    "message": "Długość utworu",
+    "description": "Kontroluje docelową długość generowanego utworu"
+  },
   "name.variationCategory": {
     "message": "Typ wariacji",
     "description": "Kontrola różnorodności generowanych wariacji"
@@ -335,6 +339,10 @@
     "message": "Powód niepowodzenia",
     "description": "Powód niepowodzenia zadania"
   },
+  "name.failure": {
+    "message": "Generowanie nie powiodło się",
+    "description": "Tytuł zadania Suno, które nie powiodło się"
+  },
   "name.status": {
     "message": "Status",
     "description": "Status zadania"
@@ -344,7 +352,7 @@
     "description": "ID śledzenia zadania"
   },
   "name.sunoBot": {
-    "message": "Suno Bot",
+    "message": "Bot Suno",
     "description": "Nazwa generatora Suno"
   },
   "name.replaceSection": {
@@ -353,7 +361,7 @@
   },
   "name.model": {
     "message": "Model",
-    "description": "Wybór wersji modelu"
+    "description": "Wybierz wersję modelu"
   },
   "name.songDescription": {
     "message": "Opis utworu",
@@ -388,15 +396,19 @@
     "description": "Opis selektora płci głosu"
   },
   "description.weirdness": {
-    "message": "Im wyższa wartość, tym bardziej kreatywna i eksperymentalna muzyka (0-100)",
+    "message": "Im wyższa wartość, tym bardziej kreatywna i eksperymentalna muzyka (0-1)",
     "description": "Opis parametru kreatywności"
   },
   "description.styleInfluence": {
-    "message": "Im wyższa wartość, tym większy wpływ etykiet stylu na wynik (0-100)",
+    "message": "Im wyższa wartość, tym większy wpływ etykiet stylu na wynik (0-1)",
     "description": "Opis parametru wpływu stylu"
   },
+  "description.duration": {
+    "message": "Określ oczekiwaną długość utworu (sekundy), różne modele mają różny poziom wsparcia, rzeczywista długość może się nieznacznie różnić",
+    "description": "Opis parametru długości utworu"
+  },
   "description.audioWeight": {
-    "message": "Waga wpływu oryginalnego utworu na wynik (0-100)",
+    "message": "Waga wpływu oryginalnego utworu na wynik (0-1)",
     "description": "Opis parametru wagi oryginalnego utworu"
   },
   "description.lyricPrompt": {
@@ -494,6 +506,10 @@
   "message.startingTask": {
     "message": "Rozpoczynam zadanie...",
     "description": "Wiadomość na początku zadania generacji muzyki"
+  },
+  "message.promptRequired": {
+    "message": "Wprowadź słowo kluczowe lub informacje o muzyce",
+    "description": "Komunikat o błędzie, gdy brakuje danych wejściowych do generowania muzyki."
   },
   "message.startingUploadAudio": {
     "message": "Przesyłam niestandardową muzykę...",
@@ -767,6 +783,22 @@
     "message": "Wprowadź polecenie, np.: spraw, aby tekst był wesoły...",
     "description": "Placeholder dla ulepszania tekstu"
   },
+  "placeholder.lyricsTheme": {
+    "message": "Na przykład: łagodna ballada o tęsknocie jesienią",
+    "description": "Tekst zastępczy w polu wprowadzania tematu dla generowania tekstu piosenki przez AI"
+  },
+  "message.lyricsThemePromptTitle": {
+    "message": "Generowanie tekstu piosenki przez AI",
+    "description": "Tytuł okna dialogowego do generowania tekstu piosenki przez AI"
+  },
+  "message.lyricsThemePromptMessage": {
+    "message": "Opisz temat lub historię tej piosenki, a AI wygeneruje na jej podstawie tekst",
+    "description": "Tekst instrukcji w oknie dialogowym do wprowadzania tematu dla generowania tekstu piosenki przez AI"
+  },
+  "message.lyricsThemeRequired": {
+    "message": "Najpierw opisz temat piosenki",
+    "description": "Komunikat walidacyjny wyświetlany, gdy pole tematu jest puste"
+  },
   "message.enhancingLyrics": {
     "message": "Ulepszanie tekstu...",
     "description": "Wiadomość podczas ulepszania tekstu"
@@ -849,7 +881,7 @@
   },
   "filter.model": {
     "message": "Model",
-    "description": "Sekcja filtru: model AI"
+    "description": "Filtruj według: model AI"
   },
   "filter.modelAll": {
     "message": "Wszystkie modele",

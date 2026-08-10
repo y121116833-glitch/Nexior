@@ -249,7 +249,7 @@
   },
   "preset.floral": {
     "message": "Floral",
-    "description": "Estilo preestablecido para generar el código QR"
+    "description": "El estilo predefinido para generar el código QR."
   },
   "preset.snowflakes": {
     "message": "Copos de nieve",
@@ -346,6 +346,10 @@
   "message.promptPlaceholder": {
     "message": "Ingrese una frase que describa la imagen a generar, por ejemplo: un gato adorable. Los parámetros adicionales sobrescribirán los parámetros preestablecidos por defecto",
     "description": "Texto de placeholder en el campo de aviso"
+  },
+  "message.promptRequired": {
+    "message": "Por favor, introduce la palabra clave",
+    "description": "Mensaje de error cuando falta la palabra clave"
   },
   "message.uploadReferencesExceed": {
     "message": "Se pueden subir hasta 5 imágenes",
@@ -561,6 +565,6 @@
   },
   "type.sms": {
     "message": "SMS",
-    "description": "Tipo de contenido para generar códigos QR"
+    "description": "El tipo de contenido utilizado para generar el código QR."
   }
 }

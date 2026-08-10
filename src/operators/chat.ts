@@ -7,10 +7,19 @@ import {
   IChatConversationOptions,
   IChatConversationRequest,
   IChatConversationResponse,
-  IChatConversationsResponse
+  IChatConversationsResponse,
+  IChatShareResponse
 } from '@/models';
-import { BASE_URL_API, ERROR_CODE_API_ERROR } from '@/constants';
+import { BASE_URL_API, BASE_URL_X402, ERROR_CODE_API_ERROR, ERROR_CODE_CONTENT_TOO_LARGE } from '@/constants';
 import { currentSiteOrigin } from '@/utils';
+import { isBrowserToolExecutionState, sanitizeBrowserOrigin } from '@/utils/browserToolExecution';
+import { scenarioPaymentState } from '@/utils/x402/scenarioPayment';
+import {
+  continuousPaymentActive,
+  continuousPaymentHeaders,
+  refreshContinuousPaymentAuthorization,
+  selectContinuousPayment
+} from '@/utils/x402/continuousPayment';
 
 /**
  * Headers carrying the calling Site's bare host. Shared with
@@ -22,6 +31,13 @@ function siteHeaders(): Record<string, string> {
   return origin ? { 'x-site-origin': origin } : {};
 }
 
+function normalizeChatError(status: number, code?: string, message?: string): BaseError {
+  if (status === 413 || code === 'request_entity_too_large') {
+    return new BaseError(status || 413, ERROR_CODE_CONTENT_TOO_LARGE, '');
+  }
+  return new BaseError(status || 500, code || ERROR_CODE_API_ERROR, message || 'An error occurred');
+}
+
 class ChatOperator {
   async chatConversation(
     data: IChatConversationRequest,
@@ -29,10 +45,18 @@ class ChatOperator {
   ): Promise<IChatConversationResponse> {
     return new Promise(async (resolve, reject) => {
       try {
-        const response = await fetch(`${BASE_URL_API}/aichat2/conversations`, {
+        const walletMode = scenarioPaymentState('chat').mode === 'wallet';
+        if (walletMode && !continuousPaymentActive()) {
+          await refreshContinuousPaymentAuthorization(options.token).catch(() => undefined);
+          selectContinuousPayment(true);
+        }
+        const continuous = walletMode && continuousPaymentActive();
+        if (walletMode && !continuous) throw new BaseError(402, 'payment_authorization_required', '');
+        const response = await fetch(`${continuous ? BASE_URL_X402 : BASE_URL_API}/aichat2/conversations`, {
           method: 'POST',
           headers: {
             authorization: `Bearer ${options.token}`,
+            ...(continuous ? continuousPaymentHeaders(options.token) : {}),
             'Content-Type': 'application/json',
             Accept: 'text/event-stream',
             ...siteHeaders()
@@ -49,7 +73,7 @@ class ChatOperator {
           const errorMessage = errorJson?.error?.message || 'An error occurred';
           const errorCode = errorJson?.error?.code || ERROR_CODE_API_ERROR;
           console.error('Error message:', errorMessage, 'Error code:', errorCode);
-          reject(new BaseError(status, errorCode, errorMessage));
+          reject(normalizeChatError(status, errorCode, errorMessage));
           return;
         }
 
@@ -81,6 +105,10 @@ class ChatOperator {
               }
               try {
                 const json = JSON.parse(subValue);
+                const browserState =
+                  json.execution_state ??
+                  json.browser_state ??
+                  (json.execution === 'browser' || json.type === 'browser_execution' ? json.state : undefined);
                 if (json.delta_answer) {
                   finalAnswer += json.delta_answer;
                 }
@@ -90,8 +118,10 @@ class ChatOperator {
                 if (json.type === 'error') {
                   const errorMessage =
                     typeof json.message === 'string' && json.message.trim() ? json.message.trim() : 'An error occurred';
+                  const errorStatus = typeof json.status === 'number' ? json.status : 500;
+                  const errorCode = typeof json.code === 'string' ? json.code : ERROR_CODE_API_ERROR;
                   await reader.cancel().catch(() => undefined);
-                  reject(new BaseError(500, ERROR_CODE_API_ERROR, errorMessage));
+                  reject(normalizeChatError(errorStatus, errorCode, errorMessage));
                   return;
                 }
                 if (options?.stream) {
@@ -105,7 +135,23 @@ class ChatOperator {
                     tool_id: json.tool_id,
                     tool_name: json.tool_name,
                     tool_display_name: json.tool_display_name,
+                    execution: json.type === 'browser_execution' ? 'browser' : json.execution,
+                    execution_state: isBrowserToolExecutionState(browserState) ? browserState : undefined,
+                    execution_sequence:
+                      typeof json.execution_sequence === 'number' ? json.execution_sequence : undefined,
+                    browser_session_id:
+                      typeof json.browser_session_id === 'string' ? json.browser_session_id : undefined,
+                    browser_call_id: typeof json.browser_call_id === 'string' ? json.browser_call_id : undefined,
+                    wire_contract_digest:
+                      typeof json.wire_contract_digest === 'string' ? json.wire_contract_digest : undefined,
+                    facade_catalog_digest:
+                      typeof json.facade_catalog_digest === 'string' ? json.facade_catalog_digest : undefined,
+                    origin: sanitizeBrowserOrigin(json.origin),
                     input: json.input,
+                    // Streamed tool-call arguments text (`tool_progress`); without
+                    // this the running tool block renders empty while the model
+                    // writes a large tool call.
+                    progress: json.progress,
                     output: json.output,
                     is_error: json.is_error,
                     duration_ms: json.duration_ms,
@@ -233,6 +279,83 @@ class ChatOperator {
         signal: options.signal
       }
     );
+  }
+
+  /**
+   * Create or refresh a public, read-only share of a conversation. The
+   * worker freezes a snapshot and returns a stable `share_id` (reused on
+   * subsequent calls so previously-copied links keep working). Build the
+   * public URL as `${origin}/share/${share_id}`.
+   */
+  async shareConversation(id: string, options: IChatConversationOptions): Promise<AxiosResponse<IChatShareResponse>> {
+    return await axios.post(
+      `/aichat2/conversations`,
+      {
+        action: IChatConversationAction.SHARE,
+        id
+      },
+      {
+        headers: {
+          'content-type': 'application/json',
+          authorization: `Bearer ${options.token}`,
+          'x-record-exempt': 'true'
+        },
+        baseURL: BASE_URL_API
+      }
+    );
+  }
+
+  /** Revoke a conversation's public share (deletes the snapshot). */
+  async unshareConversation(
+    id: string,
+    options: IChatConversationOptions
+  ): Promise<AxiosResponse<{ id?: string; success?: boolean }>> {
+    return await axios.post(
+      `/aichat2/conversations`,
+      {
+        action: IChatConversationAction.UNSHARE,
+        id
+      },
+      {
+        headers: {
+          'content-type': 'application/json',
+          authorization: `Bearer ${options.token}`,
+          'x-record-exempt': 'true'
+        },
+        baseURL: BASE_URL_API
+      }
+    );
+  }
+
+  /**
+   * ANONYMOUS read of a shared conversation snapshot. Deliberately uses
+   * `fetch` with NO Authorization header so it works for logged-out
+   * viewers — the `/aichat2/shared` path is public in PlatformGateway. The
+   * response carries only the redacted snapshot (no owner identity).
+   */
+  async getSharedConversation(shareId: string): Promise<IChatConversation> {
+    const response = await fetch(`${BASE_URL_API}/aichat2/shared`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...siteHeaders()
+      },
+      body: JSON.stringify({ share_id: shareId })
+    });
+    if (!response.ok) {
+      const status = response.status;
+      let code = ERROR_CODE_API_ERROR;
+      let message = 'An error occurred';
+      try {
+        const json = await response.json();
+        message = json?.message || json?.error?.message || message;
+        code = json?.error || json?.error?.code || code;
+      } catch {
+        // Non-JSON error body — keep the defaults.
+      }
+      throw new BaseError(status, code, message);
+    }
+    return (await response.json()) as IChatConversation;
   }
 }
 

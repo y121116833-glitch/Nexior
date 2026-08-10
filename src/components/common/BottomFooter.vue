@@ -5,21 +5,28 @@
         <el-row>
           <el-col :span="24" class="text-center">
             <p>
-              <a href="/download">{{ $t('common.nav.mobileApp') }}</a>
-              ·
-              <a href="https://platform.acedata.cloud">{{ $t('common.entity.website') }}</a> ©
-              {{ new Date().getFullYear() }}
-              {{ $t('common.entity.copyright') }}
-              ·
-              <a
-                href="https://github.com/AceDataCloud/Nexior"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="github-link"
-                :title="$t('common.nav.github')"
-              >
-                <font-awesome-icon :icon="faGithub" />
-              </a>
+              <template v-if="isMainOfficialHost">
+                <a href="/download">{{ $t('common.nav.mobileApp') }}</a>
+                ·
+              </template>
+              <template v-if="customCopyright">{{ customCopyright }}</template>
+              <template v-else>
+                <a href="/">{{ brandName }}</a> ©
+                {{ new Date().getFullYear() }}
+                {{ $t('common.entity.copyright') }}
+              </template>
+              <template v-if="isMainOfficialHost">
+                ·
+                <a
+                  href="https://github.com/AceDataCloud/Nexior"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="github-link"
+                  :title="$t('common.nav.github')"
+                >
+                  <font-awesome-icon :icon="faGithub" />
+                </a>
+              </template>
             </p>
           </el-col>
         </el-row>
@@ -33,6 +40,7 @@ import { defineComponent } from 'vue';
 import { ElContainer, ElRow, ElCol } from 'element-plus';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
+import { getBrandCopyright, getBrandName, isMainOfficial } from '@/utils';
 
 export default defineComponent({
   name: 'BottomFooter',
@@ -47,7 +55,18 @@ export default defineComponent({
       faGithub
     };
   },
-  computed: {},
+  computed: {
+    brandName(): string {
+      return getBrandName(this.$store.state.site);
+    },
+    customCopyright(): string | undefined {
+      return getBrandCopyright(this.$store.state.site);
+    },
+    // The mobile-app download page only exists on the official main host.
+    isMainOfficialHost() {
+      return isMainOfficial();
+    }
+  },
   methods: {}
 });
 </script>

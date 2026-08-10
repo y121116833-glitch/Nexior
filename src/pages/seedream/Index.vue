@@ -14,15 +14,16 @@ import { defineComponent } from 'vue';
 import Layout from '@/layouts/Seedream.vue';
 import ConfigPanel from '@/components/seedream/ConfigPanel.vue';
 import { seedreamOperator } from '@/operators';
+import { buildSeedreamRequest } from '@/utils/seedream/request';
+import { getSeedreamCapabilities } from '@/utils/seedream/capabilities';
 import { instrumentGeneration } from '@/plugins/telemetry';
 import { ISeedreamGenerateRequest, Status } from '@/models';
 import { ElMessage } from 'element-plus';
-import { ERROR_CODE_USED_UP, getWebhookCallbackUrl } from '@/constants';
+import { ERROR_CODE_USED_UP } from '@/constants';
 import RecentPanel from '@/components/seedream/RecentPanel.vue';
 import { loadPreviousPage } from '@/utils/pagination';
+import { uploadTrackerProviderMixin, ensureNoPendingUpload, ensureLoggedIn } from '@/utils';
 import { ISeedreamTask } from '@/models';
-
-const CALLBACK_URL = getWebhookCallbackUrl('seedream');
 
 interface IData {
   task: ISeedreamTask | undefined;
@@ -37,6 +38,7 @@ export default defineComponent({
     Layout,
     RecentPanel
   },
+  mixins: [uploadTrackerProviderMixin],
   inject: ['initialized'],
   data(): IData {
     return {
@@ -139,18 +141,23 @@ export default defineComponent({
       });
     },
     async onGenerate() {
-      const cfg: any = { ...(this.config || {}) };
-      const hasReferenceImages = Array.isArray(cfg?.image) && cfg.image.length > 0;
-      if (!hasReferenceImages && 'image' in cfg) {
-        delete cfg.image;
+      if (
+        !ensureNoPendingUpload(
+          this.uploadTracker,
+          (k) => this.$t(k) as string,
+          (m) => ElMessage.warning(m)
+        )
+      ) {
+        return;
       }
-      if (!cfg?.size) {
-        delete cfg.size;
+      if (getSeedreamCapabilities(this.config?.model).imageRequired && !this.config?.image?.length) {
+        ElMessage.warning(this.$t('seedream.message.referenceImageRequired'));
+        return;
       }
-      const request = {
-        ...cfg,
-        callback_url: CALLBACK_URL
-      } as ISeedreamGenerateRequest;
+      const request = buildSeedreamRequest(this.config) as ISeedreamGenerateRequest;
+      if (!ensureLoggedIn()) {
+        return;
+      }
       const token = this.credential?.token;
       if (!token) {
         console.error('no token specified');

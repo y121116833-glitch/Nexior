@@ -4,7 +4,14 @@
       <config-panel @generate="onGenerateAudio" />
     </template>
     <template #result>
-      <recent-panel ref="recentPanel" class="panel recent" :loading="loadingMore" @reach-top="onReachTop" />
+      <recent-panel
+        ref="recentPanel"
+        class="panel recent"
+        :loading="loadingMore || loadingAll"
+        @reach-top="onReachTop"
+        @load-all="onLoadAll"
+        @wallet-task="onWalletTask"
+      />
     </template>
     <template #preview>
       <preview-panel />
@@ -15,24 +22,34 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import Layout from '@/layouts/Suno.vue';
-import { applicationOperator, sunoOperator } from '@/operators';
+import { applicationOperator } from '@/operators';
+import { buildSunoAudioRequest, sunoOperator } from '@/operators/suno';
 import { IApplicationDetailResponse, ISunoAudioRequest, Status } from '@/models';
-import { ElMessage } from 'element-plus';
+import { ElMessage, ElMessageBox } from 'element-plus';
 import { ISunoTask } from '@/models';
-import { ERROR_CODE_DUPLICATION, getWebhookCallbackUrl } from '@/constants';
+import { ERROR_CODE_DUPLICATION } from '@/constants';
 import { instrumentGeneration } from '@/plugins/telemetry';
 import ConfigPanel from '@/components/suno/ConfigPanel.vue';
 import RecentPanel from '@/components/suno/RecentPanel.vue';
 import PreviewPanel from '@/components/suno/PreviewPanel.vue';
 import { loadPreviousPage } from '@/utils/pagination';
-
-const CALLBACK_URL = getWebhookCallbackUrl('suno');
+import { uploadTrackerProviderMixin, ensureNoPendingUpload, ensureLoggedIn } from '@/utils';
+import { isScenarioX402Enabled, scenarioPaymentState } from '@/utils/x402/scenarioPayment';
+import {
+  X402PaymentCancelledError,
+  type OperatorRequestOptions,
+  type X402PaymentQuote,
+  type X402WalletContext,
+  resolveX402WalletContext
+} from '@/operators/x402';
 
 interface IData {
   task: ISunoTask | undefined;
   job: number;
   loadingMore: boolean;
+  loadingAll: boolean;
   fetchingTasks: boolean;
+  walletTaskIds: string[];
 }
 
 export default defineComponent({
@@ -43,13 +60,16 @@ export default defineComponent({
     RecentPanel,
     PreviewPanel
   },
+  mixins: [uploadTrackerProviderMixin],
   inject: ['initialized'],
   data(): IData {
     return {
       task: undefined,
       job: 0,
       loadingMore: false,
-      fetchingTasks: false
+      loadingAll: false,
+      fetchingTasks: false,
+      walletTaskIds: []
     };
   },
   computed: {
@@ -82,14 +102,31 @@ export default defineComponent({
     },
     applications() {
       return this.$store.state.suno.applications;
+    },
+    walletMode(): boolean {
+      return isScenarioX402Enabled() && scenarioPaymentState('suno').mode === 'wallet';
     }
   },
   watch: {
+    walletMode: {
+      async handler(value: boolean, oldValue: boolean | undefined) {
+        if (oldValue === undefined || value === oldValue) return;
+        this.$store.commit('suno/setTasks', undefined);
+        if (value && !this.job) this.job = window.setInterval(this.onGetTasks, 5000);
+        if (!value && !this.credential?.token) {
+          window.clearInterval(this.job);
+          this.job = 0;
+          await this.onScrollDown();
+          return;
+        }
+        await this.onGetTasks();
+        await this.onScrollDown();
+      }
+    },
     tasks: {
       handler(value, oldValue) {
         // scroll down if new tasks are added
         if (value?.items?.length > oldValue?.items?.length) {
-          console.debug('new tasks detected');
           // this.onScrollDown();
         }
       },
@@ -98,12 +135,9 @@ export default defineComponent({
     initialized: {
       async handler(newValue) {
         if (newValue) {
-          console.debug('layout initialized');
           await this.onGetTasks();
           await this.onScrollDown();
-          this.job = window.setInterval(() => {
-            this.onGetTasks();
-          }, 5000);
+          if (!this.job) this.job = window.setInterval(this.onGetTasks, 5000);
         }
       },
       immediate: true
@@ -130,15 +164,49 @@ export default defineComponent({
         getScrollElement: () => this.getTasksScrollElement()
       });
     },
+    // Pull the user's full task history (older pages) so client-side
+    // search/filter cover everything, not just the loaded pages. Triggered
+    // once when the user first searches/filters.
+    async onLoadAll() {
+      if (this.walletMode && !this.credential?.token) return;
+      if (this.loadingAll) {
+        return;
+      }
+      this.loadingAll = true;
+      try {
+        // Bounded loop — each pass fetches the page older than the current
+        // oldest item; stop at total, when no progress is made, or at the cap.
+        for (let guard = 0; guard < 100; guard++) {
+          // Wait for any in-flight fetch (the 5s poll or pagination) to settle,
+          // otherwise onGetTasks early-returns on its fetchingTasks guard and we
+          // would mistake the no-op for end-of-history.
+          for (let waits = 0; (this.fetchingTasks || this.applicationsLoading) && waits < 50; waits++) {
+            await new Promise((resolve) => setTimeout(resolve, 100));
+          }
+          const items = this.tasks?.items ?? [];
+          const total = this.tasks?.total;
+          if (total !== undefined && items.length >= total) {
+            break;
+          }
+          const oldest = items[0];
+          if (!oldest?.created_at) {
+            break;
+          }
+          const before = items.length;
+          await this.onGetTasks({ createdAtMax: oldest.created_at });
+          if ((this.tasks?.items?.length ?? 0) <= before) {
+            break;
+          }
+        }
+      } finally {
+        this.loadingAll = false;
+      }
+    },
     async onGetService() {
-      console.debug('start onGetService');
       await this.$store.dispatch('suno/getService');
-      console.debug('end onGetService');
     },
     async onGetApplication() {
-      console.debug('start onGetApplications');
       await this.$store.dispatch('suno/getApplications');
-      console.debug('end onGetApplications');
       await this.onGetTasks();
     },
     onApply() {
@@ -166,51 +234,108 @@ export default defineComponent({
     },
     async onGetTasks(payload?: { limit?: number; createdAtMin?: number; createdAtMax?: number }) {
       if (this.applicationsLoading || this.fetchingTasks) {
-        console.debug('loading');
         return;
       }
-      console.debug('start onGetTasks', payload);
       const { limit = 5, createdAtMin, createdAtMax } = payload || {};
-      console.debug('limit', limit, 'createdAtMin', createdAtMin, 'createdAtMax', createdAtMax);
       this.fetchingTasks = true;
       try {
         await this.$store.dispatch('suno/getTasks', {
           limit,
           createdAtMin,
-          createdAtMax
+          createdAtMax,
+          ...(this.walletMode && !this.credential?.token ? { mode: 'x402', ids: this.walletTaskIds } : {})
         });
       } finally {
         this.fetchingTasks = false;
       }
     },
     async onGenerateAudio() {
-      const request = {
-        ...this.config,
-        callback_url: CALLBACK_URL
-      } as ISunoAudioRequest;
-      const token = this.credential?.token;
-      if (!token) {
-        console.error('no token specified');
+      if (
+        !ensureNoPendingUpload(
+          this.uploadTracker,
+          (k) => this.$t(k) as string,
+          (m) => ElMessage.warning(m)
+        )
+      ) {
         return;
       }
+      const request = buildSunoAudioRequest(this.config);
+      if (!this.hasSunoInput(request)) {
+        ElMessage.error(this.$t('suno.message.promptRequired'));
+        return;
+      }
+      if (this.hasText(request.prompt)) {
+        request.prompt = request.prompt.trim();
+      }
+      const operation = this.createPaymentOperation((options) => sunoOperator.audio(request, options));
+      if (!operation) return;
       ElMessage.info(this.$t('suno.message.startingTask'));
-      instrumentGeneration('suno', sunoOperator.audio(request, { token }))
-        .then(() => {
-          ElMessage.success(this.$t('suno.message.startTaskSuccess'));
-        })
-        .catch((error) => {
-          ElMessage.error(error?.response?.data?.error?.message || this.$t('suno.message.startTaskFailed'));
-        })
-        .finally(async () => {
-          setTimeout(async () => {
-            await this.onGetTasks();
-            await this.onScrollDown();
-          }, 1000);
-        });
+      try {
+        const response = await instrumentGeneration('suno', operation);
+        this.onWalletTask(response?.data?.task_id);
+        ElMessage.success(this.$t('suno.message.startTaskSuccess'));
+      } catch (error: any) {
+        if (error instanceof X402PaymentCancelledError) return;
+        if (this.walletMode)
+          ElMessage.error(`${this.$t('common.x402Scenario.paymentFailed')} ${error?.message || ''}`.trim());
+        else ElMessage.error(error?.response?.data?.error?.message || this.$t('suno.message.startTaskFailed'));
+      } finally {
+        setTimeout(async () => {
+          await this.onGetTasks();
+          await this.onScrollDown();
+        }, 1000);
+      }
+    },
+    createPaymentOperation(submit: (options: OperatorRequestOptions) => Promise<any>): Promise<any> | undefined {
+      if (!this.walletMode) {
+        if (!ensureLoggedIn()) return undefined;
+        const token = this.credential?.token;
+        return token ? submit({ token }) : undefined;
+      }
+      const wallet = this.getWalletContext();
+      if (!wallet) {
+        ElMessage.warning(this.$t('common.x402Scenario.connectWalletFirst'));
+        return undefined;
+      }
+      return submit({
+        mode: 'x402',
+        x402: { wallet, confirm: (quote) => this.confirmWalletPayment(quote), identityToken: this.credential?.token }
+      });
+    },
+    onWalletTask(taskId: string | undefined) {
+      if (this.walletMode && !this.credential?.token && taskId && !this.walletTaskIds.includes(taskId))
+        this.walletTaskIds.unshift(taskId);
+    },
+    getWalletContext(): X402WalletContext | undefined {
+      return resolveX402WalletContext((this as any).$wallet);
+    },
+    async confirmWalletPayment(quote: X402PaymentQuote): Promise<boolean> {
+      return ElMessageBox.confirm(
+        this.$t('common.x402Scenario.confirmPayment', { amount: quote.amountUsdc }),
+        this.$t('order.message.x402ConfirmTitle'),
+        {
+          confirmButtonText: this.$t('order.message.x402WalletPayCta'),
+          cancelButtonText: this.$t('common.button.cancel'),
+          type: 'warning'
+        }
+      )
+        .then(() => true)
+        .catch(() => false);
     },
     getTasksScrollElement(): HTMLElement | undefined {
       const panel = this.$refs.recentPanel as any;
       return panel?.getScrollElement?.();
+    },
+    hasText(value: unknown): value is string {
+      return typeof value === 'string' && value.trim().length > 0;
+    },
+    hasSunoInput(request: ISunoAudioRequest): boolean {
+      const textFields = [request.prompt, request.lyric, request.lyric_prompt, request.style, request.title];
+      return (
+        textFields.some((value) => this.hasText(value)) ||
+        this.hasText(request.audio_id) ||
+        (Array.isArray(request.mashup_audio_ids) && request.mashup_audio_ids.length > 0)
+      );
     }
   }
 });

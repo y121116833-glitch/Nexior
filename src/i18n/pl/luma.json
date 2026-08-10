@@ -17,7 +17,7 @@
   },
   "name.status": {
     "message": "Status",
-    "description": "Status zadania"
+    "description": "Stan zadania"
   },
   "name.traceId": {
     "message": "ID śledzenia",
@@ -347,6 +347,10 @@
     "message": "Wpisz opis obrazu, który chcesz wygenerować, np.: uroczy kot. Dodatkowe parametry nadpiszą domyślne ustawienia",
     "description": "Tekst placeholdera w polu prompt"
   },
+  "message.promptRequired": {
+    "message": "Wprowadź słowo kluczowe",
+    "description": "Komunikat o błędzie, gdy brakuje słowa kluczowego"
+  },
   "message.uploadReferencesExceed": {
     "message": "Można przesłać maksymalnie 5 obrazów",
     "description": "Błąd przy próbie przesłania zbyt dużej liczby obrazów"
@@ -445,7 +449,7 @@
   },
   "markerShape.plus": {
     "message": "Plus",
-    "description": "Kształt znacznika używany do generowania kodów QR"
+    "description": "Używane do generowania kształtu znacznika QR kodu"
   },
   "markerShape.box": {
     "message": "Prostokąt",
@@ -473,7 +477,7 @@
   },
   "subMarker.plus": {
     "message": "Plus",
-    "description": "Kształt podznacznika używany do generowania kodów QR"
+    "description": "Używane do generowania kształtu podznacznika QR kodu"
   },
   "subMarker.box": {
     "message": "Prostokąt",
@@ -549,7 +553,7 @@
   },
   "type.link": {
     "message": "Link",
-    "description": "Typ treści używany do generowania kodów QR"
+    "description": "Typ treści używany do generowania QR kodu"
   },
   "type.email": {
     "message": "E-mail",
@@ -561,6 +565,6 @@
   },
   "type.sms": {
     "message": "SMS",
-    "description": "Typ treści używany do generowania kodów QR"
+    "description": "Typ treści używany do generowania QR kodu"
   }
 }

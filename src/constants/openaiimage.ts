@@ -6,8 +6,19 @@ export const OPENAIIMAGE_LOGO = CHAT_MODEL_ICON_CHATGPT;
 export const OPENAIIMAGE_MODEL_GPT_IMAGE_1 = 'gpt-image-1';
 export const OPENAIIMAGE_MODEL_GPT_IMAGE_15 = 'gpt-image-1.5';
 export const OPENAIIMAGE_MODEL_GPT_IMAGE_2 = 'gpt-image-2';
+// Official-relay variant (openai-hk gpt-image-2-vip upstream). Same feature set
+// as gpt-image-2, billed at a higher tier.
+export const OPENAIIMAGE_MODEL_GPT_IMAGE_2_OFFICIAL = 'gpt-image-2:official';
 
 export const OPENAIIMAGE_DEFAULT_MODEL = OPENAIIMAGE_MODEL_GPT_IMAGE_2;
+
+// Reference images accepted by /openai/images/edits. 16 is the upstream limit
+// (and what our OpenAPI documents), not a UI-side preference.
+export const OPENAIIMAGE_MAX_REFERENCE_IMAGES = 16;
+
+// Let the model pick the ratio from the prompt. Sent explicitly (not omitted):
+// only the upstream sees the prompt when choosing dimensions.
+export const OPENAIIMAGE_SIZE_AUTO = 'auto';
 
 // Common 1K presets (shared across all models)
 export const OPENAIIMAGE_SIZE_1024 = '1024x1024';
@@ -32,7 +43,7 @@ export const OPENAIIMAGE_SIZE_2448_3264 = '2448x3264';
 export const OPENAIIMAGE_SIZE_3840_2160 = '3840x2160';
 export const OPENAIIMAGE_SIZE_2160_3840 = '2160x3840';
 
-export const OPENAIIMAGE_DEFAULT_SIZE = OPENAIIMAGE_SIZE_1024;
+export const OPENAIIMAGE_DEFAULT_SIZE = OPENAIIMAGE_SIZE_AUTO;
 
 // Per-model preset lists. Mirrors the OpenAPI `size` description on
 // `/openai/images/generations` and `/openai/images/edits`.
@@ -57,7 +68,7 @@ export const OPENAIIMAGE_SIZES_GPT_IMAGE_2_1K: string[] = [
   OPENAIIMAGE_SIZE_1024_1792
 ];
 
-// gpt-image-2 2K group → 0.3 credits/image (1.5x tier)
+// gpt-image-2 2K preset sizes.
 export const OPENAIIMAGE_SIZES_GPT_IMAGE_2_2K: string[] = [
   OPENAIIMAGE_SIZE_2048_2048,
   OPENAIIMAGE_SIZE_2048_1536,
@@ -66,7 +77,7 @@ export const OPENAIIMAGE_SIZES_GPT_IMAGE_2_2K: string[] = [
   OPENAIIMAGE_SIZE_1152_2048
 ];
 
-// gpt-image-2 4K group → 0.3 credits/image (1.5x tier)
+// gpt-image-2 4K preset sizes.
 export const OPENAIIMAGE_SIZES_GPT_IMAGE_2_4K: string[] = [
   OPENAIIMAGE_SIZE_2880_2880,
   OPENAIIMAGE_SIZE_3264_2448,
@@ -84,11 +95,15 @@ export const OPENAIIMAGE_SIZES_GPT_IMAGE_2: string[] = [
 export const OPENAIIMAGE_MODEL_SIZES: Record<string, string[]> = {
   [OPENAIIMAGE_MODEL_GPT_IMAGE_1]: OPENAIIMAGE_SIZES_GPT_IMAGE_1,
   [OPENAIIMAGE_MODEL_GPT_IMAGE_15]: OPENAIIMAGE_SIZES_GPT_IMAGE_15,
-  [OPENAIIMAGE_MODEL_GPT_IMAGE_2]: OPENAIIMAGE_SIZES_GPT_IMAGE_2
+  [OPENAIIMAGE_MODEL_GPT_IMAGE_2]: OPENAIIMAGE_SIZES_GPT_IMAGE_2,
+  [OPENAIIMAGE_MODEL_GPT_IMAGE_2_OFFICIAL]: OPENAIIMAGE_SIZES_GPT_IMAGE_2
 };
 
 // Models that allow arbitrary WIDTHxHEIGHT (subject to validation).
-export const OPENAIIMAGE_CUSTOM_SIZE_MODELS: string[] = [OPENAIIMAGE_MODEL_GPT_IMAGE_2];
+export const OPENAIIMAGE_CUSTOM_SIZE_MODELS: string[] = [
+  OPENAIIMAGE_MODEL_GPT_IMAGE_2,
+  OPENAIIMAGE_MODEL_GPT_IMAGE_2_OFFICIAL
+];
 
 // Custom-size validation constants for gpt-image-2. Mirrors upstream constraints
 // documented in the OpenAPI `size` description: multiples of 16, longer side

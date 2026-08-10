@@ -7,6 +7,10 @@
     "message": "Käyttö",
     "description": "Palvelun käyttö."
   },
+  "badge.shared": {
+    "message": "Jaettu",
+    "description": "Merkki sovellusluettelossa, joka osoittaa, että sovellus on jonkun muun valtuuttama nykyiselle käyttäjälle (ei heidän omistamansa)."
+  },
   "field.expiredAt": {
     "message": "Voimassaoloaika",
     "description": "Hakemuksen voimassaoloaika."
@@ -135,6 +139,18 @@
     "message": "Hakemus onnistui",
     "description": "Viesti, joka näytetään käyttäjälle, kun hän on onnistuneesti hakenut tätä palvelua."
   },
+  "message.applyFailed": {
+    "message": "Ilmainen kokeilu ei onnistunut. Päivitä sivu ja yritä uudelleen.",
+    "description": "Näytetään, kun automaattinen globaalin tilauksen luominen epäonnistuu."
+  },
+  "message.welcomeWithCredits": {
+    "message": "🎉 Tervetuloa {brand}iin! Olemme lahjoittaneet sinulle {credits} krediittiä, joita voit käyttää kaikissa palveluissa.",
+    "description": "Näytetään tervetuloviesti onnistuneen globaalin tilauksen luomisen jälkeen tai ensimmäisellä sisäänkirjautumisella. {credits} on jäljellä oleva globaalin tilauksen saldo."
+  },
+  "message.welcomeNoCredits": {
+    "message": "🎉 Tervetuloa {brand}iin! Tilisi on valmis ja voit käyttää kaikkia palveluja.",
+    "description": "Näytetään tervetuloviesti, kun globaalissa tilauksessa ei ole käytettävissä ilmaisia krediittejä."
+  },
   "message.notApplied": {
     "message": "Et ole vielä hakenut tätä palvelua, hae palvelua ennen käyttöä",
     "description": "Viesti, joka näytetään käyttäjälle, kun hän ei ole vielä hakenut tätä palvelua."
@@ -228,7 +244,7 @@
     "description": "Sivun otsikko, kun käyttäjä haluaa ostaa palvelun."
   },
   "title.globalBuy": {
-    "message": "Ace Data Cloud yleinen pisteiden lataus",
+    "message": "{brand} yleinen pisteiden lataus",
     "description": "Sivun otsikko, kun käyttäjä haluaa ostaa yleispalvelun."
   },
   "title.applicationRemainingCount": {
@@ -240,7 +256,7 @@
     "description": "Sivun otsikko, kun käyttäjä haluaa hallita hakemuksia."
   },
   "title.applicationBalance": {
-    "message": "Erityiset pisteet - {service}",
+    "message": "Erillinen saldo - {service}",
     "description": "Viesti, joka näytetään käyttäjälle, kun hän tarkastelee hakemuksen saldoa."
   },
   "title.count": {
@@ -256,8 +272,8 @@
     "description": "Sivun otsikko, kun käyttäjä tarkastelee yleistä saldoa."
   },
   "message.globalBalanceDescription": {
-    "message": "Kun 'Salli yleinen saldo' on käytössä, instanssin saldoa käytetään automaattisesti, kun se on riittämätön.",
-    "description": "Vihje, joka selittää, että instanssin saldoa käytetään automaattisesti, kun se on riittämätön."
+    "message": "Kun 'Salli yleinen saldo' on käytössä, yleistä saldoa käytetään automaattisesti, kun erillinen saldo on riittämätön.",
+    "description": "Vihje, joka selittää, että erillistä saldoa käytetään automaattisesti, kun se on riittämätön."
   },
   "button.service": {
     "message": "Asiakaspalvelu",

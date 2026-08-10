@@ -21,7 +21,7 @@
 import { defineComponent } from 'vue';
 import { ElSwitch } from 'element-plus';
 import InfoIcon from '@/components/common/InfoIcon.vue';
-import { SEEDANCE_DEFAULT_GENERATE_AUDIO, SEEDANCE_MODEL_1_5_PRO } from '@/constants';
+import { SEEDANCE_DEFAULT_GENERATE_AUDIO, getSeedanceCapability } from '@/constants';
 
 export default defineComponent({
   name: 'SeedanceGenerateAudioSwitch',
@@ -31,7 +31,8 @@ export default defineComponent({
   },
   computed: {
     isSupported(): boolean {
-      return this.$store.state.seedance?.config?.model === SEEDANCE_MODEL_1_5_PRO;
+      const model = this.$store.state.seedance?.config?.model;
+      return getSeedanceCapability(model).acceptsAudio;
     },
     value: {
       get(): boolean {

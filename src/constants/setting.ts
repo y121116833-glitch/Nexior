@@ -7,19 +7,29 @@
  */
 export const SETTING_TAB_GENERAL = 'general';
 export const SETTING_TAB_API_KEY = 'apiKey';
+export const SETTING_TAB_MEMORY = 'memory';
 export const SETTING_TAB_SITE = 'site';
+export const SETTING_TAB_SITE_SERVICES = 'siteServices';
 export const SETTING_TAB_SEO = 'seo';
 export const SETTING_TAB_DISTRIBUTION = 'distribution';
 export const SETTING_TAB_FUNCTION = 'function';
+export const SETTING_TAB_AUTH = 'auth';
 export const SETTING_TAB_SUBSITES = 'subsites';
+export const SETTING_TAB_CUSTOM_DOMAIN = 'customDomain';
+export const SETTING_TAB_LOCAL_TOOLS = 'localTools';
 export const SETTING_TAB_ABOUT = 'about';
 
 export type SettingTabKey =
   | typeof SETTING_TAB_GENERAL
   | typeof SETTING_TAB_API_KEY
+  | typeof SETTING_TAB_MEMORY
   | typeof SETTING_TAB_SITE
+  | typeof SETTING_TAB_SITE_SERVICES
   | typeof SETTING_TAB_SEO
   | typeof SETTING_TAB_DISTRIBUTION
   | typeof SETTING_TAB_FUNCTION
+  | typeof SETTING_TAB_AUTH
   | typeof SETTING_TAB_SUBSITES
+  | typeof SETTING_TAB_CUSTOM_DOMAIN
+  | typeof SETTING_TAB_LOCAL_TOOLS
   | typeof SETTING_TAB_ABOUT;
