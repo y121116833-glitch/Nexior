@@ -16,7 +16,7 @@
     "description": "Dugme za otpremanje referentnih audio zapisa"
   },
   "button.video": {
-    "message": "Video",
+    "message": "Видео",
     "description": "Tekst na dugmetu za video"
   },
   "button.download_video": {
@@ -63,37 +63,81 @@
     "message": "Zameni instrumentale",
     "description": "Tekst na dugmetu za zamenu instrumentalne muzike"
   },
+  "button.clear_all": {
+    "message": "Очисти све",
+    "description": "Текст dugmeta za brisanje svih konfiguracionih stavki"
+  },
+  "mode.simple": {
+    "message": "Једноставан режим",
+    "description": "Ознака за Tab једноставног режима генерисања"
+  },
+  "mode.custom": {
+    "message": "Прилагођени режим",
+    "description": "Ознака за Tab режима прилагођеног генерисања"
+  },
   "model.fuzz20pro": {
     "message": "FUZZ-2.0 Pro",
     "description": "Model za generisanje muzike"
+  },
+  "model.fuzz20proDesc": {
+    "message": "Максимум 8 минута · Најбољи квалитет звука",
+    "description": "Опис FUZZ-2.0 Pro у падајућем менију модела"
   },
   "model.fuzz20": {
     "message": "FUZZ-2.0",
     "description": "Model za generisanje muzike"
   },
+  "model.fuzz20desc": {
+    "message": "Максимум 8 минута · Уравнотежен однос цене и квалитета",
+    "description": "Опис FUZZ-2.0 у падајућем менију модела"
+  },
   "model.fuzz20raw": {
     "message": "FUZZ-2.0 Raw",
     "description": "Model za generisanje muzike"
+  },
+  "model.fuzz20rawDesc": {
+    "message": "Максимум 8 минута · Ружнији и природнији вокал",
+    "description": "Опис FUZZ-2.0 Raw у падајућем менију модела"
   },
   "model.fuzz11pro": {
     "message": "FUZZ-1.1 Pro",
     "description": "Model za generisanje muzike"
   },
+  "model.fuzz11proDesc": {
+    "message": "Максимум 4 минута · Старија верзија са фином обрадом",
+    "description": "Опис FUZZ-1.1 Pro у падајућем менију модела"
+  },
   "model.fuzz10pro": {
     "message": "FUZZ-1.0 Pro",
     "description": "Model za generisanje muzike"
+  },
+  "model.fuzz10proDesc": {
+    "message": "Максимум 4 минута · Старија стабилна верзија",
+    "description": "Опис FUZZ-1.0 Pro у падајућем менију модела"
   },
   "model.fuzz10": {
     "message": "FUZZ-1.0",
     "description": "Model za generisanje muzike"
   },
+  "model.fuzz10desc": {
+    "message": "Максимум 2 минута · Старија верзија",
+    "description": "Опис FUZZ-1.0 у падајућем менију модела"
+  },
   "model.fuzz11": {
     "message": "FUZZ-1.1",
     "description": "Model za generisanje muzike"
   },
+  "model.fuzz11desc": {
+    "message": "Максимум 4 минута · Старија побољшана верзија",
+    "description": "Опис FUZZ-1.1 у падајућем менију модела"
+  },
   "model.fuzz08": {
     "message": "FUZZ-0.8",
     "description": "Model za generisanje muzike"
+  },
+  "model.fuzz08desc": {
+    "message": "Максимум 2 минута · Рана верзија",
+    "description": "Опис FUZZ-0.8 у падајућем менију модела"
   },
   "name.instrumental": {
     "message": "Instrumentalna muzika",
@@ -171,8 +215,12 @@
     "message": "Razlog neuspeha",
     "description": "Razlog neuspeha zadatka"
   },
+  "name.failure": {
+    "message": "Generation failed",
+    "description": "Producer task failure title"
+  },
   "name.status": {
-    "message": "Status",
+    "message": "Статус",
     "description": "Status zadatka"
   },
   "name.traceId": {
@@ -180,7 +228,7 @@
     "description": "ID praćenja zadatka"
   },
   "name.producerBot": {
-    "message": "Producer Bot",
+    "message": "Producer бот",
     "description": "Naziv generatora Producer"
   },
   "name.replaceSection": {
@@ -188,7 +236,7 @@
     "description": "Zameni deo pesme"
   },
   "name.model": {
-    "message": "Model",
+    "message": "Модел",
     "description": "Izbor verzije modela"
   },
   "name.songDescription": {
@@ -224,15 +272,15 @@
     "description": "Opis selektora pola za ljudski glas"
   },
   "description.weirdness": {
-    "message": "Što je veća vrednost, muzika će biti kreativnija i eksperimentalnija (0-100)",
+    "message": "Što je veća vrednost, muzika će biti kreativnija i eksperimentalnija (0-1)",
     "description": "Opis parametra za kreativnost"
   },
   "description.soundStrength": {
-    "message": "Kontroliše jačinu generisanog zvuka (0-100)",
+    "message": "Kontroliše jačinu generisanog zvuka (0-1)",
     "description": "Opis parametra za jačinu zvuka"
   },
   "description.lyricsStrength": {
-    "message": "Kontroliše uticaj teksta na generisani rezultat (0-100)",
+    "message": "Kontroliše uticaj teksta na generisani rezultat (0-1)",
     "description": "Opis parametra za jačinu teksta"
   },
   "description.seed": {
@@ -246,6 +294,10 @@
   "description.replaceSection": {
     "message": "Zameni sadržaj u određenom vremenskom intervalu pesme",
     "description": "Opis funkcije za zamenu delova"
+  },
+  "description.instrumental": {
+    "message": "Генериши чисту музику без вокала, текст ће бити игнорисан",
+    "description": "Опис приказан поред прекидача за инструменталну музику"
   },
   "status.pending": {
     "message": "Na čekanju",

@@ -79,6 +79,18 @@
     "message": "请在手机上打开微信，扫描完成支付",
     "description": "微信支付帮助的消息。"
   },
+  "message.wechatPayMobileGuide": {
+    "message": "当前浏览器不支持直接调用微信支付。请复制下方链接，在微信中打开后继续完成支付。",
+    "description": "在非微信的移动端浏览器中显示的引导文案。"
+  },
+  "button.copyPayLink": {
+    "message": "复制支付链接",
+    "description": "复制当前页面 URL 到剪贴板的按钮文案，便于用户粘贴到微信。"
+  },
+  "message.wechatPayMobileHint": {
+    "message": "复制成功后，打开微信，将链接粘贴到任意聊天框或顶部搜索框，点击链接即可完成支付。",
+    "description": "复制链接按钮下方的二级引导提示。"
+  },
   "message.free": {
     "message": "免费",
     "description": "免费订单的消息。"
@@ -86,6 +98,18 @@
   "message.buyInExternalUrl": {
     "message": "请在外部链接中完成支付",
     "description": "外部链接支付的消息。"
+  },
+  "message.applePayProcessing": {
+    "message": "正在通过 App Store 完成支付…",
+    "description": "Apple 内购处理中的消息。"
+  },
+  "message.applePayFailed": {
+    "message": "App Store 支付未完成，请重试",
+    "description": "Apple 内购失败的消息。"
+  },
+  "message.applePayUnavailable": {
+    "message": "该套餐暂不支持在 App 内购买",
+    "description": "Apple 内购不可用的消息。"
   },
   "message.updateFailed": {
     "message": "更新失败",
@@ -134,6 +158,10 @@
   "title.stripe": {
     "message": "Stripe",
     "description": "作为网站标题显示的标题，表示Stripe支付，Stripe支付是一种在线支付。"
+  },
+  "title.card": {
+    "message": "银行卡",
+    "description": "作为网站标题显示的标题，表示银行卡支付（信用卡/借记卡）。"
   },
   "title.manageOrder": {
     "message": "管理订单",
@@ -371,6 +399,10 @@
     "message": "Solana 钱包",
     "description": "Solana 钱包连接卡片标题。"
   },
+  "message.publicPayNotFound": {
+    "message": "订单不存在或已失效。",
+    "description": "Shown on public pay page when the order GET returns 404."
+  },
   "message.x402WalletStatusDetected": {
     "message": "已检测",
     "description": "已检测/已安装的钱包状态标签。"
@@ -502,5 +534,45 @@
   "title.updateDiscount": {
     "message": "更新折扣",
     "description": "编辑折扣弹窗标题。"
+  },
+  "message.wechatPayLongPressTip": {
+    "message": "请长按下方二维码识别图中二维码完成支付。",
+    "description": "手机微信内部浏览器打开订单页时，二维码上方的引导文案。用户长按二维码即可识别并完成支付，无需跳出微信。"
+  },
+  "message.wechatPayMobileScanTip": {
+    "message": "保存或截图下方二维码，打开微信，点击扫一扫，选择右上角的相册，挑选刚才保存的图片即可完成支付。",
+    "description": "在非微信的移动端浏览器中显示在二维码上方的引导文案。指导用户保存二维码图片后通过微信扫一扫的相册功能识别完成支付。"
+  },
+  "message.creditsValue": {
+    "message": "{value} 积分",
+    "description": "Display of credits amount for an order, e.g. '5 credits'. {value} is the formatted credit number."
+  },
+  "title.totalOrders": {
+    "message": "订单总数",
+    "description": "汇总卡片：当前筛选条件下的订单总数。"
+  },
+  "title.totalSpent": {
+    "message": "总消费",
+    "description": "汇总卡片：当前筛选条件下订单总金额。"
+  },
+  "title.finishedOrders": {
+    "message": "已完成订单",
+    "description": "汇总卡片：已完成的订单数。"
+  },
+  "title.pendingOrders": {
+    "message": "待支付订单",
+    "description": "汇总卡片：待支付的订单数。"
+  },
+  "button.export": {
+    "message": "导出 CSV",
+    "description": "按钮文案：按当前筛选条件导出订单 CSV。"
+  },
+  "field.allStates": {
+    "message": "全部状态",
+    "description": "状态筛选下拉的占位符：表示不限定状态。"
+  },
+  "field.allPayWays": {
+    "message": "全部支付方式",
+    "description": "支付方式筛选下拉的占位符：表示不限定支付方式。"
   }
 }

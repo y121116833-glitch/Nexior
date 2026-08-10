@@ -11,6 +11,10 @@
     "message": "زيارة الموقع الفرعي الآن",
     "description": "عنوان نافذة الحوار للسؤال عما إذا كان يجب الانتقال بعد النجاح في الإنشاء"
   },
+  "title.openSite": {
+    "message": "فتح الموقع الفرعي",
+    "description": "Title of the open-subsite confirmation dialog."
+  },
   "field.slug": {
     "message": "بادئة اسم النطاق الفرعي",
     "description": "عنوان حقل إدخال slug للموقع الفرعي"
@@ -18,6 +22,14 @@
   "field.origin": {
     "message": "اسم نطاق الموقع الفرعي",
     "description": "عمود اسم النطاق في قائمة المواقع الفرعية"
+  },
+  "field.defaultLabel": {
+    "message": "افتراضي",
+    "description": "Tag rendered next to the default subdomain in the open-subsite dialog."
+  },
+  "field.customLabel": {
+    "message": "مخصص",
+    "description": "Tag rendered next to a custom (BYO) hostname in the open-subsite dialog."
   },
   "field.title": {
     "message": "عنوان الموقع الفرعي",
@@ -51,6 +63,10 @@
     "message": "إدارة",
     "description": "زر الدخول إلى إعدادات الموقع الفرعي"
   },
+  "button.delete": {
+    "message": "حذف",
+    "description": "Button to delete a subsite"
+  },
   "message.indexTip": {
     "message": "قم بإنشاء مواقع فرعية مستقلة تحت الموقع الرئيسي، يمكن لكل موقع فرعي أن يمتلك شعاره وعنوانه ومجموعة من الميزات، دون الحاجة لبناء كود مصدر منفصل.",
     "description": "نص توضيحي لصفحة إدارة المواقع الفرعية"
@@ -79,6 +95,10 @@
     "message": "فشل إنشاء الموقع الفرعي، يرجى المحاولة مرة أخرى لاحقًا.",
     "description": "فشل الإنشاء"
   },
+  "message.slugTaken": {
+    "message": "النطاق الفرعي {origin} مستخدم بالفعل، يرجى تجربة اسم آخر.",
+    "description": "عند إنشاء موقع فرعي، يكون الـ slug مستخدمًا بالفعل (الاستجابة من الخادم code=duplication)"
+  },
   "message.loadFailed": {
     "message": "فشل في تحميل قائمة المواقع الفرعية.",
     "description": "فشل في جلب القائمة"
@@ -86,6 +106,22 @@
   "message.openNowConfirm": {
     "message": "تم إنشاء الموقع الفرعي {origin}. هل ترغب في فتحه الآن لمتابعة الإعداد؟",
     "description": "هل تفتح الآن بعد الإنشاء"
+  },
+  "message.openSiteHint": {
+    "message": "هذا الموقع مرتبط بعدة نطاقات، يرجى اختيار العنوان الذي تريد فتحه، وسنقوم بفتحه في علامة تبويب جديدة.",
+    "description": "تلميح في جسم حوار فتح الموقع الفرعي يشرح اختيار عنوان URL."
+  },
+  "message.deleteConfirm": {
+    "message": "هل أنت متأكد من حذف الموقع الفرعي {origin}؟ بعد الحذف، لن يتمكن المستخدمون من الوصول إلى الموقع الفرعي عبر هذا النطاق، ولا يمكن التراجع عن هذا الإجراء.",
+    "description": "Confirmation prompt before deleting a subsite"
+  },
+  "message.deleted": {
+    "message": "تم حذف الموقع الفرعي {origin}.",
+    "description": "Success message after deleting a subsite"
+  },
+  "message.deleteFailed": {
+    "message": "فشل حذف الموقع الفرعي، يرجى المحاولة مرة أخرى لاحقاً.",
+    "description": "Fallback error message when DELETE fails"
   },
   "title.domains": {
     "message": "اسم النطاق المخصص لـ {origin}",
@@ -155,6 +191,10 @@
     "message": "فشل إنشاء اسم النطاق، يرجى المحاولة مرة أخرى لاحقًا.",
     "description": "فشل الإنشاء"
   },
+  "message.domainTaken": {
+    "message": "تمت إضافة النطاق {hostname} بالفعل. يرجى استخدام نطاق مختلف.",
+    "description": "يُعرض عندما يكون اسم المضيف المختار مرتبطًا بالفعل بأحد المواقع (يُرجع الخادم code=duplication)."
+  },
   "message.domainsLoadFailed": {
     "message": "فشل في تحميل قائمة أسماء النطاقات.",
     "description": "فشل في جلب قائمة أسماء النطاقات"
@@ -190,5 +230,9 @@
   "status.failed": {
     "message": "فشل",
     "description": "علامة حالة الفشل"
+  },
+  "message.recordNameHint": {
+    "message": "نصيحة: في معظم مزوّدي DNS (مثل DNSPod وCloudflare وAliyun وTencent Cloud وغيرها) يقبل حقل \"المضيف\" / \"الاسم\" البادئة الفرعية للنطاق فقط. على سبيل المثال، عند ربط studio.your-brand.com اكتب studio فقط؛ وعند ربط النطاق الجذر نفسه (مثل your-brand.com) استخدم {'@'} كقيمة للمضيف. المزوّدون الذين يطلبون FQDN كاملاً (مثل AWS Route 53 وBind) يقبلون القيمة المعروضة في الجدول أعلاه كما هي.",
+    "description": "تلميح أسفل جدول سجلات DNS يوضح ما الذي يجب إدخاله في حقل \"المضيف/الاسم\" لدى مزوّدي DNS الشائعين (بادئة النطاق الفرعي / @ / FQDN الكامل)."
   }
 }

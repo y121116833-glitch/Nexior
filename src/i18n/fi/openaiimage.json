@@ -55,6 +55,54 @@
     "message": "Kuvan luomiseen käytettävä lähtökoko, yleiset arvot: 1024x1024, 1536x1024, 1024x1536.",
     "description": "Koon kuvaus"
   },
+  "sizeGroup.standard1k": {
+    "message": "1K-vakio",
+    "description": "Otsikko 1K-kokoryhmälle"
+  },
+  "sizeGroup.preset2k": {
+    "message": "2K-esiasetukset",
+    "description": "Otsikko 2K-kokoryhmälle"
+  },
+  "sizeGroup.preset4k": {
+    "message": "4K-esiasetukset",
+    "description": "Otsikko 4K-kokoryhmälle"
+  },
+  "name.customSize": {
+    "message": "Mukautettu koko",
+    "description": "Mukautetun koon kytkin"
+  },
+  "description.customSize": {
+    "message": "Kun otettu käyttöön, voit asettaa leveyden ja korkeuden vapaasti (vain gpt-image-2 tukee). Pitää olla 16:n kerroin, pisin sivu ≤ 3840, kokonaispikselit ≤ 8 294 400.",
+    "description": "Mukautetun koon selitys"
+  },
+  "name.width": {
+    "message": "Leveys",
+    "description": "Leveys syöttökentän etiketti"
+  },
+  "name.height": {
+    "message": "Korkeus",
+    "description": "Korkeus syöttökentän etiketti"
+  },
+  "error.customSizePositive": {
+    "message": "Leveyden ja korkeuden on oltava positiivisia kokonaislukuja",
+    "description": "Mukautetun koon on oltava positiivisia kokonaislukuja"
+  },
+  "error.customSizeMultiple": {
+    "message": "Leveyden ja korkeuden on oltava {multiple} kerrannaisia",
+    "description": "Mukautetun koon on oltava 16:n kerrannaisia"
+  },
+  "error.customSizeMin": {
+    "message": "Leveys ja korkeus eivät voi olla pienempiä kuin {min}",
+    "description": "Mukautetun koon alaraja"
+  },
+  "error.customSizeMax": {
+    "message": "Pisin sivu ei voi ylittää {max}",
+    "description": "Mukautetun koon pisimmän sivun yläraja"
+  },
+  "error.customSizePixels": {
+    "message": "Kokonaispikselit eivät voi ylittää {pixels}",
+    "description": "Mukautetun koon kokonaispikselien yläraja"
+  },
   "description.prompt": {
     "message": "Kuvien luomiseen tai muokkaamiseen käytettävät promptit",
     "description": "Promptin kuvaus"
@@ -64,7 +112,7 @@
     "description": "malli-parametrin kuvaus"
   },
   "description.imageUrls": {
-    "message": "Lataa 1-5 viittauskuvaa päästäksesi muokkaustilaan.",
+    "message": "Lataa 1-16 viittauskuvaa päästäksesi muokkaustilaan.",
     "description": "image_urls-parametrin kuvaus"
   },
   "status.pending": {
@@ -91,6 +139,10 @@
     "message": "Aloitetaan tehtävää...",
     "description": "Tehtävän aloitusviesti"
   },
+  "message.promptRequired": {
+    "message": "Syötä kehotussana",
+    "description": "Virheilmoitus, kun kehotussana puuttuu."
+  },
   "message.startTaskSuccess": {
     "message": "Tehtävä luotiin onnistuneesti",
     "description": "Tehtävä luotiin onnistuneesti"
@@ -104,7 +156,7 @@
     "description": "Oikeudet käytetty loppuun -viesti"
   },
   "message.uploadImageExceed": {
-    "message": "Voit ladata enintään 5 kuvaa",
+    "message": "Voit ladata enintään {count} kuvaa",
     "description": "Kuvien määrä ylittää rajan"
   },
   "message.uploadImageError": {
@@ -126,5 +178,13 @@
   "model.gptImage2": {
     "message": "gpt-image-2",
     "description": "gpt-image-2 mallivaihtoehto"
+  },
+  "model.gptImage2Official": {
+    "message": "gpt-image-2 (Virallinen)",
+    "description": "gpt-image-2-mallivaihtoehto (virallinen välitys)"
+  },
+  "size.auto": {
+    "message": "Automaattinen",
+    "description": "Kokovalinta: automaattinen — malli valitsee kuvasuhteen kehotteesi perusteella"
   }
 }

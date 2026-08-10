@@ -2,13 +2,21 @@
   <div :class="['tool-activity', { 'is-error': item.is_error, 'is-running': item.status === 'running' }]">
     <div class="tool-header" @click="expanded = !expanded">
       <span class="tool-icon">
-        <el-icon v-if="item.status === 'running'" class="is-loading"><Loading /></el-icon>
-        <el-icon v-else-if="item.is_error" color="var(--el-color-danger)"><CircleCloseFilled /></el-icon>
-        <el-icon v-else color="var(--el-color-success)"><CircleCheckFilled /></el-icon>
+        <el-icon v-if="item.status === 'running'" class="is-loading"
+          ><Loading :size="'1em' as any" aria-hidden="true" focusable="false"
+        /></el-icon>
+        <el-icon v-else-if="item.is_error" color="var(--el-color-danger)"
+          ><CircleCloseFilled :size="'1em' as any" aria-hidden="true" focusable="false"
+        /></el-icon>
+        <el-icon v-else color="var(--el-color-success)"
+          ><CircleCheckFilled :size="'1em' as any" aria-hidden="true" focusable="false"
+        /></el-icon>
       </span>
       <span class="tool-name">{{ displayName }}</span>
       <span v-if="item.duration_ms" class="tool-duration">{{ item.duration_ms }}ms</span>
-      <el-icon class="tool-expand" :class="{ rotated: expanded }"><ArrowRight /></el-icon>
+      <el-icon class="tool-expand" :class="{ rotated: expanded }"
+        ><ArrowRight :size="'1em' as any" aria-hidden="true" focusable="false"
+      /></el-icon>
     </div>
     <div v-if="expanded" class="tool-body">
       <div v-if="inputText" class="tool-section">
@@ -24,9 +32,15 @@
 </template>
 
 <script lang="ts">
+import {
+  LoadingIcon as Loading,
+  SuccessIcon as CircleCheckFilled,
+  ErrorIcon as CircleCloseFilled,
+  ExpandRightIcon as ArrowRight
+} from '@acedatacloud/core/icons/components';
+import { ElIcon } from 'element-plus';
 import { defineComponent, PropType } from 'vue';
 import { IChatMessageContentItem } from '@/models';
-import { Loading, CircleCheckFilled, CircleCloseFilled, ArrowRight } from '@element-plus/icons-vue';
 
 const TOOL_LABELS: Record<string, string> = {
   code_execute: 'Running code',
@@ -38,7 +52,7 @@ const TOOL_LABELS: Record<string, string> = {
 
 export default defineComponent({
   name: 'ToolActivity',
-  components: { Loading, CircleCheckFilled, CircleCloseFilled, ArrowRight },
+  components: { Loading, CircleCheckFilled, CircleCloseFilled, ArrowRight, ElIcon },
   props: {
     item: {
       type: Object as PropType<IChatMessageContentItem>,
@@ -57,14 +71,20 @@ export default defineComponent({
       return TOOL_LABELS[name] || name.replace(/_/g, ' ');
     },
     inputText(): string {
-      if (!this.item.input) return '';
+      const input = this.item.input;
+      const hasInput = input && Object.keys(input).length > 0;
+      if (!hasInput) {
+        // Still being written: show the raw arguments text streaming in
+        // (input_stream) so a running tool isn't an empty block.
+        return this.item.input_stream || '';
+      }
       if (this.item.tool_name === 'code_execute') {
-        return (this.item.input.code as string) || '';
+        return (input.code as string) || '';
       }
       if (this.item.tool_name === 'web_search') {
-        return (this.item.input.query as string) || '';
+        return (input.query as string) || '';
       }
-      return JSON.stringify(this.item.input, null, 2);
+      return JSON.stringify(input, null, 2);
     }
   }
 });

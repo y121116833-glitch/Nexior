@@ -11,6 +11,10 @@
     "message": "Accéder au sous-site maintenant",
     "description": "Titre de la boîte de dialogue demandant si l'utilisateur souhaite rediriger immédiatement après la création"
   },
+  "title.openSite": {
+    "message": "Ouvrir le sous-site",
+    "description": "Title of the open-subsite confirmation dialog."
+  },
   "field.slug": {
     "message": "Préfixe du sous-domaine",
     "description": "Titre du champ d'entrée slug pour le sous-site"
@@ -18,6 +22,14 @@
   "field.origin": {
     "message": "Nom de domaine du sous-site",
     "description": "Colonne de nom de domaine dans la liste des sous-sites"
+  },
+  "field.defaultLabel": {
+    "message": "Par défaut",
+    "description": "Tag rendered next to the default subdomain in the open-subsite dialog."
+  },
+  "field.customLabel": {
+    "message": "Personnalisé",
+    "description": "Tag rendered next to a custom (BYO) hostname in the open-subsite dialog."
   },
   "field.title": {
     "message": "Titre du sous-site",
@@ -29,7 +41,7 @@
   },
   "field.actions": {
     "message": "Actions",
-    "description": "Colonne d'actions dans la liste des sous-sites"
+    "description": "Colonne des actions de la liste des sous-sites"
   },
   "placeholder.slug": {
     "message": "Par exemple my-brand",
@@ -50,6 +62,10 @@
   "button.manage": {
     "message": "Gérer",
     "description": "Bouton pour accéder aux paramètres du sous-site"
+  },
+  "button.delete": {
+    "message": "Supprimer",
+    "description": "Button to delete a subsite"
   },
   "message.indexTip": {
     "message": "Créez des sous-sites de marque indépendants sous le site principal, chaque sous-site peut avoir son propre logo, titre et ensemble de fonctionnalités, sans avoir besoin de construire le code source séparément.",
@@ -79,6 +95,10 @@
     "message": "Échec de la création du sous-site, veuillez réessayer plus tard.",
     "description": "Échec de la création"
   },
+  "message.slugTaken": {
+    "message": "Le sous-domaine {origin} est déjà utilisé, veuillez en essayer un autre.",
+    "description": "Lors de la création d'un sous-site, le slug est déjà occupé (code retourné par le backend = duplication)"
+  },
   "message.loadFailed": {
     "message": "Échec du chargement de la liste des sous-sites.",
     "description": "Échec du chargement de la liste"
@@ -86,6 +106,22 @@
   "message.openNowConfirm": {
     "message": "Le sous-site {origin} a été créé. Voulez-vous l'ouvrir maintenant pour continuer la configuration ?",
     "description": "Demande d'ouverture immédiate après création"
+  },
+  "message.openSiteHint": {
+    "message": "Ce sous-site est lié à plusieurs domaines, veuillez choisir l'adresse à ouvrir, nous l'ouvrirons dans un nouvel onglet.",
+    "description": "Indice dans la boîte de dialogue du sous-site ouvert expliquant le sélecteur d'URL."
+  },
+  "message.deleteConfirm": {
+    "message": "Supprimer le sous-site {origin} ? Les utilisateurs ne pourront plus y accéder via ce domaine, et cette action est irréversible.",
+    "description": "Confirmation prompt before deleting a subsite"
+  },
+  "message.deleted": {
+    "message": "Le sous-site {origin} a été supprimé.",
+    "description": "Success message after deleting a subsite"
+  },
+  "message.deleteFailed": {
+    "message": "Échec de la suppression du sous-site, veuillez réessayer plus tard.",
+    "description": "Fallback error message when DELETE fails"
   },
   "title.domains": {
     "message": "Nom de domaine personnalisé pour {origin}",
@@ -155,6 +191,10 @@
     "message": "Échec de la création du domaine, veuillez réessayer plus tard.",
     "description": "Échec de la création"
   },
+  "message.domainTaken": {
+    "message": "Le domaine {hostname} a déjà été ajouté. Veuillez utiliser un autre domaine.",
+    "description": "Affiché lorsque le nom d'hôte choisi est déjà lié à un site (le backend renvoie code=duplication)."
+  },
   "message.domainsLoadFailed": {
     "message": "Échec du chargement de la liste des domaines.",
     "description": "Échec du chargement de la liste des domaines"
@@ -190,5 +230,9 @@
   "status.failed": {
     "message": "Échoué",
     "description": "Étiquette d'état échoué"
+  },
+  "message.recordNameHint": {
+    "message": "Astuce : Chez la plupart des fournisseurs DNS (DNSPod, Cloudflare, Aliyun, Tencent Cloud, etc.) le champ « Hôte » / « Nom » n'accepte que le préfixe du sous-domaine. Exemple : pour lier studio.your-brand.com, saisissez simplement studio ; pour lier le domaine racine lui-même (par ex. your-brand.com), utilisez {'@'} comme hôte. Les services attendant un FQDN complet (AWS Route 53, Bind, etc.) acceptent tel quel la valeur affichée dans le tableau ci-dessus.",
+    "description": "Astuce sous le tableau d'enregistrements DNS qui explique ce qu'il faut saisir dans le champ Hôte/Nom selon les fournisseurs DNS courants (préfixe de sous-domaine / @ / FQDN complet)"
   }
 }

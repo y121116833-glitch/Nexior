@@ -27,11 +27,12 @@
                       {{ order?.application?.service?.title }}
                     </el-descriptions-item>
                     <el-descriptions-item v-if="order?.pay_way" :label="$t('order.field.payWay')">
-                      <span v-if="order?.pay_way === PayWay.WechatPay">{{ $t('order.title.wechatPay') }}</span>
-                      <span v-else-if="order?.pay_way === PayWay.Stripe">{{ $t('order.title.stripe') }}</span>
-                      <span v-else-if="order?.pay_way === PayWay.AliPay">{{ $t('order.title.aliPay') }}</span>
-                      <span v-else-if="order?.pay_way === PayWay.X402">{{ $t('order.title.x402') }}</span>
-                      <span v-else-if="order?.pay_way === PayWay.PayPal">{{ $t('order.title.paypal') }}</span>
+                      <el-tag :type="payWayTagType(order.pay_way)" effect="dark" round size="small">
+                        {{ payWayLabel(order.pay_way) }}
+                      </el-tag>
+                    </el-descriptions-item>
+                    <el-descriptions-item v-if="order?.amount && order.amount > 0" :label="$t('order.field.amount')">
+                      {{ $t('order.message.creditsValue', { value: formatCredits(order.amount) }) }}
                     </el-descriptions-item>
                     <el-descriptions-item :label="$t('order.field.createdAt')">
                       {{ $dayjs.format(order?.created_at) }}
@@ -101,7 +102,10 @@
             <el-row v-if="order?.state === OrderState.PENDING">
               <el-col :span="16" :offset="4">
                 <el-divider border-style="dashed" />
-                <div v-if="showPayWays && order.price && order.price > 0 && !order.pay_way" class="payways mb-6">
+                <div
+                  v-if="!isIos && showPayment && showPayWays && order.price && order.price > 0 && !order.pay_way"
+                  class="payways mb-6"
+                >
                   <div
                     :class="{
                       payway: true,
@@ -125,6 +129,7 @@
                     <span class="payname">{{ $t('order.title.aliPay') }}</span>
                   </div>
                   <div
+                    v-if="!enableCard"
                     :class="{
                       payway: true,
                       stripe: true,
@@ -134,6 +139,18 @@
                   >
                     <span class="payicon stripe"></span>
                     <span class="payname">{{ $t('order.title.stripe') }}</span>
+                  </div>
+                  <div
+                    v-if="enableCard"
+                    :class="{
+                      payway: true,
+                      creditcard: true,
+                      active: payWay === PayWay.Card
+                    }"
+                    @click="payWay = PayWay.Card"
+                  >
+                    <span class="payicon card" aria-hidden="true"></span>
+                    <span class="payname">{{ $t('order.title.card') }}</span>
                   </div>
                   <div
                     :class="{
@@ -169,12 +186,12 @@
                     <span class="payname">{{ $t('order.title.paypal') }}</span>
                   </div>
                 </div>
-                <div v-if="!order?.pay_way">
+                <div v-if="showPayment && !order?.pay_way">
                   <el-button :loading="prepaying" round type="primary" size="large" class="btn-pay" @click="onPay">{{
                     $t('common.button.pay')
                   }}</el-button>
                 </div>
-                <div v-else>
+                <div v-else-if="showPayment">
                   <el-button type="primary" round size="large" class="btn-repay" @click="onRepay">{{
                     $t('common.button.repay')
                   }}</el-button>
@@ -193,7 +210,7 @@
             @hide="paying = false"
           />
           <stripe-pay-order
-            v-if="order && payWay === PayWay.Stripe"
+            v-if="order && (payWay === PayWay.Stripe || payWay === PayWay.Card)"
             v-model="order"
             :visible="paying"
             @hide="paying = false"
@@ -214,6 +231,12 @@
             v-if="order && payWay === PayWay.X402"
             v-model="order"
             :session="x402Session"
+            :visible="paying"
+            @hide="paying = false"
+          />
+          <apple-pay-order
+            v-if="order && payWay === PayWay.Apple"
+            v-model="order"
             :visible="paying"
             @hide="paying = false"
           />
@@ -243,8 +266,10 @@ import StripePayOrder from '@/components/order/StripePay.vue';
 import AlipayPayOrder from '@/components/order/AliPay.vue';
 import X402PayOrder from '@/components/order/X402Pay.vue';
 import PaypalPayOrder from '@/components/order/PaypalPay.vue';
+import ApplePayOrder from '@/components/order/ApplePay.vue';
 import { IConfigResponse, IOrder, IOrderDetailResponse, OrderState } from '@/models';
 import { getPriceString } from '@/utils';
+import { getPaymentSurface, isAndroid, isIOS } from '@/utils';
 import { track } from '@/plugins/telemetry';
 import CopyToClipboard from '@/components/common/CopyToClipboard.vue';
 
@@ -256,7 +281,9 @@ enum PayWay {
   Stripe = 'Stripe',
   AliPay = 'AliPay',
   X402 = 'X402',
-  PayPal = 'PayPal'
+  PayPal = 'PayPal',
+  Apple = 'AppleIAP',
+  Card = 'Card'
 }
 
 interface IData {
@@ -289,12 +316,14 @@ export default defineComponent({
     StripePayOrder,
     AlipayPayOrder,
     X402PayOrder,
-    PaypalPayOrder
+    PaypalPayOrder,
+    ApplePayOrder
   },
   data(): IData {
     return {
       PayWay: PayWay,
-      payWay: PayWay.WechatPay,
+      // iOS must use Apple IAP (Guideline 3.1.1); everyone else defaults to WeChat.
+      payWay: isIOS() ? PayWay.Apple : PayWay.WechatPay,
       OrderState: OrderState,
       order: undefined,
       x402Session: undefined,
@@ -311,11 +340,24 @@ export default defineComponent({
     enablePaypal(): boolean {
       return !!this.config?.features?.ENABLE_PAYPAL;
     },
+    // When ENABLE_CARD is on, Card replaces Stripe in the payment picker.
+    enableCard(): boolean {
+      return !!this.config?.features?.ENABLE_CARD;
+    },
+    isIos(): boolean {
+      return isIOS();
+    },
     id() {
       return this.$route.params?.id?.toString();
     },
     redirect() {
       return this.$route.query?.redirect;
+    },
+    // Payment is available on all surfaces. On iOS the only method is Apple
+    // IAP (Guideline 3.1.1) — the non-IAP selector grid is hidden separately
+    // (see the grid v-if), so iOS users get the single Apple Pay button.
+    showPayment(): boolean {
+      return true;
     },
     pricingInfo(): {
       original: number;
@@ -532,6 +574,31 @@ export default defineComponent({
   },
   methods: {
     getPriceString,
+    formatCredits(value: number): string {
+      if (!Number.isFinite(value)) return '0';
+      return Number.isInteger(value) ? String(value) : value.toFixed(2);
+    },
+    payWayLabel(payWay: string): string {
+      switch (payWay) {
+        case PayWay.WechatPay:
+          return this.$t('order.title.wechatPay') as string;
+        case PayWay.Stripe:
+          return this.$t('order.title.stripe') as string;
+        case PayWay.Card:
+          return this.$t('order.title.card') as string;
+        case PayWay.AliPay:
+          return this.$t('order.title.aliPay') as string;
+        case PayWay.X402:
+          return this.$t('order.title.x402') as string;
+        case PayWay.PayPal:
+          return this.$t('order.title.paypal') as string;
+        default:
+          return payWay;
+      }
+    },
+    payWayTagType(_payWay: string): 'success' | 'info' {
+      return 'info';
+    },
     startOrderPolling(delay = 0) {
       this.stopOrderPolling();
       const poll = async () => {
@@ -585,13 +652,31 @@ export default defineComponent({
     },
     onPay() {
       this.prepaying = true;
+      // Apple IAP: no PSP session / pay_url. The ApplePay dialog drives the
+      // StoreKit purchase and calls apple-verify; just open it and poll.
+      if (this.payWay === PayWay.Apple) {
+        this.prepaying = false;
+        this.paying = true;
+        this.startOrderPolling(POLL_INITIAL_DELAY_MS);
+        return;
+      }
       if (this.payWay === PayWay.X402) {
         this.x402Session = undefined;
       }
+      // PayBackend always issues a Native QR for WeChat Pay (our merchant
+      // has no JSAPI/H5 enabled), so the surface field is omitted there.
+      // AliPay's backend serves Page (PC) vs Wap (mobile) based on `surface`,
+      // so the field is required to keep mobile users out of the desktop form.
+      // Android Stripe uses the native PaymentSheet, which needs a
+      // PaymentIntent (not a PaymentLink). The backend routes on this hint.
+      const payload: Record<string, unknown> = { pay_way: this.payWay };
+      if (this.payWay === PayWay.AliPay) {
+        payload.surface = getPaymentSurface();
+      } else if (this.payWay === PayWay.Stripe && isAndroid()) {
+        payload.surface = 'android';
+      }
       orderOperator
-        .pay(this.id, {
-          pay_way: this.payWay
-        })
+        .pay(this.id, payload as unknown as IOrder)
         .then(({ data: data }: { data: IOrderDetailResponse }) => {
           this.prepaying = false;
           if (data?.id) {
@@ -746,6 +831,12 @@ export default defineComponent({
       width: 22px;
       height: 22px;
       background-image: url(//cdn.acedata.cloud/alipay.webp);
+      background-size: contain;
+    }
+    &.card {
+      width: 22px;
+      height: 22px;
+      background-image: url(//cdn.acedata.cloud/jensvf.png);
       background-size: contain;
     }
     &.x402 {

@@ -53,7 +53,7 @@
   },
   "button.variation": {
     "message": "Variation",
-    "description": "Texte du bouton pour la variation"
+    "description": "Texte du bouton de variation"
   },
   "button.swap_vocals": {
     "message": "Remplacer les voix",
@@ -63,37 +63,81 @@
     "message": "Remplacer les instrumentaux",
     "description": "Texte du bouton pour remplacer les instrumentaux"
   },
+  "button.clear_all": {
+    "message": "Tout effacer",
+    "description": "Texte du bouton pour effacer toutes les configurations"
+  },
+  "mode.simple": {
+    "message": "Mode simple",
+    "description": "Étiquette de l'onglet du mode de génération simple"
+  },
+  "mode.custom": {
+    "message": "Mode personnalisé",
+    "description": "Étiquette de l'onglet du mode de génération personnalisé"
+  },
   "model.fuzz20pro": {
     "message": "FUZZ-2.0 Pro",
     "description": "Modèle utilisé pour générer de la musique"
+  },
+  "model.fuzz20proDesc": {
+    "message": "Durée maximale de 8 minutes · Meilleure qualité sonore",
+    "description": "Description de FUZZ-2.0 Pro dans le menu déroulant des modèles"
   },
   "model.fuzz20": {
     "message": "FUZZ-2.0",
     "description": "Modèle utilisé pour générer de la musique"
   },
+  "model.fuzz20desc": {
+    "message": "Durée maximale de 8 minutes · Équilibre qualité/prix",
+    "description": "Description de FUZZ-2.0 dans le menu déroulant des modèles"
+  },
   "model.fuzz20raw": {
     "message": "FUZZ-2.0 Brut",
     "description": "Modèle utilisé pour générer de la musique"
+  },
+  "model.fuzz20rawDesc": {
+    "message": "Durée maximale de 8 minutes · Voix plus brute et naturelle",
+    "description": "Description de FUZZ-2.0 Raw dans le menu déroulant des modèles"
   },
   "model.fuzz11pro": {
     "message": "FUZZ-1.1 Pro",
     "description": "Modèle utilisé pour générer de la musique"
   },
+  "model.fuzz11proDesc": {
+    "message": "Durée maximale de 4 minutes · Ancienne version perfectionnée",
+    "description": "Description de FUZZ-1.1 Pro dans le menu déroulant des modèles"
+  },
   "model.fuzz10pro": {
     "message": "FUZZ-1.0 Pro",
     "description": "Modèle utilisé pour générer de la musique"
+  },
+  "model.fuzz10proDesc": {
+    "message": "Durée maximale de 4 minutes · Ancienne version stable",
+    "description": "Description de FUZZ-1.0 Pro dans le menu déroulant des modèles"
   },
   "model.fuzz10": {
     "message": "FUZZ-1.0",
     "description": "Modèle utilisé pour générer de la musique"
   },
+  "model.fuzz10desc": {
+    "message": "Durée maximale de 2 minutes · Ancienne version",
+    "description": "Description de FUZZ-1.0 dans le menu déroulant des modèles"
+  },
   "model.fuzz11": {
     "message": "FUZZ-1.1",
     "description": "Modèle utilisé pour générer de la musique"
   },
+  "model.fuzz11desc": {
+    "message": "Durée maximale de 4 minutes · Ancienne version améliorée",
+    "description": "Description de FUZZ-1.1 dans le menu déroulant des modèles"
+  },
   "model.fuzz08": {
     "message": "FUZZ-0.8",
     "description": "Modèle utilisé pour générer de la musique"
+  },
+  "model.fuzz08desc": {
+    "message": "Durée maximale de 2 minutes · Version antérieure",
+    "description": "Description de FUZZ-0.8 dans le menu déroulant des modèles"
   },
   "name.instrumental": {
     "message": "Musique instrumentale",
@@ -129,7 +173,7 @@
   },
   "name.style": {
     "message": "Style",
-    "description": "Invite pour l'entrée de contenu du style de la chanson"
+    "description": "Invite pour le contenu de style de chanson"
   },
   "name.styleNegative": {
     "message": "Styles à exclure",
@@ -170,6 +214,10 @@
   "name.failureReason": {
     "message": "Raison de l'échec",
     "description": "Raison de l'échec de la tâche"
+  },
+  "name.failure": {
+    "message": "Échec de la génération",
+    "description": "Titre de l'échec de la tâche du producteur"
   },
   "name.status": {
     "message": "Statut",
@@ -224,15 +272,15 @@
     "description": "Description du sélecteur de genre vocal"
   },
   "description.weirdness": {
-    "message": "Plus la valeur est élevée, plus la musique générée est créative et expérimentale (0-100)",
+    "message": "Plus la valeur est élevée, plus la musique générée est créative et expérimentale (0-1)",
     "description": "Description du paramètre de créativité"
   },
   "description.soundStrength": {
-    "message": "Contrôlez l'intensité du son généré (0-100)",
+    "message": "Contrôlez l'intensité du son généré (0-1)",
     "description": "Description du paramètre d'intensité sonore"
   },
   "description.lyricsStrength": {
-    "message": "Contrôlez l'impact des paroles sur le résultat généré (0-100)",
+    "message": "Contrôlez l'impact des paroles sur le résultat généré (0-1)",
     "description": "Description du paramètre d'intensité des paroles"
   },
   "description.seed": {
@@ -246,6 +294,10 @@
   "description.replaceSection": {
     "message": "Remplacer le contenu d'une section spécifiée de la chanson",
     "description": "Description de la fonction de remplacement de section"
+  },
+  "description.instrumental": {
+    "message": "Générer de la musique instrumentale sans voix, les paroles saisies seront ignorées",
+    "description": "Description d'indication pour le commutateur de musique instrumentale"
   },
   "status.pending": {
     "message": "En attente",

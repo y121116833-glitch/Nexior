@@ -55,6 +55,54 @@
     "message": "Rozmiar wyjściowy obrazu do generowania, popularne wartości: 1024x1024, 1536x1024, 1024x1536.",
     "description": "Opis rozmiaru"
   },
+  "sizeGroup.standard1k": {
+    "message": "1K standardowy",
+    "description": "Nagłówek grupy rozmiarów 1K"
+  },
+  "sizeGroup.preset2k": {
+    "message": "Ustawienia 2K",
+    "description": "Nagłówek grupy rozmiarów 2K"
+  },
+  "sizeGroup.preset4k": {
+    "message": "Ustawienia 4K",
+    "description": "Nagłówek grupy rozmiarów 4K"
+  },
+  "name.customSize": {
+    "message": "Niestandardowy rozmiar",
+    "description": "Etykieta przełącznika niestandardowego rozmiaru"
+  },
+  "description.customSize": {
+    "message": "Włącz, aby swobodnie ustawiać szerokość i wysokość (obsługiwane tylko przez gpt-image-2). Musi być wielokrotnością 16, najdłuższy bok ≤ 3840, łączna liczba pikseli ≤ 8 294 400.",
+    "description": "Opis niestandardowego rozmiaru"
+  },
+  "name.width": {
+    "message": "Szerokość",
+    "description": "Etykieta pola szerokości"
+  },
+  "name.height": {
+    "message": "Wysokość",
+    "description": "Etykieta pola wysokości"
+  },
+  "error.customSizePositive": {
+    "message": "Szerokość i wysokość muszą być dodatnimi liczbami całkowitymi",
+    "description": "Niestandardowy rozmiar musi składać się z dodatnich liczb całkowitych"
+  },
+  "error.customSizeMultiple": {
+    "message": "Szerokość i wysokość muszą być wielokrotnością {multiple}",
+    "description": "Niestandardowy rozmiar musi być wielokrotnością 16"
+  },
+  "error.customSizeMin": {
+    "message": "Szerokość i wysokość nie mogą być mniejsze niż {min}",
+    "description": "Minimalny limit dla niestandardowego rozmiaru"
+  },
+  "error.customSizeMax": {
+    "message": "Dłuższy bok nie może przekraczać {max}",
+    "description": "Maksymalna długość dłuższego boku dla niestandardowego rozmiaru"
+  },
+  "error.customSizePixels": {
+    "message": "Łączna liczba pikseli nie może przekraczać {pixels}",
+    "description": "Maksymalna liczba pikseli dla niestandardowego rozmiaru"
+  },
   "description.prompt": {
     "message": "Podpowiedź do generowania lub edytowania obrazu",
     "description": "Opis podpowiedzi"
@@ -64,7 +112,7 @@
     "description": "Opis parametru modelu"
   },
   "description.imageUrls": {
-    "message": "Prześlij 1-5 obrazów referencyjnych, aby przejść do trybu edycji.",
+    "message": "Prześlij 1-16 obrazów referencyjnych, aby przejść do trybu edycji.",
     "description": "Opis parametru image_urls"
   },
   "status.pending": {
@@ -91,6 +139,10 @@
     "message": "Rozpoczynanie zadania...",
     "description": "Wiadomość rozpoczynania zadania"
   },
+  "message.promptRequired": {
+    "message": "Wprowadź słowo kluczowe",
+    "description": "Komunikat o błędzie, gdy brakuje słowa kluczowego."
+  },
   "message.startTaskSuccess": {
     "message": "Zadanie zostało pomyślnie rozpoczęte",
     "description": "Zadanie zostało pomyślnie utworzone"
@@ -104,7 +156,7 @@
     "description": "Komunikat o wyczerpaniu punktów"
   },
   "message.uploadImageExceed": {
-    "message": "Możesz przesłać maksymalnie 5 obrazów",
+    "message": "Możesz przesłać maksymalnie {count} obrazów",
     "description": "Przekroczono limit liczby obrazów"
   },
   "message.uploadImageError": {
@@ -113,7 +165,7 @@
   },
   "name.model": {
     "message": "Model",
-    "description": "Etykieta wyboru modelu OpenAI Image"
+    "description": "Etykieta wyboru modelu obrazu OpenAI"
   },
   "model.gptImage1": {
     "message": "gpt-image-1",
@@ -126,5 +178,13 @@
   "model.gptImage2": {
     "message": "gpt-image-2",
     "description": "Opcja modelu gpt-image-2"
+  },
+  "model.gptImage2Official": {
+    "message": "gpt-image-2 (Oficjalny)",
+    "description": "Opcja modelu gpt-image-2 (oficjalny przekaźnik)"
+  },
+  "size.auto": {
+    "message": "Automatyczny",
+    "description": "Opcja rozmiaru: automatyczny — model wybiera proporcje na podstawie Twojego promptu"
   }
 }

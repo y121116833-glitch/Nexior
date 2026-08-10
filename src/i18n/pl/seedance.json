@@ -8,8 +8,8 @@
     "description": "Słowo kluczowe do generowania wideo"
   },
   "description.prompt": {
-    "message": "Opisz wideo, które chcesz wygenerować, możesz dodać parametry SeeDance (np.: --rs 720p --rt 16:9 --dur 5).",
-    "description": "Opis wprowadzenia słowa kluczowego"
+    "message": "Opisz wideo, które chcesz wygenerować. Aby postacie mogły mówić: przesłać obraz do poniższego pola „Obraz referencyjny” (nie „Obraz pierwszej klatki”), w opisie napisać tekst i zamknąć go w cudzysłowach, na przykład postać z obrazu 1 mówi do kamery: „Twój tekst”, a następnie włączyć „Generuj audio”. Można dodać parametry (np. --rs 720p --rt 16:9 --dur 5).",
+    "description": "Opis wprowadzania opisu"
   },
   "placeholder.prompt": {
     "message": "Opisz swoje wideo…",
@@ -40,8 +40,8 @@
     "description": "Etykieta dotycząca generowania dźwięku"
   },
   "description.generateAudio": {
-    "message": "Po włączeniu wideo będzie miało dźwięk. Obsługiwane tylko przez model seedance-1.5-pro, koszt około 2 razy więcej.",
-    "description": "Opis generowania dźwięku"
+    "message": "Po włączeniu wideo będzie miało dźwięk. Aby postacie mogły mówić, musisz: przesłać obraz postaci do pola „Obraz referencyjny” + włączyć ten przełącznik + w opisie użyć cudzysłowów do zapisania tekstu. Obsługiwane tylko przez serie seedance-1.5-pro / seedance-2.0, koszt około 2 razy wyższy.",
+    "description": "Opis generowania audio"
   },
   "name.resolution": {
     "message": "Rozdzielczość",
@@ -58,6 +58,14 @@
   "model.seedance15pro": {
     "message": "doubao-seedance-1.5-pro",
     "description": "Model SeeDance 1.5 Pro"
+  },
+  "model.seedance20": {
+    "message": "doubao-seedance-2.0",
+    "description": "Model SeeDance 2.0"
+  },
+  "model.seedance20Fast": {
+    "message": "doubao-seedance-2.0-fast",
+    "description": "Model SeeDance 2.0 Fast"
   },
   "model.seedance10liteT2v": {
     "message": "doubao-seedance-1.0-lite-t2v",
@@ -92,20 +100,20 @@
     "description": "Opis zwracania ostatniej klatki"
   },
   "name.firstFrame": {
-    "message": "Obraz pierwszej klatki",
+    "message": "Obraz pierwszej klatki (efekt animacji)",
     "description": "Etykieta przesyłania obrazu pierwszej klatki"
   },
   "description.firstFrame": {
-    "message": "Opcjonalne. Prześlij obraz referencyjny/pierwszej klatki.",
-    "description": "Opis obrazu pierwszej klatki"
+    "message": "Pierwsza klatka wideo: przesłany obrazek stanie się pierwszą klatką wideo, od której zacznie się animacja. Odpowiednie do „ożywienia obrazka”, ale postacie nie będą mówić ani nie będą miały ruchu warg. Aby postacie mogły mówić, użyj poniższego „obrazu referencyjnego”.",
+    "description": "Opis pierwszej klatki obrazu"
   },
   "name.lastFrame": {
     "message": "Obraz ostatniej klatki",
     "description": "Etykieta przesyłania obrazu ostatniej klatki"
   },
   "description.lastFrame": {
-    "message": "Opcjonalne. Prześlij obraz ostatniej klatki (wymaga obrazu pierwszej klatki).",
-    "description": "Opis obrazu ostatniej klatki"
+    "message": "Ostatnia klatka wideo: określa ostatnią klatkę wideo (wymaga współpracy z pierwszą klatką). Używane do zablokowania animacji od jednego obrazu do drugiego.",
+    "description": "Opis ostatniej klatki obrazu"
   },
   "button.generate": {
     "message": "Generuj",
@@ -147,6 +155,26 @@
     "message": "Można przesłać maksymalnie 1 obrazek",
     "description": "Powiadomienie o przekroczeniu limitu przesyłania"
   },
+  "name.required": {
+    "message": "Wymagane",
+    "description": "Oznaczenie wymagane"
+  },
+  "message.modelUnsupported": {
+    "message": "Wybrany model nie jest obsługiwany, proszę wybrać ponownie.",
+    "description": "Ostrzeżenie o modelu, który nie jest na liście obsługiwanych"
+  },
+  "message.modelRequiresImage": {
+    "message": "Ten model wymaga przesłania obrazu pierwszej klatki, aby wygenerować wideo.",
+    "description": "Model generujący wideo wymaga obrazu jako wejścia"
+  },
+  "message.modelRejectsImage": {
+    "message": "Ten model obsługuje tylko wideo generowane z tekstu, proszę usunąć przesłany obraz.",
+    "description": "Model generujący wideo z tekstu nie akceptuje obrazów jako wejścia"
+  },
+  "message.resolutionNotSupported": {
+    "message": "Ta rozdzielczość nie jest obsługiwana przez aktualny model.",
+    "description": "Ostrzeżenie o rozdzielczości, która nie jest obsługiwana przez aktualny model"
+  },
   "message.uploadError": {
     "message": "Nie udało się przesłać",
     "description": "Powiadomienie o błędzie przesyłania"
@@ -186,5 +214,73 @@
   "name.status": {
     "message": "Status",
     "description": "Etykieta statusu"
+  },
+  "name.ratio": {
+    "message": "Proporcje",
+    "description": "Etykieta proporcji"
+  },
+  "description.ratio": {
+    "message": "Wybierz proporcje generowanego wideo.",
+    "description": "Opis proporcji"
+  },
+  "description.resolution": {
+    "message": "Wybierz rozdzielczość generowanego wideo.",
+    "description": "Opis rozdzielczości"
+  },
+  "ratio.adaptive": {
+    "message": "Adaptacyjne",
+    "description": "Opcja proporcji adaptacyjnych"
+  },
+  "name.cameraFixed": {
+    "message": "Zablokuj kamerę",
+    "description": "Etykieta zablokuj kamerę"
+  },
+  "description.cameraFixed": {
+    "message": "Po włączeniu kamera pozostaje nieruchoma podczas wideo.",
+    "description": "Opis blokady kamery"
+  },
+  "name.seed": {
+    "message": "Ziarno",
+    "description": "Etykieta losowego ziarna"
+  },
+  "description.seed": {
+    "message": "Losowe ziarno dla powtarzalnych wyników. Pozostaw puste dla losowego.",
+    "description": "Opis losowego ziarna"
+  },
+  "placeholder.seed": {
+    "message": "Automatycznie",
+    "description": "Placeholder dla losowego ziarna"
+  },
+  "model.seedance20Mini": {
+    "message": "doubao-seedance-2.0-mini",
+    "description": "Model SeeDance 2.0 Mini"
+  },
+  "name.referenceImage": {
+    "message": "Obraz referencyjny (aby postacie mówiły)",
+    "description": "Etykieta przesyłania obrazu referencyjnego (Seedance 2.0)"
+  },
+  "description.referenceImage": {
+    "message": "Kanał, który pozwala postaciom w wideo mówić i synchronizować ruch warg (preferowane dla mówców / cyfrowych postaci, zachowując wizerunek postaci). Aby postacie mogły mówić, przesyłaj obrazy tutaj, a nie w „Obrazie pierwszej klatki”. Użyj w połączeniu z tekstem w cudzysłowach + „Generuj audio”. Można przesłać 1-9 obrazów. Tylko seria Seedance 2.0. Uwaga: nie można używać jednocześnie z „Obrazem pierwszej/ostatniej klatki”.",
+    "description": "Opis obrazu referencyjnego"
+  },
+  "name.referenceAudio": {
+    "message": "Audio referencyjne (tonacja/muzyka)",
+    "description": "Etykieta przesyłania audio referencyjnego (Seedance 2.0)"
+  },
+  "description.referenceAudio": {
+    "message": "Pozwól, aby generowane wideo korzystało z tego fragmentu audio jako tonacji lub muzyki w tle (w połączeniu z obrazem referencyjnym, aby postacie mówiły w tym tonie). Musi być używane razem z obrazem referencyjnym lub wideo referencyjnym, nie można przesyłać audio samodzielnie. Można przesłać 1-3 fragmenty. Tylko seria Seedance 2.0.",
+    "description": "Opis audio referencyjnego"
+  },
+  "name.referenceVideo": {
+    "message": "Wideo referencyjne",
+    "description": "Etykieta przesyłania wideo referencyjnego (Seedance 2.0)"
+  },
+  "description.referenceVideo": {
+    "message": "Pozwól modelowi korzystać z tego wideo w celu uzyskania ruchów/ujęć/stylu/dźwięków, aby wygenerować nowe wideo. Można przesłać 1-3 fragmenty. Tylko seria Seedance 2.0.",
+    "description": "Opis wideo referencyjnego"
+  },
+  "message.audioRequiresReference": {
+    "message": "Audio referencyjne nie może być używane samodzielnie, proszę jednocześnie przesłać obraz referencyjny lub wideo referencyjne.",
+    "description": "Ostrzeżenie, gdy audio referencyjne nie ma sparowanego obrazu/wideo"
   }
 }

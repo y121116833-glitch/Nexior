@@ -11,6 +11,10 @@
     "message": "Öppna underdomän nu",
     "description": "Rubrik för dialogrutan som frågar om man vill gå till den nya underdomänen efter skapande"
   },
+  "title.openSite": {
+    "message": "Öppna underwebbplats",
+    "description": "Title of the open-subsite confirmation dialog."
+  },
   "field.slug": {
     "message": "Underdomänprefix",
     "description": "Rubrik för inmatningsfältet för slug"
@@ -18,6 +22,14 @@
   "field.origin": {
     "message": "Underdomänens domännamn",
     "description": "Domännamns kolumn i underdomänlistan"
+  },
+  "field.defaultLabel": {
+    "message": "Standard",
+    "description": "Tag rendered next to the default subdomain in the open-subsite dialog."
+  },
+  "field.customLabel": {
+    "message": "Anpassad",
+    "description": "Tag rendered next to a custom (BYO) hostname in the open-subsite dialog."
   },
   "field.title": {
     "message": "Underdomänens titel",
@@ -51,6 +63,10 @@
     "message": "Hantera",
     "description": "Knapp för att gå till inställningarna för underdomänen"
   },
+  "button.delete": {
+    "message": "Radera",
+    "description": "Button to delete a subsite"
+  },
   "message.indexTip": {
     "message": "Skapa självständiga underdomäner under huvuddomänen, varje underdomän kan ha sin egen logotyp, titel och funktioner utan att behöva bygga källkoden separat.",
     "description": "Förklarande text på startsidan för underdomänshantering"
@@ -79,6 +95,10 @@
     "message": "Misslyckades med att skapa underdomän, vänligen försök igen senare.",
     "description": "Skapande misslyckades"
   },
+  "message.slugTaken": {
+    "message": "Underdomän {origin} är redan upptagen, vänligen försök med en annan.",
+    "description": "När du skapar en subdomän, är sluggen redan upptagen (backend returnerar kod=duplication)"
+  },
   "message.loadFailed": {
     "message": "Misslyckades med att ladda underdomänlistan.",
     "description": "Misslyckades med att hämta listan"
@@ -86,6 +106,22 @@
   "message.openNowConfirm": {
     "message": "Underdomänen {origin} har skapats. Vill du öppna den nu för att fortsätta konfigurera?",
     "description": "Fråga om att öppna direkt efter skapande"
+  },
+  "message.openSiteHint": {
+    "message": "Denna underwebbplats är kopplad till flera domäner, vänligen välj den adress du vill öppna, vi kommer att öppna den i en ny flik.",
+    "description": "Kroppstext i dialogrutan för att öppna underwebbplats som förklarar URL-väljaren."
+  },
+  "message.deleteConfirm": {
+    "message": "Radera underwebbplatsen {origin}? Användare kommer inte längre att kunna nå den via denna domän, och åtgärden kan inte ångras.",
+    "description": "Confirmation prompt before deleting a subsite"
+  },
+  "message.deleted": {
+    "message": "Underwebbplatsen {origin} har raderats.",
+    "description": "Success message after deleting a subsite"
+  },
+  "message.deleteFailed": {
+    "message": "Det gick inte att radera underwebbplatsen, försök igen senare.",
+    "description": "Fallback error message when DELETE fails"
   },
   "title.domains": {
     "message": "Anpassade domännamn för {origin}",
@@ -155,6 +191,10 @@
     "message": "Misslyckades med att skapa domän, vänligen försök igen senare.",
     "description": "Skapande misslyckades"
   },
+  "message.domainTaken": {
+    "message": "Domänen {hostname} har redan lagts till. Använd en annan domän.",
+    "description": "Visas när det valda värdnamnet redan är bundet till en webbplats (backend returnerar code=duplication)."
+  },
   "message.domainsLoadFailed": {
     "message": "Misslyckades med att ladda domänlistan.",
     "description": "Misslyckades med att hämta domänlistan"
@@ -190,5 +230,9 @@
   "status.failed": {
     "message": "Misslyckades",
     "description": "Failed 状态标签"
+  },
+  "message.recordNameHint": {
+    "message": "Tips: Hos de flesta DNS-leverantörer (DNSPod, Cloudflare, Aliyun, Tencent Cloud m.fl.) tar fältet ”Host” / ”Name” bara emot subdomänprefixet. Om du t.ex. binder studio.your-brand.com anger du bara studio; vid bindning av själva rotdomänen (t.ex. your-brand.com) använder du {'@'} som värd. Leverantörer som förväntar sig ett fullständigt FQDN (AWS Route 53, Bind m.fl.) accepterar värdet som visas i tabellen ovan som det är.",
+    "description": "Tips under DNS-posttabellen som förklarar vad du anger i fältet Host/Name hos vanliga DNS-leverantörer (subdomänprefix / @ / fullständig FQDN)."
   }
 }

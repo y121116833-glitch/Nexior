@@ -1,11 +1,13 @@
 <template>
   <div class="subsite-settings">
+    <section-notice tone="official" :text="$t('common.settings.officialOnlyHint')" />
     <div class="header">
       <div>
         <p class="settings-title">{{ $t('subsite.title.index') }}</p>
         <p class="settings-tip">{{ $t('subsite.message.indexTip') }}</p>
       </div>
-      <el-button type="primary" round :icon="Plus" :disabled="!canCreate" @click="onOpenCreate">
+      <el-button type="primary" round :disabled="!canCreate" @click="onOpenCreate">
+        <plus :size="'1em' as any" aria-hidden="true" focusable="false" />
         {{ $t('subsite.button.create') }}
       </el-button>
     </div>
@@ -13,11 +15,39 @@
     <el-card v-loading="loading" shadow="never" class="list-card">
       <el-empty v-if="!loading && items.length === 0" :description="$t('subsite.message.empty')" />
       <el-table v-else :data="items" stripe class="subsite-table">
-        <el-table-column :label="$t('subsite.field.origin')" prop="origin" min-width="220">
+        <el-table-column :label="$t('subsite.field.origin')" prop="origin" min-width="240">
           <template #default="{ row }">
-            <a :href="rowUrl(row)" target="_blank" rel="noopener" class="origin-link">
-              {{ row.origin }}
-            </a>
+            <div class="domain-list">
+              <a :href="rowUrl(row)" target="_blank" rel="noopener" class="origin-link primary">
+                {{ row.origin }}
+              </a>
+              <template v-for="dom in customDomainsFor(row)" :key="dom.id">
+                <a
+                  v-if="dom.status === SiteDomainStatus.Active"
+                  :href="`https://${dom.hostname}/`"
+                  target="_blank"
+                  rel="noopener"
+                  class="custom-domain origin-link"
+                >
+                  {{ dom.hostname }}
+                  <el-tag size="small" type="success" effect="plain" round>
+                    {{ $t('subsite.status.active') }}
+                  </el-tag>
+                </a>
+                <div v-else-if="dom.status === SiteDomainStatus.Pending" class="custom-domain muted">
+                  <span class="hostname">{{ dom.hostname }}</span>
+                  <el-tag size="small" type="warning" effect="plain" round>
+                    {{ $t('subsite.status.pending') }}
+                  </el-tag>
+                </div>
+                <div v-else-if="dom.status === SiteDomainStatus.Failed" class="custom-domain muted">
+                  <span class="hostname">{{ dom.hostname }}</span>
+                  <el-tag size="small" type="danger" effect="plain" round>
+                    {{ $t('subsite.status.failed') }}
+                  </el-tag>
+                </div>
+              </template>
+            </div>
             <div v-if="row.title" class="row-title">{{ row.title }}</div>
           </template>
         </el-table-column>
@@ -35,14 +65,37 @@
               <el-button size="small" round @click="onManageSite(row)">
                 {{ $t('subsite.button.manage') }}
               </el-button>
-              <el-button size="small" round type="primary" plain @click="onOpenDomains(row)">
-                {{ $t('subsite.button.domains') }}
+              <el-button
+                size="small"
+                round
+                type="danger"
+                plain
+                :loading="deletingId === row.id"
+                @click="onDeleteSite(row)"
+              >
+                {{ $t('common.button.delete') }}
               </el-button>
             </span>
           </template>
         </el-table-column>
       </el-table>
     </el-card>
+
+    <el-dialog
+      v-model="opening.visible"
+      :title="$t('subsite.title.openSite')"
+      width="420px"
+      class="open-dialog"
+      align-center
+      append-to-body
+    >
+      <p class="open-hint">{{ $t('subsite.message.openSiteHint') }}</p>
+      <div class="open-actions">
+        <el-button v-for="url in opening.urls" :key="url.href" round type="primary" @click="onConfirmOpen(url.href)">
+          {{ $t('subsite.button.open') }} {{ url.hostname }}
+        </el-button>
+      </div>
+    </el-dialog>
 
     <el-dialog v-model="creating.visible" :title="$t('subsite.title.create')" width="480px" class="create-dialog">
       <el-form :model="creating.form" label-width="auto" class="form" @submit.prevent>
@@ -77,12 +130,11 @@
         </span>
       </template>
     </el-dialog>
-
-    <domains-dialog v-model="domainsDialog.visible" :site="domainsDialog.site" />
   </div>
 </template>
 
 <script lang="ts">
+import { AddIcon as Plus } from '@acedatacloud/core/icons/components';
 import { defineComponent, markRaw } from 'vue';
 import {
   ElCard,
@@ -96,12 +148,13 @@ import {
   ElInput,
   ElMessage,
   ElMessageBox,
+  ElTag,
   vLoading
 } from 'element-plus';
-import { Plus } from '@element-plus/icons-vue';
-import { siteOperator } from '@/operators';
-import type { ISite } from '@/models';
-import DomainsDialog from '@/components/setting/SubsiteDomainsDialog.vue';
+
+import { siteOperator, siteDomainOperator } from '@/operators';
+import SectionNotice from '@/components/setting/SectionNotice.vue';
+import { SiteDomainStatus, type ISite, type ISiteDomain } from '@/models';
 
 const SLUG_RE = /^(?!.*--)[a-z0-9][a-z0-9-]{1,30}[a-z0-9]$/;
 
@@ -127,7 +180,8 @@ export default defineComponent({
     ElForm,
     ElFormItem,
     ElInput,
-    DomainsDialog
+    ElTag,
+    SectionNotice
   },
   directives: {
     loading: vLoading
@@ -144,8 +198,22 @@ export default defineComponent({
   data() {
     return {
       Plus: markRaw(Plus),
+      // Re-export the enum for the template (string-comparable in v-if).
+      SiteDomainStatus,
       loading: false,
       items: [] as ISite[],
+      // Custom (BYO) domains grouped by their parent subsite id. Fetched
+      // alongside `items` so the column can render every bound hostname,
+      // and so the open-confirmation dialog can offer Active customs as
+      // pickable URLs.
+      domainsBySite: {} as Record<string, ISiteDomain[]>,
+      // Drives the unified "Open subsite" confirmation dialog. Built on
+      // demand from `customDomainsFor(row)` so the URL list is always
+      // fresh w.r.t. the latest domain statuses.
+      opening: {
+        visible: false,
+        urls: [] as { href: string; hostname: string; isCustom: boolean }[]
+      },
       creating: {
         visible: false,
         submitting: false,
@@ -154,10 +222,9 @@ export default defineComponent({
           title: ''
         }
       },
-      domainsDialog: {
-        visible: false,
-        site: null as ISite | null
-      }
+      // Row id whose DELETE call is currently in flight (drives the
+      // per-row spinner on the destructive action button).
+      deletingId: null as string | null
     };
   },
   computed: {
@@ -206,23 +273,60 @@ export default defineComponent({
         this.items = [];
         return;
       }
+      const zone = this.subdomainZone;
+      if (!zone) {
+        // Parent site hasn't been seeded with a subdomain zone yet —
+        // surface the empty state rather than dumping every site the
+        // user happens to own elsewhere.
+        this.items = [];
+        return;
+      }
       this.loading = true;
       try {
-        const { data } = await siteOperator.getAll({ user_id: userId });
-        const all = (data?.items || []) as ISite[];
-        const parentId = this.parentSite?.id;
-        this.items = all.filter((s) => {
-          if (s.id === parentId) return false;
-          const meta = (s.metadata || {}) as Record<string, unknown>;
-          if (parentId && meta.parent_site_id) return meta.parent_site_id === parentId;
-          return Boolean(s.origin && this.subdomainZone && s.origin.endsWith(`.${this.subdomainZone}`));
+        // Listing is fully scoped by (user_id, origin__endswith=.{zone}).
+        // The leading dot excludes the parent (`studio.acedata.cloud`) by
+        // DNS-hierarchy semantics and matches every subsite
+        // (`<slug>.studio.acedata.cloud`). No `parent_site_id` needed —
+        // the superuser fast path doesn't stamp `metadata.parent_site_id`
+        // anyway, which is why the previous metadata filter hid rows.
+        const { data } = await siteOperator.getAll({
+          user_id: userId,
+          origin__endswith: `.${zone}`,
+          ordering: '-created_at'
         });
+        this.items = (data?.items || []) as ISite[];
+        await this.fetchDomains();
       } catch (e) {
         console.error('failed to load subsites', e);
         ElMessage.error(this.$t('subsite.message.loadFailed'));
       } finally {
         this.loading = false;
       }
+    },
+    async fetchDomains() {
+      // Fan-out one GET per subsite (typical max is 5). We deliberately
+      // filter by site id rather than user_id because that's the only
+      // filter known to be wired up server-side (mirrors CustomDomain.vue),
+      // and the per-row swarm is bounded by `maxSubsitesPerUser`.
+      // Failures are swallowed per-row so one site's RBAC hiccup doesn't
+      // hide every other site's domains.
+      const sites = this.items.filter((s) => s.id);
+      if (sites.length === 0) {
+        this.domainsBySite = {};
+        return;
+      }
+      const pairs = await Promise.all(
+        sites.map(async (s) => {
+          try {
+            const { data } = await siteDomainOperator.getAll({ site: s.id, limit: 50 });
+            return [s.id as string, (data?.items || []) as ISiteDomain[]] as const;
+          } catch (err) {
+            console.warn(`failed to load domains for site ${s.id}`, err);
+            return [s.id as string, [] as ISiteDomain[]] as const;
+          }
+        })
+      );
+      this.domainsBySite = Object.fromEntries(pairs);
     },
     onOpenCreate() {
       this.creating.form.slug = '';
@@ -287,15 +391,98 @@ export default defineComponent({
     },
     onOpenSite(row: ISite) {
       if (!row.origin) return;
-      window.open(`https://${row.origin}/`, '_blank', 'noopener');
+      // Build the URL picker once, on demand. We always include the
+      // default subdomain. Active custom domains are listed beneath so
+      // a tenant who's bound their own brand URL can land there
+      // directly without re-typing the hostname. Pending / Failed
+      // customs are intentionally excluded — they wouldn't actually
+      // load until DNS + TLS are green.
+      const urls: { href: string; hostname: string; isCustom: boolean }[] = [
+        { href: `https://${row.origin}/`, hostname: row.origin, isCustom: false }
+      ];
+      const customs = this.customDomainsFor(row);
+      for (const d of customs) {
+        if (d.status === SiteDomainStatus.Active && d.hostname) {
+          urls.push({ href: `https://${d.hostname}/`, hostname: d.hostname, isCustom: true });
+        }
+      }
+      // Single URL → no point asking the user to "choose"; open it
+      // straight away. Only show the picker dialog when the tenant has
+      // bound at least one Active custom domain and the default
+      // subdomain coexists.
+      if (urls.length <= 1) {
+        window.open(urls[0].href, '_blank', 'noopener');
+        return;
+      }
+      this.opening.urls = urls;
+      this.opening.visible = true;
+    },
+    onConfirmOpen(href: string) {
+      this.opening.visible = false;
+      window.open(href, '_blank', 'noopener');
+    },
+    customDomainsFor(row: ISite): ISiteDomain[] {
+      if (!row.id) return [];
+      const list = this.domainsBySite[row.id] || [];
+      // Keep a stable order: Active first (clickable), then Pending,
+      // then Failed — and alphabetize within each bucket so reloads
+      // don't shuffle the column.
+      const rank = (s?: SiteDomainStatus) =>
+        s === SiteDomainStatus.Active ? 0 : s === SiteDomainStatus.Pending ? 1 : 2;
+      return [...list].sort((a, b) => {
+        const r = rank(a.status) - rank(b.status);
+        if (r !== 0) return r;
+        return (a.hostname || '').localeCompare(b.hostname || '');
+      });
     },
     onManageSite(row: ISite) {
       if (!row.origin) return;
-      window.open(`https://${row.origin}/site`, '_blank', 'noopener');
+      const activeDomain = this.customDomainsFor(row).find(
+        (domain) => domain.status === SiteDomainStatus.Active && domain.hostname
+      );
+      const hostname = activeDomain?.hostname || row.origin;
+      // Open the subsite at its root and signal the user-settings dialog
+      // to auto-open via the `?dialog=settings` query flag. The root
+      // route still redirects to whatever the subsite's default landing
+      // page is (e.g. /chatgpt/conversations) — the query is preserved
+      // through the redirect, and `UserCenter` picks it up on mount and
+      // pops the settings dialog. This avoids the blank `/settings`
+      // page race where SettingsIndex dispatches `open-user-settings`
+      // before UserCenter's listener is registered.
+      window.open(`https://${hostname}/?dialog=settings`, '_blank', 'noopener');
     },
-    onOpenDomains(row: ISite) {
-      this.domainsDialog.site = row;
-      this.domainsDialog.visible = true;
+    async onDeleteSite(row: ISite) {
+      if (!row.id || !row.origin) return;
+      try {
+        await ElMessageBox.confirm(
+          this.$t('subsite.message.deleteConfirm', { origin: row.origin }) as string,
+          this.$t('common.button.delete') as string,
+          {
+            type: 'warning',
+            confirmButtonText: this.$t('common.button.delete') as string,
+            cancelButtonText: this.$t('common.button.cancel') as string,
+            confirmButtonClass: 'el-button--danger'
+          }
+        );
+      } catch {
+        return;
+      }
+      this.deletingId = row.id;
+      try {
+        await siteOperator.delete(row.id);
+        this.items = this.items.filter((s) => s.id !== row.id);
+        if (row.id && this.domainsBySite[row.id]) {
+          const next = { ...this.domainsBySite };
+          delete next[row.id];
+          this.domainsBySite = next;
+        }
+        ElMessage.success(this.$t('subsite.message.deleted', { origin: row.origin }));
+      } catch (e: any) {
+        const detail = e?.response?.data?.detail || e?.message;
+        ElMessage.error(typeof detail === 'string' ? detail : this.$t('subsite.message.deleteFailed'));
+      } finally {
+        this.deletingId = null;
+      }
     },
     rowUrl(row: ISite) {
       return row.origin ? `https://${row.origin}/` : '#';
@@ -348,8 +535,35 @@ export default defineComponent({
       text-decoration: underline;
     }
   }
+  .domain-list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+
+    .origin-link.primary {
+      font-weight: 500;
+    }
+    .custom-domain {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      line-height: 1.4;
+
+      .hostname {
+        word-break: break-all;
+      }
+      &.muted {
+        color: var(--el-text-color-secondary);
+      }
+      &.origin-link {
+        font-weight: 400;
+      }
+    }
+  }
   .row-title {
-    margin-top: 2px;
+    margin-top: 4px;
     font-size: 12px;
     color: var(--el-text-color-secondary);
     line-height: 1.4;
@@ -369,6 +583,37 @@ export default defineComponent({
     color: var(--el-text-color-secondary);
     font-size: 12px;
     margin-top: 4px;
+  }
+}
+
+// Scoped styles on the open-dialog rely on `:deep` because el-dialog
+// portals its body outside `.subsite-settings`. Keeping them in the
+// same <style scoped> block avoids leaking selectors globally while
+// still reaching the teleported nodes.
+.open-dialog {
+  :deep(.el-dialog) {
+    max-width: calc(100vw - 32px);
+  }
+  :deep(.open-hint) {
+    margin: 0 0 16px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--el-text-color-regular);
+  }
+  :deep(.open-actions) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+
+    .el-button {
+      min-width: 220px;
+      max-width: 100%;
+      margin-left: 0;
+    }
+    .el-button + .el-button {
+      margin-left: 0;
+    }
   }
 }
 </style>

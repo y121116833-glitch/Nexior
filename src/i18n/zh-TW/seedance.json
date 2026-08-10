@@ -1,18 +1,18 @@
 {
   "name.seedanceBot": {
     "message": "SeeDance 機器人",
-    "description": "SeeDance 視頻生成器名稱"
+    "description": "SeeDance 影片生成器名稱"
   },
   "name.prompt": {
     "message": "提示詞",
-    "description": "生成視頻的提示詞"
+    "description": "生成影片的提示詞"
   },
   "description.prompt": {
-    "message": "描述你要生成的視頻，可附加 SeeDance 參數（例如：--rs 720p --rt 16:9 --dur 5）。",
+    "message": "描述你要生成的視頻。想讓角色開口說話：把圖片傳到下面的「參考圖片」框（不是「首幀圖片」），在提示詞裡寫清台詞並用引號包住，例如 圖片1中的角色對著鏡頭說：「你的台詞」，並打開「生成音頻」。可附加參數（如 --rs 720p --rt 16:9 --dur 5）。",
     "description": "提示詞輸入說明"
   },
   "placeholder.prompt": {
-    "message": "描述你的视频…",
+    "message": "描述你的影片…",
     "description": "提示詞佔位符"
   },
   "name.model": {
@@ -29,23 +29,23 @@
   },
   "name.duration": {
     "message": "時長",
-    "description": "視頻時長選擇標籤"
+    "description": "影片時長選擇標籤"
   },
   "description.duration": {
-    "message": "視頻時長（秒），範圍 2-12 秒。",
-    "description": "視頻時長說明"
+    "message": "影片時長（秒），範圍 2-12 秒。",
+    "description": "影片時長說明"
   },
   "name.generateAudio": {
-    "message": "生成音頻",
-    "description": "是否生成音頻標籤"
+    "message": "生成音訊",
+    "description": "是否生成音訊標籤"
   },
   "description.generateAudio": {
-    "message": "開啟後視頻將附帶音頻。僅 seedance-1.5-pro 模型支持，費用約為 2 倍。",
+    "message": "開啟後視頻帶聲音。想讓角色開口說話需要：把人物圖傳到「參考圖片」框 + 打開本開關 + 在提示詞裡用引號寫出台詞。僅 seedance-1.5-pro / seedance-2.0 系列支持，費用約 2 倍。",
     "description": "生成音頻說明"
   },
   "name.resolution": {
     "message": "解析度",
-    "description": "視頻解析度標籤"
+    "description": "影片解析度標籤"
   },
   "model.seedance10pro": {
     "message": "doubao-seedance-1.0-pro",
@@ -58,6 +58,14 @@
   "model.seedance15pro": {
     "message": "doubao-seedance-1.5-pro",
     "description": "SeeDance 1.5 Pro 模型"
+  },
+  "model.seedance20": {
+    "message": "doubao-seedance-2.0",
+    "description": "SeeDance 2.0 模型"
+  },
+  "model.seedance20Fast": {
+    "message": "doubao-seedance-2.0-fast",
+    "description": "SeeDance 2.0 快速模型"
   },
   "model.seedance10liteT2v": {
     "message": "doubao-seedance-1.0-lite-t2v",
@@ -77,7 +85,7 @@
   },
   "serviceTier.default": {
     "message": "default",
-    "description": "默認檔位"
+    "description": "預設檔位"
   },
   "serviceTier.flex": {
     "message": "flex",
@@ -92,11 +100,11 @@
     "description": "返回尾幀說明"
   },
   "name.firstFrame": {
-    "message": "首幀圖片",
+    "message": "首幀圖片（畫面動效）",
     "description": "首幀圖片上傳標籤"
   },
   "description.firstFrame": {
-    "message": "可選。上傳參考/首幀圖片。",
+    "message": "圖生視頻：你上傳的這張圖會成為視頻的第一幀，畫面從它開始動。適合「讓一張圖動起來」，但角色不會開口說話、沒有口型。想讓角色說話請改用下面的「參考圖片」。",
     "description": "首幀圖片說明"
   },
   "name.lastFrame": {
@@ -104,7 +112,7 @@
     "description": "尾幀圖片上傳標籤"
   },
   "description.lastFrame": {
-    "message": "可選。上傳尾幀圖片（需要首幀）。",
+    "message": "首尾幀圖生視頻：指定視頻最後一幀（需配合首幀圖）。用於鎖定畫面從某圖開始、到某圖結束。",
     "description": "尾幀圖片說明"
   },
   "button.generate": {
@@ -144,16 +152,36 @@
     "description": "額度用盡提示"
   },
   "message.uploadExceed": {
-    "message": "最多只能上傳 1 張圖片",
+    "message": "最多隻能上傳 1 張圖片",
     "description": "上傳超限提示"
+  },
+  "name.required": {
+    "message": "必填",
+    "description": "必填標記"
+  },
+  "message.modelUnsupported": {
+    "message": "所選模型不被支援，請重新選擇。",
+    "description": "不在支援列表中的模型提示"
+  },
+  "message.modelRequiresImage": {
+    "message": "該模型需要上傳首幀圖片才能生成影片。",
+    "description": "圖生影片模型需要圖片輸入提示"
+  },
+  "message.modelRejectsImage": {
+    "message": "該模型僅支援文生影片，請移除已上傳的圖片。",
+    "description": "文生影片模型不接受圖片輸入提示"
+  },
+  "message.resolutionNotSupported": {
+    "message": "該解析度不被目前模型支援。",
+    "description": "解析度不被目前模型支援提示"
   },
   "message.uploadError": {
     "message": "上傳失敗",
     "description": "上傳失敗提示"
   },
   "message.downloadVideo": {
-    "message": "下載視頻",
-    "description": "下載視頻提示"
+    "message": "下載影片",
+    "description": "下載影片提示"
   },
   "status.pending": {
     "message": "排隊中",
@@ -186,5 +214,73 @@
   "name.status": {
     "message": "狀態",
     "description": "狀態標籤"
+  },
+  "name.ratio": {
+    "message": "畫面比例",
+    "description": "畫面比例標籤"
+  },
+  "description.ratio": {
+    "message": "選擇輸出影片的畫面比例。",
+    "description": "畫面比例說明"
+  },
+  "description.resolution": {
+    "message": "選擇輸出影片的解析度。",
+    "description": "影片解析度說明"
+  },
+  "ratio.adaptive": {
+    "message": "自適應",
+    "description": "自適應比例選項"
+  },
+  "name.cameraFixed": {
+    "message": "鎖定鏡頭",
+    "description": "鎖定鏡頭開關標籤"
+  },
+  "description.cameraFixed": {
+    "message": "開啟後，影片中的鏡頭將保持固定不動。",
+    "description": "鎖定鏡頭說明"
+  },
+  "name.seed": {
+    "message": "隨機種子",
+    "description": "隨機種子標籤"
+  },
+  "description.seed": {
+    "message": "用於重現結果的隨機種子，留空則隨機。",
+    "description": "隨機種子說明"
+  },
+  "placeholder.seed": {
+    "message": "自動",
+    "description": "隨機種子佔位符"
+  },
+  "model.seedance20Mini": {
+    "message": "doubao-seedance-2.0-mini",
+    "description": "SeeDance 2.0 Mini 模型"
+  },
+  "name.referenceImage": {
+    "message": "參考圖片（讓角色說話）",
+    "description": "參考主體圖片上傳標籤（Seedance 2.0）"
+  },
+  "description.referenceImage": {
+    "message": "讓圖中人物在視頻裡開口說話、對口型的通道（口播 / 數字人首選，會保留人物形象）。想讓角色說話就把圖傳到這裡，而不是「首幀圖片」。配合提示詞裡的引號台詞 +「生成音頻」一起用。可傳 1~9 張。僅 Seedance 2.0 系列。注意：不能與「首幀/尾幀圖片」同時使用。",
+    "description": "參考圖片說明"
+  },
+  "name.referenceAudio": {
+    "message": "參考音頻（音色/配樂）",
+    "description": "參考音頻上傳標籤（Seedance 2.0）"
+  },
+  "description.referenceAudio": {
+    "message": "讓生成視頻借用這段音頻的音色或背景音樂（配合參考圖片讓角色用該音色說話）。需搭配參考圖片或參考視頻一起用，不能單獨只傳音頻。可傳 1~3 段。僅 Seedance 2.0 系列。",
+    "description": "參考音頻說明"
+  },
+  "name.referenceVideo": {
+    "message": "參考影片",
+    "description": "參考影片上傳標籤（Seedance 2.0）"
+  },
+  "description.referenceVideo": {
+    "message": "讓模型借用這段視頻的動作/運鏡/風格/音效，生成一段新視頻。可傳 1~3 段。僅 Seedance 2.0 系列。",
+    "description": "參考視頻說明"
+  },
+  "message.audioRequiresReference": {
+    "message": "參考音頻不能單獨使用，請同時上傳一張參考圖片或一段參考視頻。",
+    "description": "當參考音頻沒有配對的圖片/視頻時的警告"
   }
 }

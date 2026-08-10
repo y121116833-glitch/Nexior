@@ -2,11 +2,53 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <!--
+      Google Analytics (GA4). The gtag stub + config are defined inline (cheap,
+      no network) so events queue immediately; the remote googletagmanager.com
+      library is loaded lazily after the page is idle. This way a blocked/slow
+      request (e.g. behind the GFW in CN) never blocks render or the load event
+      and never competes for the initial connection budget — it just fails
+      silently in the background.
+    -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'G-Y6N02K05B8');
+      (function () {
+        function loadGtag() {
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=G-Y6N02K05B8';
+          document.head.appendChild(s);
+        }
+        function schedule() {
+          if ('requestIdleCallback' in window) requestIdleCallback(loadGtag, { timeout: 3000 });
+          else setTimeout(loadGtag, 1200);
+        }
+        if (document.readyState === 'complete') schedule();
+        else window.addEventListener('load', schedule);
+      })();
+    </script>
+    <!--
+      `viewport-fit=cover` is required so iOS Safari / Capacitor expose
+      `env(safe-area-inset-*)` (notch + home indicator) — without it those
+      env vars all resolve to 0px and our mobile layout draws under the
+      Dynamic Island / home bar. The other flags are retained from the
+      previous tag to keep the existing keyboard / pinch behaviour.
+    -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"
+    />
     <meta http-equiv="Cache-Control" content="no-cache, no-store, max-age=0, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
     <title>Ace Data Cloud - AI Hub</title>
+    <!-- Slack App Directory: suggest our Slack app when acedata links are shared -->
+    <meta name="slack-app-id" content="A0B0VU3KBQX" />
     <meta
       name="description"
       content="AI-powered creative hub — generate images with Midjourney & Flux, create music with Suno, produce videos with Luma & Sora, chat with GPT, Claude, Gemini & DeepSeek."
@@ -47,7 +89,7 @@
       property="og:description"
       content="AI-powered creative hub — generate images with Midjourney & Flux, create music with Suno, produce videos with Luma & Sora, chat with GPT, Claude, Gemini & DeepSeek."
     />
-    <meta property="og:image" content="https://cdn.acedata.cloud/logo.png" />
+    <meta property="og:image" content="https://platform.acedata.cloud/api/v1/og/__OG_HOST__.png" />
     <!-- Twitter Cards -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Ace Data Cloud - AI Hub" />
@@ -55,8 +97,58 @@
       name="twitter:description"
       content="AI-powered creative hub — generate images with Midjourney & Flux, create music with Suno, produce videos with Luma & Sora, chat with GPT, Claude, Gemini & DeepSeek."
     />
-    <meta name="twitter:image" content="https://cdn.acedata.cloud/logo.png" />
-    <link rel="icon" href="/src/images/favicon.ico" />
+    <meta name="twitter:image" content="https://platform.acedata.cloud/api/v1/og/__OG_HOST__.png" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <!--
+      White-label first paint. This bundle is byte-identical across every host
+      (studio.acedata.cloud and each tenant domain via the Caddy studio-proxy),
+      so the static tags above are OUR brand and would otherwise show on a
+      tenant domain until getSite() resolves (~230ms measured on juheai.ai).
+      Crawlers, which never run this, are out of scope — see plans/white-label/19.
+    -->
+    <script>
+      (function () {
+        try {
+          var host = (location.hostname || '').toLowerCase();
+          // Native shells report localhost (Capacitor) / bundle (Electron
+          // app://bundle) and ARE first-party — never strip there.
+          var official =
+            host === 'localhost' ||
+            host === 'bundle' ||
+            host === '127.0.0.1' ||
+            host === '' ||
+            host === 'acedata.cloud' ||
+            /\.acedata\.cloud$/.test(host) ||
+            /(^|\.)localhost$/.test(host);
+          if (official) return;
+
+          document.querySelectorAll('link[rel="icon"],link[rel="apple-touch-icon"]').forEach(function (el) {
+            el.parentNode.removeChild(el);
+          });
+          [
+            'meta[name="description"]',
+            'meta[name="keywords"]',
+            'meta[name="slack-app-id"]',
+            'meta[property^="og:"]',
+            'meta[name^="twitter:"]'
+          ].forEach(function (sel) {
+            document.head.querySelectorAll(sel).forEach(function (el) {
+              // og:url is host-derived, not our brand — keep it.
+              if (el.getAttribute('property') === 'og:url') return;
+              el.parentNode.removeChild(el);
+            });
+          });
+
+          // Show the tenant's own hostname until getSite() lands. Leaving the
+          // static title would flash our brand; blanking it shows the URL
+          // anyway, so the hostname is the closest honest placeholder.
+          document.title = host.replace(/^www\./, '');
+        } catch (e) {
+          /* never let first paint depend on this */
+        }
+      })();
+    </script>
     <!-- Preconnect to critical origins -->
     <link rel="preconnect" href="https://cdn.acedata.cloud" crossorigin />
     <link rel="dns-prefetch" href="https://platform.acedata.cloud" />
@@ -141,9 +233,9 @@
         --boot-bg: #ffffff;
         --boot-fg: #0b0b0b;
         --boot-muted: rgba(0, 0, 0, 0.55);
-        --boot-spinner-1: #7c3aed;
-        --boot-spinner-2: #818cf8;
-        --boot-spinner-3: #a78bfa;
+        --boot-spinner-1: #07eea6;
+        --boot-spinner-2: #29bee4;
+        --boot-spinner-3: #23abff;
       }
 
       /*
@@ -228,20 +320,6 @@
         }
       }
 
-      .boot__title {
-        font-size: 14px;
-        letter-spacing: 0.24em;
-        text-transform: uppercase;
-        opacity: 0.92;
-        user-select: none;
-      }
-
-      .boot__subtitle {
-        font-size: 12px;
-        color: var(--boot-muted);
-        user-select: none;
-      }
-
       @media (prefers-reduced-motion: reduce) {
         .boot__loader::before,
         .boot__loader::after {
@@ -255,8 +333,6 @@
       <div class="boot" aria-label="Loading" role="status">
         <div class="boot__content">
           <div class="boot__loader" aria-hidden="true"></div>
-          <div class="boot__title">Ace Data Cloud</div>
-          <div class="boot__subtitle">Loading…</div>
         </div>
       </div>
     </div>

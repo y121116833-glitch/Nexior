@@ -8,12 +8,7 @@ export interface IVeoConfig {
   image_urls?: string[];
   prompt?: string;
   callback_url?: string;
-  // /veo/upsample — sub-action: 1080p / 4k / gif
-  upsample_action?: string;
-  // /veo/reshoot — short uppercase motion-type alias
-  motion_type?: string;
-  // /veo/objects — base64-encoded JPEG or HTTP(S) URL to a mask image
-  image_mask?: string;
+  async?: boolean;
 }
 
 export interface IVeoGenerateRequest {
@@ -26,13 +21,8 @@ export interface IVeoGenerateRequest {
   translation?: boolean;
   aspect_ratio?: string;
   callback_url?: string;
+  async?: boolean;
   mirror?: boolean;
-  // /veo/upsample
-  upsample_action?: string;
-  // /veo/reshoot
-  motion_type?: string;
-  // /veo/objects
-  image_mask?: string;
 }
 export interface IVeoVideo {
   id?: string;
@@ -54,6 +44,8 @@ export interface IVeoGenerateResponse {
 
 export interface IVeoTask {
   id: string;
+  trace_id?: string;
+  status?: string;
   created_at?: number;
   elapsed?: number;
   request?: IVeoGenerateRequest;

@@ -1,16 +1,20 @@
 import { getCookie, setCookie } from 'typescript-cookie';
 import favicon from '@/assets/images/favicon.ico';
-import { applyTheme } from './theme';
+import { applyAccentColor, applyThemePreference } from './theme';
 import store from '@/store';
 import { IToken } from '@/models';
-import { BASE_HOST_HUB, LOCALE_CURRENCY_MAPPING } from '@/constants';
+import { LOCALE_CURRENCY_MAPPING } from '@acedatacloud/core/constants';
+import { BASE_HOST_HUB } from '@/constants';
 import { isOfficial, isSubOfficial, isWechatBrowser } from './is';
 import { getLocale } from '@/i18n';
 
 import { getDomain } from './domain';
 
-// @ts-ignore
-window.getDomain = getDomain;
+// Debug helper — client only (no window during the SSG build).
+if (typeof window !== 'undefined') {
+  // @ts-ignore
+  window.getDomain = getDomain;
+}
 
 export const initializeCookies = async () => {
   // parse the query string and set to cookies
@@ -179,12 +183,22 @@ export const initializeToken = async () => {
 };
 
 /**
- * Initialize theme
+ * Initialize theme — light/dark mode AND the runtime accent (primary) colour.
+ *
+ * Light/dark is per-user (cookie); accent colour is per-site (admin-picked,
+ * stored at `Site.theme.primary_color`). When the site has no custom
+ * colour set, `applyAccentColor(null)` no-ops and the compiled-in default
+ * teal from `_element.scss` + `_common.scss :root` is used.
+ *
+ * Depends on `initializeSite()` having already populated `store.state.site`.
  */
 export const initializeTheme = async () => {
   const theme = getCookie('THEME') || 'dark';
   console.debug('initialize theme', theme);
-  applyTheme(theme);
+  applyThemePreference(theme);
+  const primaryColor = store.state.site?.theme?.primary_color;
+  console.debug('initialize primary color', primaryColor || '(default)');
+  applyAccentColor(primaryColor || null);
 };
 
 /**

@@ -11,6 +11,10 @@
     "message": "Відкрити підрозділ зараз",
     "description": "Заголовок діалогового вікна, що запитує, чи потрібно перейти до нового підрозділу після успішного створення"
   },
+  "title.openSite": {
+    "message": "Відкрити підсайт",
+    "description": "Title of the open-subsite confirmation dialog."
+  },
   "field.slug": {
     "message": "Префікс піддомену",
     "description": "Заголовок поля вводу slug для підрозділу"
@@ -18,6 +22,14 @@
   "field.origin": {
     "message": "Домен підрозділу",
     "description": "Стовпець доменів у списку підрозділів"
+  },
+  "field.defaultLabel": {
+    "message": "За замовчуванням",
+    "description": "Tag rendered next to the default subdomain in the open-subsite dialog."
+  },
+  "field.customLabel": {
+    "message": "Власне",
+    "description": "Tag rendered next to a custom (BYO) hostname in the open-subsite dialog."
   },
   "field.title": {
     "message": "Заголовок підрозділу",
@@ -51,6 +63,10 @@
     "message": "Управління",
     "description": "Кнопка для переходу до налаштувань підрозділу"
   },
+  "button.delete": {
+    "message": "Видалити",
+    "description": "Button to delete a subsite"
+  },
   "message.indexTip": {
     "message": "Створюйте незалежні брендові підрозділи під основним сайтом, кожен підрозділ може мати своє логотип, заголовок та набір функцій, без необхідності окремої побудови вихідного коду.",
     "description": "Опис на головній сторінці управління підрозділами"
@@ -79,6 +95,10 @@
     "message": "Не вдалося створити підрозділ, будь ласка, спробуйте ще раз пізніше.",
     "description": "Не вдалося створити"
   },
+  "message.slugTaken": {
+    "message": "Піддомен {origin} вже використовується, будь ласка, спробуйте інший.",
+    "description": "При створенні підсайту, slug вже зайнятий (сервер повертає код=duplication)"
+  },
   "message.loadFailed": {
     "message": "Не вдалося завантажити список підрозділів.",
     "description": "Не вдалося завантажити список"
@@ -86,6 +106,22 @@
   "message.openNowConfirm": {
     "message": "Підрозділ {origin} було створено. Чи потрібно відкрити його зараз для продовження налаштування?",
     "description": "Чи потрібно відкрити відразу після створення"
+  },
+  "message.openSiteHint": {
+    "message": "Цей підсайт прив'язаний до кількох доменів, будь ласка, виберіть адресу, яку потрібно відкрити, ми відкриємо її у новій вкладці.",
+    "description": "Текст підказки в діалоговому вікні відкриття підсайту, що пояснює вибір URL."
+  },
+  "message.deleteConfirm": {
+    "message": "Видалити субсайт {origin}? Користувачі більше не зможуть отримати доступ через цей домен, і цю дію не можна скасувати.",
+    "description": "Confirmation prompt before deleting a subsite"
+  },
+  "message.deleted": {
+    "message": "Субсайт {origin} видалено.",
+    "description": "Success message after deleting a subsite"
+  },
+  "message.deleteFailed": {
+    "message": "Не вдалося видалити субсайт, спробуйте пізніше.",
+    "description": "Fallback error message when DELETE fails"
   },
   "title.domains": {
     "message": "Користувацький домен для {origin}",
@@ -155,6 +191,10 @@
     "message": "Не вдалося створити домен, будь ласка, спробуйте ще раз пізніше.",
     "description": "Не вдалося створити"
   },
+  "message.domainTaken": {
+    "message": "Домен {hostname} вже додано. Будь ласка, використайте інший домен.",
+    "description": "Відображається, коли обране ім'я хоста вже прив'язано до сайту (сервер повертає code=duplication)."
+  },
   "message.domainsLoadFailed": {
     "message": "Не вдалося завантажити список доменів.",
     "description": "Не вдалося завантажити список доменів"
@@ -190,5 +230,9 @@
   "status.failed": {
     "message": "Не вдалося",
     "description": "Тег статусу Failed"
+  },
+  "message.recordNameHint": {
+    "message": "Підказка: у більшості постачальників DNS (DNSPod, Cloudflare, Aliyun, Tencent Cloud тощо) поле «Хост» / «Ім'я» приймає лише префікс піддомену. Наприклад, прив'язуючи studio.your-brand.com, ви вводите лише studio; при прив'язуванні самого кореневого домену (наприклад, your-brand.com) використовуйте як хост символ {'@'}. Постачальники, які очікують повний FQDN (AWS Route 53, Bind тощо), приймають значення з таблиці вище без змін.",
+    "description": "Підказка під таблицею DNS-записів, що пояснює, що вводити в поле Хост/Ім'я у поширених постачальників DNS (префікс піддомену / @ / повний FQDN)."
   }
 }

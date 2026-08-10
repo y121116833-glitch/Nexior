@@ -319,6 +319,10 @@
     "message": "スタイル影響度",
     "description": "生成結果に対するスタイルの影響度を制御"
   },
+  "name.duration": {
+    "message": "曲の長さ",
+    "description": "生成される曲の目標長さを制御します"
+  },
   "name.variationCategory": {
     "message": "バリエーションタイプ",
     "description": "生成されるバリエーションの多様性を制御"
@@ -334,6 +338,10 @@
   "name.failureReason": {
     "message": "失敗理由",
     "description": "タスク失敗の理由"
+  },
+  "name.failure": {
+    "message": "生成に失敗しました",
+    "description": "Suno タスク失敗のタイトル"
   },
   "name.status": {
     "message": "ステータス",
@@ -388,15 +396,19 @@
     "description": "人声性別選択器の説明"
   },
   "description.weirdness": {
-    "message": "値が高いほど、生成される音楽はより創造的で実験的になります (0-100)",
+    "message": "値が高いほど、生成される音楽はより創造的で実験的になります (0-1)",
     "description": "創造性パラメータの説明"
   },
   "description.styleInfluence": {
-    "message": "値が高いほど、スタイルタグが生成結果に与える影響が大きくなります (0-100)",
+    "message": "値が高いほど、スタイルタグが生成結果に与える影響が大きくなります (0-1)",
     "description": "スタイル影響力パラメータの説明"
   },
+  "description.duration": {
+    "message": "希望する曲の長さを指定してください（秒）。モデルによってサポートの程度が異なり、実際の長さには若干の変動があります。",
+    "description": "曲の長さのパラメータの説明"
+  },
   "description.audioWeight": {
-    "message": "カバー時の原曲の影響度 (0-100)",
+    "message": "カバー時の原曲の影響度 (0-1)",
     "description": "原曲重みパラメータの説明"
   },
   "description.lyricPrompt": {
@@ -494,6 +506,10 @@
   "message.startingTask": {
     "message": "タスクを開始しています...",
     "description": "音楽生成タスク開始時のメッセージ"
+  },
+  "message.promptRequired": {
+    "message": "プロンプトまたは音楽情報を入力してください",
+    "description": "音楽生成の入力が欠けているときのエラーメッセージ"
   },
   "message.startingUploadAudio": {
     "message": "カスタム音楽をアップロードしています...",
@@ -766,6 +782,22 @@
   "placeholder.enhanceLyrics": {
     "message": "修正指示を入力、例：歌詞をもっと楽しく...",
     "description": "歌詞強化入力のプレースホルダー"
+  },
+  "placeholder.lyricsTheme": {
+    "message": "例えば：秋の日の思いを歌った穏やかなフォークソング",
+    "description": "AIによる歌詞生成テーマ入力のプレースホルダー"
+  },
+  "message.lyricsThemePromptTitle": {
+    "message": "AIによる歌詞生成",
+    "description": "AIが歌詞を生成するための入力ポップアップのタイトル"
+  },
+  "message.lyricsThemePromptMessage": {
+    "message": "この曲が表現したいテーマやストーリーを説明してください。AIがそれに基づいて歌詞を生成します。",
+    "description": "AIが歌詞を生成するための入力ポップアップの説明テキスト"
+  },
+  "message.lyricsThemeRequired": {
+    "message": "まず曲のテーマを説明してください",
+    "description": "テーマ入力が空のときの検証メッセージ"
   },
   "message.enhancingLyrics": {
     "message": "歌詞を強化中...",

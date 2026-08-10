@@ -36,8 +36,8 @@
     "description": "La API del servicio, la API es una forma de servicio en línea."
   },
   "field.proxies": {
-    "message": "Proxies",
-    "description": "Los proxies del servicio, los proxies son una forma de servicio en línea utilizados para transmitir datos a través de HTTP."
+    "message": "Proxy",
+    "description": "Proxy del servicio, un proxy es una forma de servicio en línea utilizado para la transmisión de datos a través de un proxy HTTP."
   },
   "message.free": {
     "message": "Gratis",
@@ -84,8 +84,8 @@
     "description": "La API del servicio, la API es una forma de servicio en línea."
   },
   "title.proxies": {
-    "message": "Proxies",
-    "description": "Los proxies del servicio, los proxies son una forma de servicio en línea utilizados para transmitir datos a través de HTTP."
+    "message": "Proxy",
+    "description": "Proxy del servicio, un proxy es una forma de servicio en línea utilizado para la transmisión de datos a través de un proxy HTTP."
   },
   "title.packages": {
     "message": "Paquetes",
@@ -122,6 +122,22 @@
   "unit.Calls": {
     "message": "Llamadas",
     "description": "Las llamadas son el número de veces que se invoca el servicio de API, esta es la forma en mayúscula y plural."
+  },
+  "unit.count": {
+    "message": "vez",
+    "description": "Unidad de recuento (número de llamadas API), singular."
+  },
+  "unit.Count": {
+    "message": "vez",
+    "description": "Unidad de recuento (número de llamadas API), singular."
+  },
+  "unit.counts": {
+    "message": "veces",
+    "description": "Unidad de recuento (número de llamadas API), plural."
+  },
+  "unit.Counts": {
+    "message": "veces",
+    "description": "Unidad de recuento (número de llamadas API), plural."
   },
   "unit.MB": {
     "message": "MB",

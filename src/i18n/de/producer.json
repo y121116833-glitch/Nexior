@@ -17,7 +17,7 @@
   },
   "button.video": {
     "message": "Video",
-    "description": "Text des Video-Buttons"
+    "description": "Text für den Video-Button"
   },
   "button.download_video": {
     "message": "Video herunterladen",
@@ -33,7 +33,7 @@
   },
   "button.cover_music": {
     "message": "Cover",
-    "description": "Text des Cover-Buttons"
+    "description": "Text für den Cover-Button"
   },
   "button.download_audio": {
     "message": "Musik herunterladen",
@@ -53,7 +53,7 @@
   },
   "button.variation": {
     "message": "Variation",
-    "description": "Text des Variations-Buttons"
+    "description": "Text für den Variations-Button"
   },
   "button.swap_vocals": {
     "message": "Gesang ersetzen",
@@ -63,41 +63,85 @@
     "message": "Instrumental ersetzen",
     "description": "Text des Buttons zum Ersetzen des Instrumentals"
   },
+  "button.clear_all": {
+    "message": "Alles löschen",
+    "description": "Text für die Schaltfläche zum Löschen aller Konfigurationseinstellungen"
+  },
+  "mode.simple": {
+    "message": "Einfacher Modus",
+    "description": "Label für den Tab des einfachen Generierungsmodus"
+  },
+  "mode.custom": {
+    "message": "Benutzerdefinierter Modus",
+    "description": "Label für den Tab des benutzerdefinierten Generierungsmodus"
+  },
   "model.fuzz20pro": {
     "message": "FUZZ-2.0 Pro",
     "description": "Modell zur Musikgenerierung"
+  },
+  "model.fuzz20proDesc": {
+    "message": "Maximal 8 Minuten · Beste Klangqualität",
+    "description": "Beschreibung von FUZZ-2.0 Pro im Dropdown-Menü der Modelle"
   },
   "model.fuzz20": {
     "message": "FUZZ-2.0",
     "description": "Modell zur Musikgenerierung"
   },
+  "model.fuzz20desc": {
+    "message": "Maximal 8 Minuten · Preis-Leistungs-Verhältnis ausgewogen",
+    "description": "Beschreibung von FUZZ-2.0 im Dropdown-Menü der Modelle"
+  },
   "model.fuzz20raw": {
     "message": "FUZZ-2.0 Raw",
     "description": "Modell zur Musikgenerierung"
+  },
+  "model.fuzz20rawDesc": {
+    "message": "Maximal 8 Minuten · Rohere, naturnahe Stimmen",
+    "description": "Beschreibung von FUZZ-2.0 Raw im Dropdown-Menü der Modelle"
   },
   "model.fuzz11pro": {
     "message": "FUZZ-1.1 Pro",
     "description": "Modell zur Musikgenerierung"
   },
+  "model.fuzz11proDesc": {
+    "message": "Maximal 4 Minuten · Alte überarbeitete Version",
+    "description": "Beschreibung von FUZZ-1.1 Pro im Dropdown-Menü der Modelle"
+  },
   "model.fuzz10pro": {
     "message": "FUZZ-1.0 Pro",
     "description": "Modell zur Musikgenerierung"
+  },
+  "model.fuzz10proDesc": {
+    "message": "Maximal 4 Minuten · Alte stabile Version",
+    "description": "Beschreibung von FUZZ-1.0 Pro im Dropdown-Menü der Modelle"
   },
   "model.fuzz10": {
     "message": "FUZZ-1.0",
     "description": "Modell zur Musikgenerierung"
   },
+  "model.fuzz10desc": {
+    "message": "Maximal 2 Minuten · Alte Version",
+    "description": "Beschreibung von FUZZ-1.0 im Dropdown-Menü der Modelle"
+  },
   "model.fuzz11": {
     "message": "FUZZ-1.1",
     "description": "Modell zur Musikgenerierung"
+  },
+  "model.fuzz11desc": {
+    "message": "Maximal 4 Minuten · Alte verbesserte Version",
+    "description": "Beschreibung von FUZZ-1.1 im Dropdown-Menü der Modelle"
   },
   "model.fuzz08": {
     "message": "FUZZ-0.8",
     "description": "Modell zur Musikgenerierung"
   },
+  "model.fuzz08desc": {
+    "message": "Maximal 2 Minuten · Frühe Version",
+    "description": "Beschreibung von FUZZ-0.8 im Dropdown-Menü der Modelle"
+  },
   "name.instrumental": {
     "message": "Instrumental",
-    "description": "Generierung von rein instrumentalem Musik ohne Gesang"
+    "description": "Erzeugt rein instrumentale Musik ohne Gesang"
   },
   "name.referenceAudios": {
     "message": "Referenzmusik",
@@ -161,7 +205,7 @@
   },
   "name.seed": {
     "message": "Seed",
-    "description": "Zufalls-Seed für reproduzierbare Generierungen"
+    "description": "Zufälliger Seed für reproduzierbare Generierung"
   },
   "name.lyricPrompt": {
     "message": "Textaufforderung",
@@ -170,6 +214,10 @@
   "name.failureReason": {
     "message": "Fehlerursache",
     "description": "Grund für das Scheitern der Aufgabe"
+  },
+  "name.failure": {
+    "message": "Generierung fehlgeschlagen",
+    "description": "Titel für fehlgeschlagene Producer-Aufgaben"
   },
   "name.status": {
     "message": "Status",
@@ -224,15 +272,15 @@
     "description": "Beschreibung des Geschlecht-Wahl-Selectors"
   },
   "description.weirdness": {
-    "message": "Je höher der Wert, desto kreativer und experimenteller ist die generierte Musik (0-100)",
+    "message": "Je höher der Wert, desto kreativer und experimenteller ist die generierte Musik (0-1)",
     "description": "Beschreibung des Kreativitätsparameters"
   },
   "description.soundStrength": {
-    "message": "Steuern Sie die Lautstärke der generierten Musik (0-100)",
+    "message": "Steuern Sie die Lautstärke der generierten Musik (0-1)",
     "description": "Beschreibung des Lautstärkeparameters"
   },
   "description.lyricsStrength": {
-    "message": "Steuern Sie den Einfluss der Lyrics auf das Ergebnis (0-100)",
+    "message": "Steuern Sie den Einfluss der Lyrics auf das Ergebnis (0-1)",
     "description": "Beschreibung des Lyrics-Stärkeparameters"
   },
   "description.seed": {
@@ -246,6 +294,10 @@
   "description.replaceSection": {
     "message": "Ersetzen Sie den Inhalt eines bestimmten Zeitabschnitts im Song",
     "description": "Beschreibung der Ersetzungsfunktion"
+  },
+  "description.instrumental": {
+    "message": "Generiere rein instrumentale Musik, Texteingaben werden ignoriert",
+    "description": "Hinweisbeschreibung für den Schalter für rein instrumentale Musik"
   },
   "status.pending": {
     "message": "Warten",

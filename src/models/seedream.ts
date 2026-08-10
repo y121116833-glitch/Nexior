@@ -3,6 +3,7 @@ export interface ISeedreamSequentialOptions {
 }
 
 export interface ISeedreamConfig {
+  action?: 'generate' | 'edit';
   model?: string;
   prompt?: string;
   image?: string[];
@@ -16,6 +17,7 @@ export interface ISeedreamConfig {
   watermark?: boolean;
   output_format?: 'jpeg' | 'png';
   callback_url?: string;
+  async?: boolean;
 }
 
 export interface ISeedreamGenerateRequest {
@@ -32,6 +34,7 @@ export interface ISeedreamGenerateRequest {
   watermark?: boolean;
   output_format?: 'jpeg' | 'png';
   callback_url?: string;
+  async?: boolean;
 }
 
 export interface ISeedreamImage {

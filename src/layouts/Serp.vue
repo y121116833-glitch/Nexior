@@ -8,8 +8,14 @@
     <div class="result h-full flex-1 flex flex-col min-w-0 overflow-x-hidden bg-[var(--app-content-bg)]">
       <slot name="result" />
     </div>
-    <el-button circle class="menu" @click="drawer = true">
-      <font-awesome-icon icon="fa-solid fa-search" />
+    <el-button
+      circle
+      class="menu"
+      :aria-label="$t('common.button.openMenu')"
+      :title="$t('common.button.openMenu')"
+      @click="drawer = true"
+    >
+      <search-icon :size="'1em' as any" aria-hidden="true" focusable="false" />
     </el-button>
     <el-drawer v-model="drawer" direction="ltr" :with-header="false" size="340px" class="drawer">
       <slot name="config" />
@@ -18,16 +24,16 @@
 </template>
 
 <script lang="ts">
+import { SearchIcon } from '@acedatacloud/core/icons/components';
 import { defineComponent } from 'vue';
 import { ElDrawer, ElButton } from 'element-plus';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 export default defineComponent({
   name: 'LayoutSerp',
   components: {
+    SearchIcon,
     ElDrawer,
-    ElButton,
-    FontAwesomeIcon
+    ElButton
   },
   data() {
     return {
@@ -53,7 +59,7 @@ export default defineComponent({
     display: block;
     position: absolute;
     right: 8px;
-    top: 45px;
+    top: calc(45px + var(--app-safe-area-top));
     z-index: 1000;
   }
 }

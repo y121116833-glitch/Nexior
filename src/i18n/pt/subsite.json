@@ -11,6 +11,10 @@
     "message": "Acessar Subdomínio Agora",
     "description": "Título da caixa de diálogo perguntando se deseja redirecionar após a criação bem-sucedida"
   },
+  "title.openSite": {
+    "message": "Abrir subsite",
+    "description": "Title of the open-subsite confirmation dialog."
+  },
   "field.slug": {
     "message": "Prefixo do Subdomínio",
     "description": "Título do campo de entrada para o slug do subdomínio"
@@ -18,6 +22,14 @@
   "field.origin": {
     "message": "Domínio do Subdomínio",
     "description": "Coluna de domínio na lista de subdomínios"
+  },
+  "field.defaultLabel": {
+    "message": "Padrão",
+    "description": "Tag rendered next to the default subdomain in the open-subsite dialog."
+  },
+  "field.customLabel": {
+    "message": "Personalizado",
+    "description": "Tag rendered next to a custom (BYO) hostname in the open-subsite dialog."
   },
   "field.title": {
     "message": "Título do Subdomínio",
@@ -51,6 +63,10 @@
     "message": "Gerenciar",
     "description": "Botão para acessar as configurações do subdomínio"
   },
+  "button.delete": {
+    "message": "Excluir",
+    "description": "Button to delete a subsite"
+  },
   "message.indexTip": {
     "message": "Crie subdomínios independentes sob o domínio principal, cada subdomínio pode ter seu próprio logo, título e conjunto de funcionalidades, sem necessidade de construir o código-fonte separadamente.",
     "description": "Texto explicativo na página de gerenciamento de subdomínios"
@@ -79,6 +95,10 @@
     "message": "Falha ao criar o subdomínio, por favor, tente novamente mais tarde.",
     "description": "Falha na criação"
   },
+  "message.slugTaken": {
+    "message": "O subdomínio {origin} já está em uso. Tente outro.",
+    "description": "Ao criar um subsite, o slug já está em uso (backend retorna code=duplication)"
+  },
   "message.loadFailed": {
     "message": "Falha ao carregar a lista de subdomínios.",
     "description": "Falha ao carregar a lista"
@@ -86,6 +106,22 @@
   "message.openNowConfirm": {
     "message": "Subdomínio {origin} criado. Deseja abri-lo agora para continuar a configuração?",
     "description": "Pergunta se deseja abrir imediatamente após a criação"
+  },
+  "message.openSiteHint": {
+    "message": "Este subsite está vinculado a vários domínios, por favor escolha o endereço que deseja abrir, nós o abriremos em uma nova aba.",
+    "description": "Dica no corpo do diálogo do subsite aberto explicando o seletor de URL."
+  },
+  "message.deleteConfirm": {
+    "message": "Excluir o subsite {origin}? Os usuários não poderão mais acessá-lo por este domínio, e esta ação não pode ser desfeita.",
+    "description": "Confirmation prompt before deleting a subsite"
+  },
+  "message.deleted": {
+    "message": "O subsite {origin} foi excluído.",
+    "description": "Success message after deleting a subsite"
+  },
+  "message.deleteFailed": {
+    "message": "Falha ao excluir o subsite, tente novamente mais tarde.",
+    "description": "Fallback error message when DELETE fails"
   },
   "title.domains": {
     "message": "Domínio Personalizado de {origin}",
@@ -155,6 +191,10 @@
     "message": "Falha ao criar o domínio, por favor, tente novamente mais tarde.",
     "description": "Falha na criação"
   },
+  "message.domainTaken": {
+    "message": "O domínio {hostname} já foi adicionado. Por favor, use um domínio diferente.",
+    "description": "Exibido quando o nome de host escolhido já está vinculado a um site (o backend retorna code=duplication)."
+  },
   "message.domainsLoadFailed": {
     "message": "Falha ao carregar a lista de domínios.",
     "description": "Falha ao carregar a lista de domínios"
@@ -190,5 +230,9 @@
   "status.failed": {
     "message": "Falhou",
     "description": "Etiqueta de estado de falha"
+  },
+  "message.recordNameHint": {
+    "message": "Dica: na maioria dos provedores de DNS (DNSPod, Cloudflare, Aliyun, Tencent Cloud, etc.) o campo \"Host\" / \"Nome\" aceita apenas o prefixo do subdomínio. Por exemplo, ao vincular studio.your-brand.com você insere apenas studio; ao vincular o domínio raiz (ex.: your-brand.com), use {'@'} como host. Provedores que esperam um FQDN completo (AWS Route 53, Bind, etc.) aceitam o valor mostrado na tabela acima como está.",
+    "description": "Dica abaixo da tabela de registros DNS explicando o que digitar no campo Host/Nome para provedores DNS comuns (prefixo de subdomínio / @ / FQDN completo)"
   }
 }

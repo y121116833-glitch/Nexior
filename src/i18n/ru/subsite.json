@@ -11,6 +11,10 @@
     "message": "Перейти к поддомену",
     "description": "Заголовок диалогового окна с вопросом о переходе после успешного создания"
   },
+  "title.openSite": {
+    "message": "Открыть подсайт",
+    "description": "Title of the open-subsite confirmation dialog."
+  },
   "field.slug": {
     "message": "Префикс поддомена",
     "description": "Заголовок поля ввода slug для поддомена"
@@ -18,6 +22,14 @@
   "field.origin": {
     "message": "Домен поддомена",
     "description": "Столбец доменов в списке поддоменов"
+  },
+  "field.defaultLabel": {
+    "message": "По умолчанию",
+    "description": "Tag rendered next to the default subdomain in the open-subsite dialog."
+  },
+  "field.customLabel": {
+    "message": "Свой",
+    "description": "Tag rendered next to a custom (BYO) hostname in the open-subsite dialog."
   },
   "field.title": {
     "message": "Заголовок поддомена",
@@ -51,6 +63,10 @@
     "message": "Управлять",
     "description": "Кнопка для перехода к настройкам поддомена"
   },
+  "button.delete": {
+    "message": "Удалить",
+    "description": "Button to delete a subsite"
+  },
   "message.indexTip": {
     "message": "Создавайте независимые поддомены для брендов под основным сайтом. Каждый поддомен может иметь свой логотип, заголовок и набор функций, без необходимости отдельной настройки исходного кода.",
     "description": "Описание на главной странице управления поддоменами"
@@ -79,6 +95,10 @@
     "message": "Не удалось создать поддомен, пожалуйста, попробуйте позже.",
     "description": "Ошибка создания"
   },
+  "message.slugTaken": {
+    "message": "Поддомен {origin} уже используется, попробуйте другой.",
+    "description": "При создании субсайта указанный slug уже занят (сервер вернул код ошибки code=duplication)"
+  },
   "message.loadFailed": {
     "message": "Не удалось загрузить список поддоменов.",
     "description": "Ошибка загрузки списка"
@@ -86,6 +106,22 @@
   "message.openNowConfirm": {
     "message": "Поддомен {origin} создан. Открыть его для дальнейшей настройки?",
     "description": "Вопрос о немедленном открытии после создания"
+  },
+  "message.openSiteHint": {
+    "message": "Этот поддомен связан с несколькими доменами, пожалуйста, выберите адрес для открытия, мы откроем его в новой вкладке.",
+    "description": "Текст подсказки в диалоговом окне открытия поддомена, объясняющий выбор URL."
+  },
+  "message.deleteConfirm": {
+    "message": "Удалить субсайт {origin}? Пользователи больше не смогут получить доступ к нему через этот домен, и это действие нельзя отменить.",
+    "description": "Confirmation prompt before deleting a subsite"
+  },
+  "message.deleted": {
+    "message": "Субсайт {origin} удалён.",
+    "description": "Success message after deleting a subsite"
+  },
+  "message.deleteFailed": {
+    "message": "Не удалось удалить субсайт, попробуйте позже.",
+    "description": "Fallback error message when DELETE fails"
   },
   "title.domains": {
     "message": "Пользовательские домены для {origin}",
@@ -155,6 +191,10 @@
     "message": "Не удалось создать домен, пожалуйста, попробуйте позже.",
     "description": "Ошибка создания домена"
   },
+  "message.domainTaken": {
+    "message": "Домен {hostname} уже был добавлен. Пожалуйста, используйте другой домен.",
+    "description": "Отображается, когда выбранное имя хоста уже привязано к сайту (сервер возвращает code=duplication)."
+  },
   "message.domainsLoadFailed": {
     "message": "Не удалось загрузить список доменов.",
     "description": "Ошибка загрузки списка доменов"
@@ -190,5 +230,9 @@
   "status.failed": {
     "message": "Неудача",
     "description": "Метка состояния Failed"
+  },
+  "message.recordNameHint": {
+    "message": "Подсказка: у большинства DNS-провайдеров (DNSPod, Cloudflare, Aliyun, Tencent Cloud и т. п.) в поле «Хост» / «Имя» вводится только префикс поддомена. Например, при привязке studio.your-brand.com укажите только studio; при привязке самого корневого домена (например, your-brand.com) используйте {'@'} как хост. Провайдеры, которым нужен полный FQDN (AWS Route 53, Bind и т. п.), принимают значение из таблицы выше без изменений.",
+    "description": "Подсказка под таблицей DNS-записей, объясняющая, что вводить в поле «Хост»/«Имя» у разных DNS-провайдеров (префикс поддомена / @ / полный FQDN)."
   }
 }

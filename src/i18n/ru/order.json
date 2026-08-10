@@ -79,6 +79,18 @@
     "message": "Пожалуйста, откройте WeChat на телефоне и отсканируйте для завершения оплаты",
     "description": "Сообщение помощи по оплате через WeChat."
   },
+  "message.wechatPayMobileGuide": {
+    "message": "Текущий браузер не поддерживает прямой вызов WeChat Pay. Пожалуйста, скопируйте ссылку ниже и откройте ее в WeChat для завершения оплаты.",
+    "description": "Текст подсказки, отображаемый в мобильном браузере, отличном от WeChat."
+  },
+  "button.copyPayLink": {
+    "message": "Скопировать ссылку на оплату",
+    "description": "Кнопка для копирования текущего URL страницы в буфер обмена, чтобы пользователь мог вставить его в WeChat."
+  },
+  "message.wechatPayMobileHint": {
+    "message": "После успешного копирования откройте WeChat, вставьте ссылку в любое окно чата или в верхнее поле поиска и нажмите на ссылку для завершения оплаты.",
+    "description": "Вторичная подсказка под кнопкой копирования ссылки."
+  },
   "message.free": {
     "message": "Бесплатно",
     "description": "Сообщение о бесплатном заказе."
@@ -86,6 +98,18 @@
   "message.buyInExternalUrl": {
     "message": "Пожалуйста, завершите оплату по внешней ссылке",
     "description": "Сообщение о платеже по внешней ссылке."
+  },
+  "message.applePayProcessing": {
+    "message": "Завершаем покупку через App Store…",
+    "description": "Message while the Apple in-app purchase is processing."
+  },
+  "message.applePayFailed": {
+    "message": "Платёж в App Store не завершён. Попробуйте ещё раз.",
+    "description": "Message when the Apple in-app purchase fails."
+  },
+  "message.applePayUnavailable": {
+    "message": "Этот пакет нельзя купить внутри приложения.",
+    "description": "Message when Apple in-app purchase is unavailable for the package."
   },
   "message.updateFailed": {
     "message": "Ошибка обновления",
@@ -134,6 +158,10 @@
   "title.stripe": {
     "message": "Stripe",
     "description": "Заголовок, отображаемый на сайте, указывающий на оплату через Stripe."
+  },
+  "title.card": {
+    "message": "Банковская карта",
+    "description": "Заголовок, отображаемый на сайте, указывающий на оплату банковской картой (кредитной/дебетовой)."
   },
   "title.manageOrder": {
     "message": "Управление заказом",
@@ -371,6 +399,10 @@
     "message": "Solana Кошелек",
     "description": "Заголовок карточки подключения Solana кошелька."
   },
+  "message.publicPayNotFound": {
+    "message": "Заказ не найден или срок его действия истёк.",
+    "description": "Shown on public pay page when the order GET returns 404."
+  },
   "message.x402WalletStatusDetected": {
     "message": "Обнаружено",
     "description": "Метка статуса кошелька, который был обнаружен/установлен."
@@ -502,5 +534,45 @@
   "title.updateDiscount": {
     "message": "Обновить скидку",
     "description": "Заголовок всплывающего окна редактирования скидки."
+  },
+  "message.wechatPayLongPressTip": {
+    "message": "Удерживайте QR-код ниже и выберите 'Распознать QR-код', чтобы завершить оплату в WeChat.",
+    "description": "Tip shown above the Native QR on mobile-WeChat. The user long-presses to recognise the `weixin://wxpay/bizpayurl` URL and pays without leaving WeChat."
+  },
+  "message.wechatPayMobileScanTip": {
+    "message": "Сохраните или сделайте скриншот QR-кода ниже, откройте WeChat, нажмите 'Сканировать', выберите альбом в правом верхнем углу и выберите только что сохраненное изображение для завершения оплаты.",
+    "description": "Текст, отображаемый над QR-кодом в мобильном браузере, не относящемся к WeChat. Инструктирует пользователя сохранить изображение QR-кода и использовать функцию альбома в WeChat для завершения оплаты."
+  },
+  "message.creditsValue": {
+    "message": "{value} кредитов",
+    "description": "Display of credits amount for an order, e.g. '5 credits'. {value} is the formatted credit number."
+  },
+  "title.totalOrders": {
+    "message": "Общее количество заказов",
+    "description": "Карточка сводки: общее количество заказов по текущим фильтрам."
+  },
+  "title.totalSpent": {
+    "message": "Общие расходы",
+    "description": "Карточка сводки: общая сумма заказов по текущим фильтрам."
+  },
+  "title.finishedOrders": {
+    "message": "Завершенные заказы",
+    "description": "Карточка сводки: количество завершенных заказов."
+  },
+  "title.pendingOrders": {
+    "message": "Заказы на оплату",
+    "description": "Карточка сводки: количество заказов, ожидающих оплаты."
+  },
+  "button.export": {
+    "message": "Экспортировать CSV",
+    "description": "Текст кнопки: экспортировать заказы в CSV по текущим фильтрам."
+  },
+  "field.allStates": {
+    "message": "Все статусы",
+    "description": "Заполнитель выпадающего списка фильтра статусов: означает отсутствие ограничений по статусам."
+  },
+  "field.allPayWays": {
+    "message": "Все способы оплаты",
+    "description": "Заполнитель выпадающего списка фильтра способов оплаты: означает отсутствие ограничений по способам оплаты."
   }
 }

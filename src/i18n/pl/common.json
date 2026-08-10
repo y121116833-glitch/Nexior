@@ -1,4 +1,8 @@
 {
+  "message.mediaPreviewUnavailable": {
+    "message": "Podgląd niedostępny",
+    "description": "Nie można załadować podglądu mediów."
+  },
   "button.setup": {
     "message": "Ustawienia",
     "description": "Tekst w przycisku, używany do przeprowadzania ustawień"
@@ -51,6 +55,10 @@
     "message": "Usuń",
     "description": "Tekst w przycisku, używany do usuwania treści"
   },
+  "button.deletePermanently": {
+    "message": "Trwale usuń konto",
+    "description": "Final red delete button at the bottom of the delete confirmation dialog"
+  },
   "button.confirm": {
     "message": "Potwierdź",
     "description": "Tekst w przycisku, używany do potwierdzania pewnych działań"
@@ -62,6 +70,50 @@
   "button.close": {
     "message": "Zamknij",
     "description": "Tekst w przycisku, używany do zamykania okna dialogowego lub panelu"
+  },
+  "button.send": {
+    "message": "Wyślij",
+    "description": "Etykieta przycisku wysyłania treści."
+  },
+  "button.stop": {
+    "message": "Zatrzymaj",
+    "description": "Etykieta przycisku zatrzymania operacji."
+  },
+  "button.openMenu": {
+    "message": "Otwórz menu",
+    "description": "Etykieta przycisku otwierającego menu nawigacyjne lub konfiguracyjne."
+  },
+  "button.more": {
+    "message": "Więcej działań",
+    "description": "Etykieta przycisku otwierającego menu działań."
+  },
+  "button.remove": {
+    "message": "Usuń",
+    "description": "Etykieta przycisku usuwania elementu."
+  },
+  "player.previous": {
+    "message": "Poprzedni utwór",
+    "description": "Etykieta dostępności przycisku poprzedniego utworu w odtwarzaczu."
+  },
+  "player.play": {
+    "message": "Odtwarzaj",
+    "description": "Etykieta dostępności przycisku odtwarzania w odtwarzaczu."
+  },
+  "player.pause": {
+    "message": "Pauza",
+    "description": "Etykieta dostępności przycisku pauzy w odtwarzaczu."
+  },
+  "player.next": {
+    "message": "Następny utwór",
+    "description": "Etykieta dostępności przycisku następnego utworu w odtwarzaczu."
+  },
+  "player.volume": {
+    "message": "Głośność",
+    "description": "Etykieta dostępności kontrolki głośności w odtwarzaczu."
+  },
+  "button.expand": {
+    "message": "Rozwiń",
+    "description": "Tekst przycisku, używany do otwierania edytora pełnoekranowego dla pola wprowadzania podpowiedzi."
   },
   "button.alert": {
     "message": "Ostrzeżenie",
@@ -118,6 +170,22 @@
   "button.downloadIos": {
     "message": "Pobierz pakiet instalacyjny iOS",
     "description": "Tekst w przycisku, używany do pobierania pliku instalacyjnego iOS"
+  },
+  "button.downloadWindows": {
+    "message": "Pobierz dla Windows",
+    "description": "Text in button for downloading the Windows desktop installer"
+  },
+  "button.downloadMac": {
+    "message": "Pobierz dla macOS",
+    "description": "Text in button for downloading the macOS desktop installer"
+  },
+  "button.downloadBrowserExtension": {
+    "message": "Pobierz rozszerzenie przeglądarki",
+    "description": "Text in button for downloading the Chrome / Edge browser extension package"
+  },
+  "button.viewExtensionGuide": {
+    "message": "Zobacz przewodnik instalacji",
+    "description": "Przycisk pomocniczy na karcie rozszerzenia przeglądarki, prowadzi do dokumentacji instalacji wtyczki"
   },
   "button.installIos": {
     "message": "Zainstaluj iOS",
@@ -205,11 +273,19 @@
   },
   "entity.status": {
     "message": "Status",
-    "description": "Status encji"
+    "description": "Status podmiotu"
   },
   "status.loading": {
     "message": "Ładowanie...",
     "description": "Tekst stanu wyświetlany podczas ładowania treści"
+  },
+  "error.appleSignInFailed": {
+    "message": "Logowanie przez Apple nie powiodło się. Spróbuj ponownie lub użyj innej metody logowania.",
+    "description": "Error toast shown when native Apple sign-in fails for a reason other than user cancellation"
+  },
+  "error.loginLinkExpired": {
+    "message": "Link do logowania wygasł, proszę zalogować się ponownie.",
+    "description": "Komunikat o błędzie wyświetlany, gdy link OAuth w kliencie desktopowym został odrzucony z powodu nieudanej/wygaśniętej weryfikacji stanu."
   },
   "entity.operation": {
     "message": "Operacja",
@@ -234,6 +310,10 @@
   "message.noTasks": {
     "message": "Brak historii zadań, rozpocznij nowe zadanie～",
     "description": "Wiadomość wyświetlana, gdy nie ma zadań"
+  },
+  "message.guestTasks": {
+    "message": "Zaloguj się, aby rozpocząć zadanie i zobaczyć tutaj swoje dzieła.",
+    "description": "Prompt shown in the task list area for not-logged-in guests"
   },
   "message.usedAmount": {
     "message": "Wykorzystana kwota",
@@ -271,6 +351,14 @@
     "message": "Wspólne konto i limity z wersją webową",
     "description": "Wyjaśnienie, że mobilna wersja korzysta z tego samego konta co wersja webowa"
   },
+  "message.extensionAvailableNow": {
+    "message": "Darmowe",
+    "description": "Status chip on the browser extension card"
+  },
+  "message.extensionHint": {
+    "message": "Autoryzuj konto w mediach społecznościowych, połącz lokalną przeglądarkę do wykonywania zadań. Po pobraniu rozpakuj, a na stronie zarządzania rozszerzeniami wybierz „Załaduj rozpakowane rozszerzenie”, aby zainstalować.",
+    "description": "Tekst wyjaśniający na karcie rozszerzenia przeglądarki"
+  },
   "message.mobileIosHint": {
     "message": "Dla iPhone'a i iPada, można zainstalować bezpośrednio online; jeśli system zablokuje, można najpierw pobrać IPA, a następnie rozprowadzić.",
     "description": "Opis karty pobierania iOS"
@@ -278,6 +366,46 @@
   "message.mobileIosPending": {
     "message": "Pakiet instalacyjny iOS nie jest jeszcze dostępny do pobrania, będzie dostępny po uzupełnieniu certyfikatów Apple i plików konfiguracyjnych.",
     "description": "Wskazówka, gdy pakiet instalacyjny iOS nie jest dostępny"
+  },
+  "message.mobileComingSoon": {
+    "message": "Wkrótce",
+    "description": "Short status label shown on a platform card (e.g. iOS) while its build is being prepared"
+  },
+  "message.mobileNowOnAppStore": {
+    "message": "Dostępne w App Store",
+    "description": "Etykieta stanu wyświetlana na karcie iOS, gdy aplikacja jest dostępna w App Store."
+  },
+  "message.desktopWindowsHint": {
+    "message": "Dla Windows 10 i nowszych (64-bit). Pobierz instalator i kliknij dwukrotnie, aby zainstalować.",
+    "description": "Windows desktop download card description"
+  },
+  "message.desktopMacHint": {
+    "message": "Dla macOS 11 i nowszych. Wybierz wersję pasującą do Twojego Maca — Apple Silicon (seria M) lub Intel.",
+    "description": "macOS desktop download card description"
+  },
+  "message.desktopUnsignedNote": {
+    "message": "Aplikacje na komputer to niepodpisane wersje beta. W systemie Windows wybierz „Więcej informacji → Uruchom mimo to” w oknie SmartScreen; w systemie macOS kliknij aplikację prawym przyciskiem myszy i wybierz „Otwórz”, aby pominąć Gatekeeper.",
+    "description": "Note explaining the desktop builds are unsigned betas and how to open them"
+  },
+  "button.getOnGooglePlay": {
+    "message": "Pobierz z Google Play",
+    "description": "Button label that opens the app's Google Play Store listing"
+  },
+  "button.getOnAppStore": {
+    "message": "Pobierz w App Store",
+    "description": "Etykieta przycisku, która otwiera listing aplikacji w Apple App Store."
+  },
+  "message.mobileApkFallback": {
+    "message": "Brak dostępu do Google Play? Pobierz plik APK bezpośrednio.",
+    "description": "Shown next to a secondary button offering a direct APK download for users who cannot access Google Play"
+  },
+  "message.mobilePlayStoreHint": {
+    "message": "Zeskanuj, aby otworzyć Google Play",
+    "description": "Hint under the QR code explaining that scanning it opens the Google Play listing"
+  },
+  "message.mobileAppStoreHint": {
+    "message": "Zeskanuj, aby przejść do App Store",
+    "description": "Wskazówka pod kodem QR wyjaśniająca, że zeskanowanie go otwiera stronę App Store."
   },
   "message.mobileInstallNote": {
     "message": "Podczas pierwszej instalacji pakietu korporacyjnego lub Ad Hoc na iOS, system może poprosić o zaufanie certyfikatowi w 'Ustawienia > Ogólne > VPN i zarządzanie urządzeniem'.",
@@ -331,6 +459,18 @@
     "message": "Czy na pewno chcesz usunąć?",
     "description": "Potwierdzenie, że użytkownik chce usunąć jakąś zawartość"
   },
+  "message.deleteTaskConfirm": {
+    "message": "Czy na pewno chcesz usunąć ten rekord generacji? Po usunięciu zostanie on usunięty ze wszystkich urządzeń i nie będzie można go przywrócić.",
+    "description": "Komunikat potwierdzający wyświetlany przed usunięciem pojedynczego rekordu zadania."
+  },
+  "message.deleteTaskSuccess": {
+    "message": "Rekord został usunięty.",
+    "description": "Komunikat wyświetlany po pomyślnym usunięciu rekordu zadania."
+  },
+  "message.deleteTaskFailed": {
+    "message": "Usunięcie nie powiodło się, spróbuj ponownie później.",
+    "description": "Komunikat wyświetlany, gdy usunięcie rekordu zadania się nie powiodło."
+  },
   "message.expiredAt": {
     "message": "Czas wygaśnięcia",
     "description": "Używane do wyświetlenia czasu wygaśnięcia usługi"
@@ -338,6 +478,34 @@
   "message.alert": {
     "message": "Ostrzeżenie",
     "description": "Komunikat ostrzegający użytkownika"
+  },
+  "message.deleteAccountConfirm": {
+    "message": "Spowoduje to trwałe usunięcie Twojego konta i wszystkich powiązanych danych. Tej operacji nie można cofnąć. Czy na pewno chcesz kontynuować?",
+    "description": "Confirmation message shown before permanently deleting the user account"
+  },
+  "message.deleteAccountSuccess": {
+    "message": "Twoje konto zostało usunięte.",
+    "description": "Message shown after the user account is successfully deleted"
+  },
+  "message.deleteAccountFailed": {
+    "message": "Nie udało się usunąć konta. Spróbuj ponownie później.",
+    "description": "Message shown when account deletion fails"
+  },
+  "message.deleteAccountWarning": {
+    "message": "Tej czynności nie można cofnąć! Twoje konto i wszystkie jego dane zostaną trwale usunięte i nie będzie można ich odzyskać.",
+    "description": "Red warning banner at the top of the delete confirmation dialog"
+  },
+  "message.deleteAccountConsequences": {
+    "message": "Trwale usunięte: profil, saldo i kredyty, aplikacje i subskrypcje, klucze API oraz powiązania logowania zewnętrznego.",
+    "description": "Explains what data will be removed in the delete confirmation dialog"
+  },
+  "message.deleteAccountTypePrompt": {
+    "message": "Wpisz swoją nazwę użytkownika, aby potwierdzić usunięcie:",
+    "description": "Instructs the user to type their username to confirm; the username is shown separately below"
+  },
+  "message.deleteAccountPlaceholder": {
+    "message": "Wpisz tutaj swoją nazwę użytkownika",
+    "description": "Placeholder for the username confirmation input"
   },
   "message.info": {
     "message": "Informacja",
@@ -471,6 +639,10 @@
     "message": "SeeDance",
     "description": "Tekst w nawigacji strony, który wyświetla stronę SeeDance, nie tłumaczyć, musi pozostać 'SeeDance'"
   },
+  "nav.grokvideo": {
+    "message": "Grok Wideo",
+    "description": "Tekst w nawigacji strony, który wyświetla stronę wideo Grok Imagine."
+  },
   "nav.luma": {
     "message": "Luma",
     "description": "Tekst w nawigacji strony, który wyświetla stronę Luma, nie tłumaczyć, musi pozostać 'Luma'"
@@ -487,6 +659,10 @@
     "message": "Hailuo",
     "description": "Tekst w nawigacji strony, który wyświetla stronę Hailuo, nie tłumaczyć, musi pozostać 'Hailuo'"
   },
+  "nav.minimax": {
+    "message": "MiniMax H3",
+    "description": "Navigation name for the MiniMax H3 video generation service"
+  },
   "nav.wan": {
     "message": "Wan",
     "description": "Tekst w nawigacji strony, który wyświetla stronę Wan, nie tłumaczyć, musi pozostać 'Wan'"
@@ -495,6 +671,10 @@
     "message": "Producer",
     "description": "Tekst w nawigacji strony, który wyświetla stronę Producer, nie tłumaczyć, musi pozostać 'Producer'"
   },
+  "nav.fish": {
+    "message": "Fish Audio",
+    "description": "Tekst w pasku nawigacyjnym strony, używany do wyświetlania strony Fish Audio, proszę nie tłumaczyć tego pola, musi pozostać jako 'Fish Audio'"
+  },
   "nav.kimi": {
     "message": "Kimi",
     "description": "Tekst w nawigacji strony, który wyświetla stronę Kimi, nie tłumaczyć, musi pozostać 'Kimi'"
@@ -502,6 +682,14 @@
   "nav.serp": {
     "message": "SERP",
     "description": "Tekst w nawigacji strony, który wyświetla stronę SERP, nie tłumaczyć, musi pozostać 'SERP'"
+  },
+  "nav.codingBridge": {
+    "message": "Coding Bridge",
+    "description": "Text in the website navigation bar to display the Coding Bridge page, must remain as 'Coding Bridge'"
+  },
+  "nav.webextrator": {
+    "message": "WebExtrator",
+    "description": "Text in the website navigation bar to display the WebExtrator page, must remain as 'WebExtrator'"
   },
   "nav.image": {
     "message": "Obraz",
@@ -527,6 +715,10 @@
     "message": "Wyloguj się",
     "description": "Tekst w nawigacji strony, który służy do wylogowania"
   },
+  "nav.deleteAccount": {
+    "message": "Usuń konto",
+    "description": "Menu item to permanently delete the current user account"
+  },
   "nav.site": {
     "message": "Konfiguracja strony",
     "description": "Tekst w nawigacji strony, który wyświetla stronę konfiguracji strony"
@@ -539,13 +731,17 @@
     "message": "Ustawienia",
     "description": "Tekst w nawigacji strony, który wyświetla stronę ustawień"
   },
-  "nav.headshots": {
-    "message": "AI Zdjęcia",
-    "description": "Tekst w nawigacji strony, który wyświetla stronę konfiguracji strony"
-  },
   "nav.more": {
     "message": "Więcej",
     "description": "Tekst w nawigacji strony, który rozwija więcej usług"
+  },
+  "nav.collapseDock": {
+    "message": "Zwiń pasek aplikacji",
+    "description": "Przycisk do zwijania dolnego paska aplikacji na urządzeniach mobilnych"
+  },
+  "nav.expandDock": {
+    "message": "Rozwiń pasek aplikacji",
+    "description": "Przycisk do rozwijania dolnego paska aplikacji na urządzeniach mobilnych"
   },
   "nav.locale": {
     "message": "Ustawienia języka",
@@ -624,11 +820,11 @@
     "description": "Wyświetla część tytułu z informacjami wsparcia"
   },
   "about.address": {
-    "message": "651 N Broad St, Suite 201, Middletown, DE, USA",
+    "message": "131 Continental Dr, Suite 305, Newark, DE 19713, USA",
     "description": "Adres firmy"
   },
   "about.email": {
-    "message": "office@acedata.cloud",
+    "message": "office{'@'}acedata.cloud",
     "description": "E-mail firmy"
   },
   "about.link1": {
@@ -691,6 +887,30 @@
     "message": "Motyw",
     "description": "Tytuł sekcji ustawień motywu na stronie ustawień"
   },
+  "settings.sendShortcut": {
+    "message": "Wyślij wiadomość",
+    "description": "Title of the send-message shortcut row in General settings: choose Enter or modifier+Enter to send."
+  },
+  "sendShortcut.enter": {
+    "message": "Wyślij Enterem",
+    "description": "Send-shortcut option: press Enter to send the message."
+  },
+  "sendShortcut.modEnter": {
+    "message": "Wyślij {key} + Enter",
+    "description": "Send-shortcut option: press the platform modifier (⌘ or Ctrl) plus Enter to send. {key} is the modifier symbol."
+  },
+  "settings.loginMode": {
+    "message": "Tryb logowania",
+    "description": "Login-mode row title in general settings"
+  },
+  "loginMode.iframe": {
+    "message": "Osadzone wyskakujące okno",
+    "description": "Login mode option: embedded iframe popup"
+  },
+  "loginMode.redirect": {
+    "message": "Przekierowanie pełnostronicowe",
+    "description": "Login mode option: full-page redirect"
+  },
   "settings.seo": {
     "message": "Ustawienia SEO",
     "description": "Tytuł sekcji ustawień SEO na stronie ustawień"
@@ -704,12 +924,112 @@
     "description": "Tytuł sekcji ustawień dystrybucji na stronie ustawień"
   },
   "settings.function": {
-    "message": "Ustawienia funkcji",
-    "description": "Tytuł sekcji ustawień funkcji na stronie ustawień"
+    "message": "Możliwości",
+    "description": "Title for the site capabilities section in the settings page"
+  },
+  "settings.auth": {
+    "message": "Uwierzytelnianie",
+    "description": "Tytuł zakładki „Metoda logowania” w bocznym pasku ustawień — konfiguruje dostępne metody logowania oraz domyślną metodę logowania, widoczną tylko dla administratorów witryny."
   },
   "settings.apiKey": {
     "message": "Klucz API",
     "description": "Etykieta Klucz API w bocznym pasku na stronie ustawień - zarządzanie kluczem API dostawcy usług upstream (BYOK)"
+  },
+  "settings.memory": {
+    "message": "Pamięć",
+    "description": "Ustawia etykietę „Pamięć” w bocznym pasku okna ustawień, gdzie użytkownik może przeglądać i zarządzać informacjami, które asystent zapamiętał o sobie."
+  },
+  "settings.memoryIntro": {
+    "message": "Asystent zapamięta przydatne informacje, które wspomnisz w rozmowach, aby w różnych rozmowach udzielać bardziej spersonalizowanych odpowiedzi. Masz pełną kontrolę — możesz przeglądać zapisane treści i usuwać te, które nie chcesz, aby były zapamiętane.",
+    "description": "Wprowadzenie na górze zakładki ustawień pamięci."
+  },
+  "settings.memoryEnabled": {
+    "message": "Użyj pamięci",
+    "description": "Tytuł przełącznika kontrolującego, czy asystent ma używać zapisanej pamięci w rozmowie i uczyć się nowych pamięci."
+  },
+  "settings.memoryEnabledHint": {
+    "message": "Po wyłączeniu asystent nie będzie odczytywał zapisanej pamięci ani nie będzie zapisywał pamięci z nowych rozmów. Istniejąca zawartość nie zostanie usunięta.",
+    "description": "Opis działania pod przełącznikiem pamięci."
+  },
+  "settings.memoryNeedsChat": {
+    "message": "Proszę najpierw rozpocząć rozmowę, aby włączyć funkcję pamięci.",
+    "description": "Wyświetlane na zakładce ustawień pamięci, gdy aplikacja czatu/token nie została jeszcze załadowana."
+  },
+  "settings.memoryStored": {
+    "message": "Zapisana pamięć",
+    "description": "Tytuł sekcji nad listą zapisanych wpisów pamięci."
+  },
+  "settings.memoryImport": {
+    "message": "Importuj",
+    "description": "Przycisk otwierający okno importu pamięci."
+  },
+  "settings.memoryImportTitle": {
+    "message": "Importuj pamięć z innych AI",
+    "description": "Tytuł okna importu pamięci."
+  },
+  "settings.memoryImportExportStep": {
+    "message": "1. Pozwól aktualnie używanemu AI na eksport pamięci",
+    "description": "Tytuł pierwszego kroku w oknie importu pamięci."
+  },
+  "settings.memoryImportPrompt": {
+    "message": "Chcę przenieść się do innej usługi AI. Proszę wymienić każdą zapisaną pamięć o mnie oraz trwałe informacje zdobyte z przeszłych rozmów. Umieść całą treść w bloku kodu, pisząc tylko jeden fakt na linię, w formacie: [data zapisu, jeśli jest] - treść pamięci. Proszę uwzględnić preferencje odpowiedzi, informacje osobiste, projekty, cele, często używane narzędzia, języki, ramy oraz poprawki, które mi przekazałeś. Staraj się zachować moje oryginalne słowa, nie dodawaj haseł, kluczy ani innych wrażliwych informacji.",
+    "description": "Słowo kluczowe do skopiowania do innych usług AI w celu eksportu pamięci."
+  },
+  "settings.memoryImportCopy": {
+    "message": "Skopiuj słowo kluczowe",
+    "description": "Przycisk do kopiowania słowa kluczowego eksportu pamięci."
+  },
+  "settings.memoryImportCopied": {
+    "message": "Słowo kluczowe zostało skopiowane",
+    "description": "Powiadomienie po pomyślnym skopiowaniu słowa kluczowego eksportu pamięci."
+  },
+  "settings.memoryImportPasteStep": {
+    "message": "2. Wklej wyeksportowaną pamięć",
+    "description": "Tytuł drugiego kroku w oknie importu pamięci."
+  },
+  "settings.memoryImportPlaceholder": {
+    "message": "Wklej treść pamięci zwróconą przez ChatGPT, Claude, Gemini lub inne AI…",
+    "description": "Tekst zastępczy w polu wejściowym do wklejenia wyeksportowanej treści pamięci."
+  },
+  "settings.memoryImportSubmit": {
+    "message": "Dodaj do pamięci",
+    "description": "Przycisk do przesyłania wklejonej zawartości w celu importu."
+  },
+  "settings.memoryImportSuccess": {
+    "message": "Imported {count} memory entries",
+    "description": "Success toast after importing memory; count is the number of accepted entries"
+  },
+  "settings.memoryImportPartial": {
+    "message": "Przetworzono {processed} pozycji, pominięto {rejected} pozycji z powodu braku bezpieczeństwa lub nieważności.",
+    "description": "Ostrzeżenie wyświetlane, gdy część importu pamięci zakończyła się sukcesem."
+  },
+  "settings.memoryImportInvalid": {
+    "message": "Nie udało się zaimportować pamięci. Proszę upewnić się, że pamięć jest włączona i wkleić w formacie jeden zwykły fakt na linię.",
+    "description": "Operacyjny komunikat o błędzie wyświetlany, gdy żądanie importu pamięci jest nieważne."
+  },
+  "settings.memoryImportInProgress": {
+    "message": "Inne zadanie importu pamięci jest już w toku, proszę pozostawić okno otwarte i spróbować ponownie później.",
+    "description": "Ostrzeżenie wyświetlane, gdy inne zadanie importu pamięci jest w trakcie realizacji."
+  },
+  "settings.memoryEmpty": {
+    "message": "Brak zapisanej pamięci.",
+    "description": "Stan pusty wyświetlany, gdy użytkownik nie ma żadnych zapisanych pamięci."
+  },
+  "settings.memoryForget": {
+    "message": "Zapomnij",
+    "description": "Przycisk do usunięcia pojedynczego wpisu pamięci na liście."
+  },
+  "settings.memoryClearAll": {
+    "message": "Wyczyść wszystko",
+    "description": "Przycisk do jednorazowego usunięcia wszystkich zapisanych pamięci."
+  },
+  "settings.memoryClearConfirm": {
+    "message": "To spowoduje trwałe usunięcie wszystkich informacji, które asystent zapamiętał o Tobie, i nie można tego cofnąć.",
+    "description": "Treść okna potwierdzenia przed wyczyszczeniem wszystkich pamięci."
+  },
+  "settings.memoryError": {
+    "message": "Operacja nie powiodła się, spróbuj ponownie.",
+    "description": "Komunikat o błędzie wyświetlany, gdy operacja usunięcia/wyczyszczenia pamięci nie powiodła się."
   },
   "field.operations": {
     "message": "Operacje",
@@ -807,9 +1127,286 @@
     "message": "O aplikacji",
     "description": "Tytuł sekcji o aplikacji na stronie ustawień"
   },
+  "settings.localTools": {
+    "message": "Narzędzia lokalne",
+    "description": "Desktop-only settings tab for managing local tool folders, permissions and grants."
+  },
+  "settings.localToolsDesktopOnly": {
+    "message": "Dostępne tylko w aplikacji desktopowej.",
+    "description": "Shown when the Local Tools tab is opened on web/mobile."
+  },
+  "settings.localToolsFoldersTitle": {
+    "message": "Autoryzowane foldery",
+    "description": "Heading for the list of folders the AI may read/write locally."
+  },
+  "settings.localToolsFoldersHint": {
+    "message": "Foldery, które AI może odczytywać i zapisywać na tym urządzeniu. Narzędzia działają lokalnie; nic nie opuszcza urządzenia bez Twojej zgody.",
+    "description": "Help text under the authorized-folders heading."
+  },
+  "settings.localToolsComputerUseTitle": {
+    "message": "Użycie komputera (eksperymentalne)",
+    "description": "Nagłówek dla przełącznika użycia komputera (kontrola ekranu + mysz/klawiatura)."
+  },
+  "settings.localToolsComputerUseHint": {
+    "message": "Pozwól AI zobaczyć twój ekran i kontrolować mysz oraz klawiaturę. Domyślnie wyłączone, włączaj w razie potrzeby. Na macOS należy przyznać uprawnienia „Nagrywanie ekranu” i „Ułatwienia dostępu” poniżej. Każda operacja nadal będzie wymagała twojej potwierdzenia.",
+    "description": "Tekst pomocy pod przełącznikiem użycia komputera."
+  },
+  "settings.localToolsAndroidSkillsTitle": {
+    "message": "Umiejętności automatyzacji telefonu",
+    "description": "Nagłówek sekcji tylko dla Androida, która instaluje umiejętności sterujące aplikacjami na telefonie za pomocą operacji komputerowych."
+  },
+  "settings.localToolsAndroidSkillsHint": {
+    "message": "Zainstaluj umiejętności, które pozwalają asystentowi na obsługę lokalnych aplikacji. Działają one poprzez „komputerowe operacje”, proszę najpierw przyznać dostęp do funkcji ułatwień dostępu powyżej i włączyć komputerowe operacje. Każdy krok będzie nadal zgodny z ustawieniami potwierdzenia operacji komputerowych.",
+    "description": "Tekst pomocy pod nagłówkiem umiejętności automatyzacji telefonu."
+  },
+  "settings.localToolsAndroidSkillsXhsName": {
+    "message": "Automatyczna odpowiedź na wiadomości prywatne Xiaohongshu",
+    "description": "Nazwa wyświetlana umiejętności automatycznej odpowiedzi na wiadomości bezpośrednie Xiaohongshu (RED)."
+  },
+  "settings.localToolsAndroidSkillsXhsDesc": {
+    "message": "Odczytaj nowe wiadomości prywatne w aplikacji Xiaohongshu i napisz odpowiedź, przed wysłaniem poprosi cię o potwierdzenie.",
+    "description": "Jednolinijkowy opis umiejętności DM Xiaohongshu."
+  },
+  "settings.localToolsAndroidSkillsInstall": {
+    "message": "Zainstaluj",
+    "description": "Przycisk, który instaluje umiejętność na koncie użytkownika."
+  },
+  "settings.localToolsAndroidSkillsInstalled": {
+    "message": "Zainstalowane",
+    "description": "Etykieta wyświetlana, gdy umiejętność jest już zainstalowana."
+  },
+  "settings.localToolsAndroidSkillsLoading": {
+    "message": "Ładowanie dostępnych umiejętności…",
+    "description": "Zastępczy tekst podczas pobierania katalogu umiejętności."
+  },
+  "settings.localToolsAndroidSkillsUnavailable": {
+    "message": "Brak dostępnych umiejętności do zainstalowania.",
+    "description": "Stan pusty, gdy nie znaleziono żadnej umiejętności do zainstalowania."
+  },
+  "settings.localToolsAndroidSkillsNeedComputerUse": {
+    "message": "Przed instalacją proszę najpierw przyznać dostęp do funkcji ułatwień dostępu i włączyć komputerowe operacje powyżej.",
+    "description": "Wskazówka wyświetlana, gdy przycisk instalacji jest wyłączony z powodu brakujących wymagań wstępnych."
+  },
+  "settings.localToolsAndroidSkillsNextTurn": {
+    "message": "Zainstalowane, wejdzie w życie przy następnej rozmowie.",
+    "description": "Potwierdzenie wyświetlane po pomyślnej instalacji."
+  },
+  "settings.localToolsAndroidSkillsInstallFailed": {
+    "message": "Instalacja nie powiodła się, spróbuj ponownie.",
+    "description": "Błąd wyświetlany, gdy żądanie instalacji nie powiodło się."
+  },
+  "settings.localToolsAndroidSkillsLoadFailed": {
+    "message": "Nie udało się załadować dostępnych umiejętności, spróbuj ponownie.",
+    "description": "Błąd wyświetlany, gdy pobieranie katalogu umiejętności nie powiodło się."
+  },
+  "settings.localToolsPreauthorizeAll": "Wstępnie zatwierdź wszystkie działania komputera",
+  "settings.localToolsPreauthorizeHint": "Zezwól od razu na zrzut ekranu, kliknięcie, pisanie, klawisze i wszystkie działania oraz poproś o wymagane uprawnienia systemowe.",
+  "settings.localToolsCuA11yLabel": {
+    "message": "Usługi dostępności",
+    "description": "Etykieta stanu użycia komputera, wskazująca, czy usługi dostępności są rzeczywiście uruchomione."
+  },
+  "settings.localToolsCuReady": {
+    "message": "Gotowe, dostępne",
+    "description": "Zielony status wyświetlany, gdy usługi dostępności są uruchomione, a użycie komputera jest rzeczywiście dostępne."
+  },
+  "settings.localToolsCuA11yMissing": {
+    "message": "Nie włączone, użycie komputera chwilowo niedostępne",
+    "description": "Czerwony komunikat ostrzegawczy wyświetlany, gdy przełącznik jest włączony, ale usługi dostępności nie działają."
+  },
+  "settings.localToolsCuActionsTitle": "Zezwól na pojedyncze akcje",
+  "settings.localToolsCuActionsHint": "Włącz tylko te akcje, które AI może wykonywać bez pytania za każdym razem. Każdą można tu cofnąć.",
+  "settings.localToolsCuScreenshot": "Zrzut ekranu",
+  "settings.localToolsCuClick": "Kliknięcie",
+  "settings.localToolsCuMove": "Przesuń wskaźnik",
+  "settings.localToolsCuType": "Wpisz tekst",
+  "settings.localToolsCuKey": "Naciśnij klawisze",
+  "settings.localToolsCuScroll": "Przewijanie",
+  "settings.localToolsBuiltinTitle": "Narzędzia wbudowane",
+  "settings.localToolsBuiltinHint": "Włącz narzędzie, aby AI uruchamiało je bez pytania. Shell może wykonać dowolne polecenie na tym komputerze — włącz tylko jeśli ufasz. Narzędzia plików pozostają ograniczone do autoryzowanych folderów.",
+  "settings.localToolsBuiltinRisky": "Pełny dostęp",
+  "settings.localToolsAddFolder": {
+    "message": "Dodaj folder",
+    "description": "Button to pick a folder to authorize."
+  },
+  "settings.localToolsRemove": {
+    "message": "Usuń",
+    "description": "Button to remove an authorized folder."
+  },
+  "settings.localToolsNoFolders": {
+    "message": "Brak autoryzowanych folderów.",
+    "description": "Empty state for the authorized-folders list."
+  },
+  "settings.localToolsSave": {
+    "message": "Zapisz",
+    "description": "Save the authorized folders."
+  },
+  "settings.localToolsMcpTitle": {
+    "message": "Serwer MCP",
+    "description": "Tytuł sekcji konfiguracji lokalnego serwera MCP w ustawieniach lokalnych narzędzi."
+  },
+  "settings.localToolsMcpHint": {
+    "message": "Połącz lokalny serwer MCP przez stdio. Ich narzędzia będą dostępne dla AI i będą chronione przez tę samą potwierdzającą ochronę wywołań. Zmiany wchodzą w życie natychmiast.",
+    "description": "Opis działania lokalnego serwera MCP oraz informacja, że zmiany nie wymagają ponownego uruchomienia."
+  },
+  "settings.localToolsMcpAdd": {
+    "message": "Dodaj serwer",
+    "description": "Przycisk do dodania nowego wiersza lokalnego serwera MCP."
+  },
+  "settings.localToolsMcpName": {
+    "message": "Nazwa",
+    "description": "Etykieta pola nazwy/identyfikatora serwera MCP."
+  },
+  "settings.localToolsMcpCommand": {
+    "message": "Polecenie",
+    "description": "Etykieta pola polecenia uruchamiającego serwer MCP."
+  },
+  "settings.localToolsMcpArgs": {
+    "message": "Argumenty",
+    "description": "Etykieta pola argumentów polecenia serwera MCP."
+  },
+  "settings.localToolsMcpArgsHint": {
+    "message": "Jeden argument na linię.",
+    "description": "Podpowiedź w polu tekstowym argumentów MCP."
+  },
+  "settings.localToolsMcpEnv": {
+    "message": "Zmienne środowiskowe",
+    "description": "Etykieta pola zmiennych środowiskowych serwera MCP."
+  },
+  "settings.localToolsMcpEnvHint": {
+    "message": "Jedna para KEY=VALUE na linię.",
+    "description": "Podpowiedź w polu tekstowym zmiennych środowiskowych MCP."
+  },
+  "settings.localToolsMcpNoServers": {
+    "message": "Nie skonfigurowano jeszcze serwera MCP.",
+    "description": "Stan pusty wyświetlany, gdy żaden serwer MCP nie jest skonfigurowany."
+  },
+  "settings.localToolsMcpNamePlaceholder": {
+    "message": "Na przykład filesystem",
+    "description": "Placeholder w polu wprowadzania nazwy serwera MCP."
+  },
+  "settings.localToolsMcpCommandPlaceholder": {
+    "message": "Na przykład npx",
+    "description": "Placeholder w polu wprowadzania polecenia serwera MCP."
+  },
+  "settings.localToolsMcpNameRequired": {
+    "message": "Każdy serwer musi mieć nazwę i polecenie.",
+    "description": "Błąd walidacji, gdy wiersz serwera nie ma nazwy lub polecenia."
+  },
+  "settings.localToolsMcpDuplicateName": {
+    "message": "Nazwa serwera musi być unikalna.",
+    "description": "Błąd walidacji, gdy dwie nazwy serwerów są duplikatami."
+  },
+  "settings.localToolsMcpNameInvalid": {
+    "message": "Nazwa może zawierać tylko litery, cyfry, myślniki i podkreślenia.",
+    "description": "Błąd walidacji, gdy nazwa serwera zawiera nieprawidłowe znaki."
+  },
+  "settings.localToolsMcpEnabled": {
+    "message": "Włączone",
+    "description": "Etykieta przełącznika do włączania/wyłączania lokalnego serwera MCP."
+  },
+  "settings.localToolsMcpReconnect": {
+    "message": "Test / Ponowne połączenie",
+    "description": "Przycisk do ponownego uruchomienia serwera MCP i odświeżenia jego stanu."
+  },
+  "settings.localToolsMcpConnecting": {
+    "message": "Łączenie…",
+    "description": "Etykieta stanu, gdy serwer MCP jest w trakcie (ponownego) łączenia."
+  },
+  "settings.localToolsMcpNotSaved": {
+    "message": "Nie zapisano jeszcze",
+    "description": "Etykieta stanu wiersza serwera MCP, który nie został zapisany/połączony."
+  },
+  "settings.localToolsMcpConnected": {
+    "message": "Połączono · {n} narzędzi",
+    "description": "Etykieta, gdy połączenie z serwerem MCP jest udane; {n} to liczba narzędzi."
+  },
+  "settings.localToolsMcpDisabled": {
+    "message": "Wyłączone",
+    "description": "Etykieta, gdy serwer MCP jest wyłączony."
+  },
+  "settings.localToolsMcpFailed": {
+    "message": "Połączenie nie powiodło się",
+    "description": "Etykieta, gdy uruchomienie serwera MCP nie powiodło się; przyczyna wyświetlana poniżej."
+  },
+  "settings.localToolsMcpPlatformHint": {
+    "message": "Wskazówka: użyj poleceń w PATH, takich jak npx lub uvx (na przykład npx -y {'@'}modelcontextprotocol/server-filesystem ~/Documents). Na Windows npx/node automatycznie się rozwiązuje. Jeśli jakiś serwer wyświetla „spawn … ENOENT”, zmień polecenie na pełną ścieżkę.",
+    "description": "Wskazówka międzyplatformowa dotycząca konfigurowania polecenia uruchamiania MCP."
+  },
+  "settings.localToolsSaved": {
+    "message": "Zapisano",
+    "description": "Transient confirmation after saving local-tool folders."
+  },
+  "settings.localToolsActiveTools": {
+    "message": "Aktywne narzędzia",
+    "description": "Label before the list of currently available local tools."
+  },
+  "settings.localToolsGrantsTitle": {
+    "message": "Zawsze dozwolone działania",
+    "description": "Heading for the persistent consent grants list."
+  },
+  "settings.localToolsGrantsHint": {
+    "message": "Wywołania narzędzi, które wybrałeś, aby zawsze zezwalać. Działają bez ponownego pytania. Cofnij dowolne, aby ponownie włączyć potwierdzenie.",
+    "description": "Help text under the always-allowed actions heading."
+  },
+  "settings.localToolsRevoke": {
+    "message": "Cofnij",
+    "description": "Button to revoke a single always-allow grant."
+  },
+  "settings.localToolsRevokeAll": {
+    "message": "Cofnij wszystkie",
+    "description": "Button to revoke every always-allow grant."
+  },
+  "settings.localToolsNoGrants": {
+    "message": "Brak zawsze dozwolonych działań. Przed każdym lokalnym narzędziem pojawi się pytanie.",
+    "description": "Empty state for the always-allowed actions list."
+  },
+  "settings.localToolsPermsTitle": {
+    "message": "Uprawnienia systemowe",
+    "description": "Heading for the macOS system-permission section."
+  },
+  "settings.localToolsPermsHint": {
+    "message": "Opcjonalne. Dostęp do folderów powyżej ich nie wymaga — przyznawaj tylko to, czego wymaga konkretne zadanie.",
+    "description": "Help text under the system-permissions heading."
+  },
+  "settings.localToolsPermFullDisk": {
+    "message": "Pełny dostęp do dysku",
+    "description": "macOS Full Disk Access permission row."
+  },
+  "settings.localToolsPermScreen": {
+    "message": "Nagrywanie ekranu",
+    "description": "macOS Screen Recording permission row."
+  },
+  "settings.localToolsPermAccessibility": {
+    "message": "Dostępność",
+    "description": "macOS Accessibility permission row."
+  },
+  "settings.localToolsGranted": {
+    "message": "Przyznano",
+    "description": "Status tag when a system permission is granted."
+  },
+  "settings.localToolsNotGranted": {
+    "message": "Nie przyznano",
+    "description": "Status tag when a system permission is not granted."
+  },
+  "settings.localToolsOpen": {
+    "message": "Otwórz…",
+    "description": "Button to open the relevant macOS System Settings pane."
+  },
   "settings.subsites": {
     "message": "Moje podstrony",
     "description": "Tytuł zakładki zarządzania podstronami w oknie ustawień. Widoczne tylko na oficjalnej stronie głównej, podstrony nie są wyświetlane."
+  },
+  "settings.adminOnlyHint": {
+    "message": "Ten dział jest widoczny tylko dla administratorów witryny, zwykli użytkownicy nie mają dostępu.",
+    "description": "To jest komunikat wyświetlany na górze zakładek w ustawieniach witryny / ustawieniach SEO / ustawieniach dystrybucji / ustawieniach funkcji, które są widoczne tylko dla administratorów."
+  },
+  "settings.officialOnlyHint": {
+    "message": "Ten dział jest widoczny tylko na głównej stronie, nie będzie wyświetlany na podstronach.",
+    "description": "To jest komunikat wyświetlany na górze zakładki 'Moje podstrony', informujący, że ten dostęp jest dostępny tylko na oficjalnej głównej stronie."
+  },
+  "settings.customDomain": {
+    "message": "Domena niestandardowa",
+    "description": "Title for the custom-domain management tab in the settings popup. Visible only on subsites (non-main-official hosts) for site admins."
   },
   "settings.buildNow": {
     "message": "Zbuduj teraz",
@@ -843,6 +1440,86 @@
     "message": "Skontaktuj się z nami",
     "description": "Tekst przycisku do kontaktu z obsługą klienta"
   },
+  "settings.contactSupport": {
+    "message": "Kontakt z pomocą",
+    "description": "Section title on the About page listing the site owner's customer-service channels"
+  },
+  "settings.contactSupportTip": {
+    "message": "Skontaktuj się z naszym zespołem pomocy przez dowolny z poniższych kanałów.",
+    "description": "Subtitle under the support contacts section on the About page"
+  },
+  "settings.contactInvalidUrl": {
+    "message": "{field} musi być prawidłowym linkiem http(s)",
+    "description": "Validation error shown when a contact URL is not a valid http(s) link"
+  },
+  "settings.contactInvalidPhone": {
+    "message": "Podaj prawidłowy numer telefonu",
+    "description": "Validation error shown when the phone number is invalid"
+  },
+  "settings.contactInvalidEmail": {
+    "message": "Podaj prawidłowy adres e-mail",
+    "description": "Validation error shown when the email address is invalid"
+  },
+  "settings.contactType": {
+    "message": "Typ",
+    "description": "Placeholder for the contact type picker in the editor"
+  },
+  "settings.contactType_phone": {
+    "message": "Telefon",
+    "description": "Display name for the phone contact type"
+  },
+  "settings.contactType_email": {
+    "message": "E-mail",
+    "description": "Display name for the email contact type"
+  },
+  "settings.contactType_website": {
+    "message": "Strona internetowa",
+    "description": "Display name for the website contact type"
+  },
+  "settings.contactType_wechat": {
+    "message": "WeChat",
+    "description": "Nazwa wyświetlana dla typu kontaktu WeChat"
+  },
+  "settings.contactLabelPlaceholder": {
+    "message": "Uwagi (opcjonalne), np.: przed sprzedażą",
+    "description": "Placeholder dla opcjonalnego pola etykiety kontaktu."
+  },
+  "settings.contactValuePlaceholder": {
+    "message": "Konto / Tekst do wyświetlenia",
+    "description": "Placeholder dla ogólnego pola wartości kontaktu."
+  },
+  "settings.contactQr": {
+    "message": "Kod QR",
+    "description": "Label for a contact's QR-code image"
+  },
+  "settings.contactQrTip": {
+    "message": "Prześlij kod QR, aby użytkownik mógł Cię dodać po zeskanowaniu.",
+    "description": "Wskazówka dla przesyłacza kodu QR kontaktu."
+  },
+  "settings.contactAdd": {
+    "message": "Dodaj kontakt",
+    "description": "Button to add another contact entry"
+  },
+  "settings.contactEditorHint": {
+    "message": "Wybierz typ dla każdego kanału i wypełnij przynajmniej jedno z: wartość / link / kod QR; można dodać wiele pozycji.",
+    "description": "Wskazówka na górze okna edytora kontaktów."
+  },
+  "settings.contactInvalidType": {
+    "message": "Typ może zawierać tylko małe litery, cyfry, - i _",
+    "description": "Błąd walidacji dla nieprawidłowego sluga typu kontaktu."
+  },
+  "settings.contactRowNeedsValue": {
+    "message": "Każdy kontakt musi mieć przynajmniej jedną z wartości, linków lub kodów QR.",
+    "description": "Błąd walidacji, gdy wiersz kontaktu nie ma wartości/url/kodu QR."
+  },
+  "settings.contactInvalidValue": {
+    "message": "Treść kontaktu jest nieprawidłowa lub za długa",
+    "description": "Błąd walidacji, gdy wartość/etykieta kontaktu jest nieprawidłowa lub za długa."
+  },
+  "settings.contactTooMany": {
+    "message": "Można dodać maksymalnie {max} kontaktów",
+    "description": "Błąd walidacji, gdy dodano zbyt wiele kontaktów."
+  },
   "message.viewOnGithub": {
     "message": "Zobacz na GitHubie",
     "description": "Tekst linku do przeglądania projektu na GitHubie"
@@ -870,5 +1547,364 @@
   "button.goBack": {
     "message": "Wróć do poprzedniej strony",
     "description": "Tekst przycisku do powrotu do poprzedniej strony w historii przeglądania"
+  },
+  "title.apiCode": {
+    "message": "Kod API dla tego żądania",
+    "description": "Tytuł okna dialogowego: wyświetla kod wywołania API curl / Python / Node odpowiadający bieżącemu wynikowi."
+  },
+  "message.viewCodeHint": {
+    "message": "Zobacz kod API odpowiadający temu zapytaniu",
+    "description": "Wskazówka dla przycisku 'Zobacz kod' obok operacji na karcie wyników (U1/U2/Pobierz/Rozszerz…). Kliknięcie przycisku otworzy okno dialogowe, które pokaże kod wywołania API w trzech językach: curl / Python / Node."
+  },
+  "button.viewCode": {
+    "message": "Zobacz kod",
+    "description": "Tekst przycisku: otwiera okno dialogowe, pokazujące kod wywołania API curl / Python / Node odpowiadający bieżącemu wynikowi (podobnie jak 'Zobacz kod' w OpenAI Playground)."
+  },
+  "button.getApiKey": {
+    "message": "Pobierz klucz API",
+    "description": "Tekst linku na dole dialogu kodu API: kliknięcie przenosi do konsoli platformy w celu utworzenia klucza API."
+  },
+  "button.apiPlatform": {
+    "message": "Platforma API",
+    "description": "Etykieta przycisku w stopce dialogu kodu API. Kliknięcie otwiera https://platform.acedata.cloud/ w nowej karcie, aby użytkownicy mogli zarządzać swoimi kluczami API, saldem i użyciem."
+  },
+  "message.apiCodeIntro": {
+    "message": "Run this from your own code to produce the same result. Replace <YOUR_API_KEY> with a key from your platform console.",
+    "description": "Helper text shown above the code tabs in the API code dialog, explaining how to use the snippet"
+  },
+  "tab.apiRequest": {
+    "message": "Żądanie",
+    "description": "Etykieta zakładki dialogu kodu API dla fragmentu żądania (kod, który reprodukuje aktualny wynik)."
+  },
+  "tab.apiResponse": {
+    "message": "Odpowiedź",
+    "description": "Etykieta zakładki dialogu kodu API dla odpowiedzi na żywo zwróconej po kliknięciu Uruchom."
+  },
+  "button.apiRun": {
+    "message": "Uruchom ponownie",
+    "description": "Przycisk w dialogu kodu API, który ponownie uruchamia żądanie na żywo za pomocą klucza użytkownika. Wynik już istnieje, więc kliknięcie uruchamia go ponownie i jest płatne."
+  },
+  "button.apiRunning": {
+    "message": "Uruchamianie…",
+    "description": "Etykieta przycisku Uruchom w dialogu kodu API, gdy żądanie na żywo jest w trakcie realizacji."
+  },
+  "button.apiRunConfirm": {
+    "message": "Potwierdź uruchomienie",
+    "description": "Etykieta przycisku potwierdzenia w dialogu, który ostrzega, że uruchomienie tutaj zużywa dodatkowe kredyty."
+  },
+  "button.viewDocs": {
+    "message": "Zobacz dokumentację",
+    "description": "Przycisk w stopce dialogu kodu API, który otwiera odpowiednią stronę dokumentacji API na platformie."
+  },
+  "message.apiClickRun": {
+    "message": "Kliknij „Uruchom ponownie”, aby użyć swojego klucza API do wykonania tego żądania na żywo.",
+    "description": "Stan pusty zakładki Odpowiedź w dialogu kodu API, wyświetlany przed uruchomieniem żądania przez użytkownika."
+  },
+  "message.apiRunConfirmTitle": {
+    "message": "Potwierdź uruchomienie",
+    "description": "Tytuł dialogu potwierdzenia wyświetlanego przed ponownym uruchomieniem żądania z dialogu kodu API."
+  },
+  "message.apiRunConfirmDesc": {
+    "message": "To uruchomienie użyje twojego klucza API do rzeczywistego wywołania interfejsu i dodatkowo zużyje punkty, czy chcesz kontynuować?",
+    "description": "Treść dialogu potwierdzenia ostrzegającego, że ponowne uruchomienie żądania to rzeczywiste, płatne wywołanie API."
+  },
+  "message.apiRunConfirmSkip": {
+    "message": "Nie pokazuj ponownie",
+    "description": "Pole wyboru w dialogu potwierdzenia uruchomienia, które, gdy jest zaznaczone, tłumi ostrzeżenie przy kolejnych uruchomieniach."
+  },
+  "message.apiRunTaskCreated": {
+    "message": "Zadanie zostało utworzone, zamknij to okno, aby zobaczyć najnowsze wyniki poniżej.",
+    "description": "Baner sukcesu wyświetlany w oknie dialogowym kodu API po uruchomieniu, które zwraca identyfikator zadania, sugerując, że nowe zadanie już pojawia się na liście za oknem dialogowym."
+  },
+  "button.apiViewLatest": {
+    "message": "Zamknij i zobacz",
+    "description": "Przycisk w banerze sukcesu okna dialogowego kodu API, który zamyka okno, aby użytkownik mógł zobaczyć nowo utworzone zadanie na liście poniżej."
+  },
+  "message.uploadInProgress": {
+    "message": "Przesyłanie plików referencyjnych nadal trwa — proszę chwilę poczekać.",
+    "description": "Toast shown when the user clicks the Generate button while one or more reference uploads are still in flight. Asks them to wait for uploads to complete before retrying."
+  },
+  "message.uploadTooLarge": {
+    "message": "Rozmiar pliku {size} przekracza limit {max}, proszę skompresować i spróbować ponownie",
+    "description": "Komunikat wyświetlany, gdy wybrany plik przekracza dozwolony rozmiar przesyłania, wskazujący aktualny rozmiar pliku i dozwolony limit."
+  },
+  "message.dropToUpload": {
+    "message": "Przeciągnij i upuść tutaj, aby przesłać",
+    "description": "Tekst wskazówki, który tymczasowo pojawia się nad kontrolką przesyłania, gdy przeciągasz plik, informując użytkownika, że wystarczy puścić, aby przesłać."
+  },
+  "appUpgrade.title": {
+    "message": "Wymagana aktualizacja",
+    "description": "Tytuł okna bramki wersji przy uruchamianiu aplikacji natywnej. Wyświetlane, gdy wersja klienta jest niższa niż wymagana przez serwer, informuje użytkownika o konieczności aktualizacji aplikacji."
+  },
+  "appUpgrade.blockMessage": {
+    "message": "Obecna wersja jest zbyt niska, proszę zaktualizować do najnowszej wersji w sklepie aplikacji przed użyciem.",
+    "description": "Treść okna wymuszonej aktualizacji. Wyświetlane, gdy wersja klienta jest niższa niż min_supported, nie można zamknąć, jedyny przycisk przekierowuje do sklepu aplikacji."
+  },
+  "appUpgrade.softMessage": {
+    "message": "Dostępna jest nowa wersja, zalecamy aktualizację w sklepie aplikacji, aby uzyskać najlepsze doświadczenie.",
+    "description": "Treść opcjonalnego powiadomienia o aktualizacji. Wyświetlane, gdy wersja klienta jest niższa niż latest, ale wyższa niż min_supported, użytkownik może wybrać 'powiedz później' i kontynuować korzystanie."
+  },
+  "appUpgrade.openStore": {
+    "message": "Przejdź do aktualizacji",
+    "description": "Główny przycisk w oknie aktualizacji: otwiera link do App Store / Play Store w systemowej przeglądarce."
+  },
+  "appUpgrade.later": {
+    "message": "Powiedz później",
+    "description": "Przycisk drugorzędny w oknie aktualizacji: zignoruj tę sugestię i kontynuuj korzystanie, pojawia się tylko w przypadku nieprzymusowej aktualizacji."
+  },
+  "nav.maestro": {
+    "message": "Maestro",
+    "description": "Tekst na stronie przejścia z artykułu na wideo w nawigacji, pozostaje jako 'Maestro'"
+  },
+  "nav.digitalhuman": {
+    "message": "Cyfrowy człowiek",
+    "description": "Tekst na stronie cyfrowego człowieka w nawigacji."
+  },
+  "settings.localToolsAndroidPermHint": {
+    "message": "Po włączeniu usługi ułatwień dostępu, asystent AI może zobaczyć i obsługiwać twój ekran. Możesz z góry autoryzować konkretne operacje poniżej.",
+    "description": "Opis w sekcji uprawnień ułatwień dostępu w ustawieniach Androida dla użycia komputera."
+  },
+  "settings.cuConsentTitle": {
+    "message": "Zezwolić na operację?",
+    "description": "Tytuł okna dialogowego zgody na żądanie (pojawia się, gdy model prosi o wykonanie jakiejś operacji na ekranie)."
+  },
+  "settings.cuConsentMessage": {
+    "message": "Asystent AI chce wykonać operację „{action}” na Twoim telefonie, czy zezwalasz?",
+    "description": "Treść okna dialogowego zgody na żądanie; {action} to konkretna nazwa operacji computer.*."
+  },
+  "settings.cuConsentAllow": {
+    "message": "Zezwól raz",
+    "description": "Przycisk zezwolenia w oknie dialogowym zgody na żądanie."
+  },
+  "settings.cuConsentAlways": {
+    "message": "Zawsze zezwól",
+    "description": "Przycisk zezwolenia w oknie dialogowym zgody na żądanie; trwałe zezwolenie, ta operacja nie będzie już pytana."
+  },
+  "settings.cuConsentDeny": {
+    "message": "Odmów",
+    "description": "Przycisk odmowy w oknie dialogowym zgody na żądanie."
+  },
+  "settings.siteServices": {
+    "message": "Cena"
+  },
+  "nav.omni": {
+    "message": "Omni Wideo",
+    "description": "Etykieta nawigacyjna modułu wideo Omni."
+  },
+  "settings.localToolsMcpToolsTitle": {
+    "message": "Narzędzia MCP",
+    "description": "Tytuł sekcji narzędzi MCP w ustawieniach lokalnych"
+  },
+  "settings.localToolsMcpToolsHint": {
+    "message": "Narzędzia dostarczone przez serwer MCP są połączone. Po otwarciu AI nie będzie już pytać o nie pojedynczo. Serwer MCP to program zewnętrzny, który nie podlega ograniczeniom autoryzowanych folderów — narzędzia oznaczone jako „pełny dostęp” mogą modyfikować lub publikować dane, proszę zachować ostrożność.",
+    "description": "Opis sekcji narzędzi MCP, podkreślający ryzyko związane z zewnętrznymi programami"
+  },
+  "settings.localToolsWorkingDirTitle": {
+    "message": "Katalog roboczy",
+    "description": "Tytuł sekcji w ustawieniach lokalnych narzędzi: folder projektu, w którym obecnie działa AI"
+  },
+  "settings.localToolsWorkingDirHint": {
+    "message": "AI domyślnie pracuje w tym projekcie: polecenia terminala są wykonywane stąd, a ustalenia projektu (AGENTS.md / CLAUDE.md) są również odczytywane stąd. Po wybraniu ten folder automatycznie uzyska uprawnienia do odczytu i zapisu, bez potrzeby dodawania ich ponownie.",
+    "description": "Opis sekcji katalogu roboczego"
+  },
+  "settings.localToolsWorkingDirNone": {
+    "message": "Nie wybrano",
+    "description": "Stan pusty, gdy katalog roboczy nie jest ustawiony"
+  },
+  "settings.localToolsWorkingDirChange": {
+    "message": "Zmień",
+    "description": "Przycisk do zmiany katalogu roboczego"
+  },
+  "button.report": {
+    "message": "Zgłoś",
+    "description": "Tekst na przycisku do zgłaszania nieodpowiednich treści generowanych przez AI"
+  },
+  "title.reportContent": {
+    "message": "Zgłoszenie treści",
+    "description": "Tytuł okna dialogowego do zgłaszania nieodpowiednich treści generowanych przez AI"
+  },
+  "message.reportIntro": {
+    "message": "Wybierz powód zgłoszenia, a my jak najszybciej przeanalizujemy to i poprawimy filtr treści.",
+    "description": "Wiadomość wprowadzająca w oknie zgłaszania treści"
+  },
+  "message.reportDetailPlaceholder": {
+    "message": "Dodatkowe informacje (opcjonalnie)",
+    "description": "Placeholder dla opcjonalnego pola tekstowego w oknie zgłaszania treści"
+  },
+  "message.reportSuccess": {
+    "message": "Zgłoszenie zostało przesłane, dziękujemy za Twoją opinię.",
+    "description": "Wiadomość wyświetlana po pomyślnym przesłaniu zgłoszenia treści"
+  },
+  "message.reportFailed": {
+    "message": "Nie udało się przesłać zgłoszenia, spróbuj ponownie później.",
+    "description": "Wiadomość wyświetlana, gdy przesłanie zgłoszenia treści nie powiodło się"
+  },
+  "message.reportReasonRequired": {
+    "message": "Wybierz powód zgłoszenia.",
+    "description": "Wiadomość walidacyjna, gdy nie wybrano powodu zgłoszenia"
+  },
+  "reportReason.sexual": {
+    "message": "Treści seksualne lub sugestywne",
+    "description": "Powód zgłoszenia treści: treści seksualne"
+  },
+  "reportReason.violence": {
+    "message": "Treści związane z przemocą lub krwią",
+    "description": "Powód zgłoszenia treści: przemoc lub brutalność"
+  },
+  "reportReason.hate": {
+    "message": "Mowa nienawiści lub nękanie",
+    "description": "Powód zgłoszenia treści: mowa nienawiści lub nękanie"
+  },
+  "reportReason.child_safety": {
+    "message": "Zagrożenie dla nieletnich",
+    "description": "Powód zgłoszenia treści: bezpieczeństwo dzieci"
+  },
+  "reportReason.self_harm": {
+    "message": "Samo-szkodzenie lub niebezpieczne zachowania",
+    "description": "Powód zgłoszenia treści: samo-szkodzenie lub niebezpieczne działania"
+  },
+  "reportReason.deception": {
+    "message": "Fałszywe lub wprowadzające w błąd informacje",
+    "description": "Powód zgłoszenia treści: treści wprowadzające w błąd"
+  },
+  "reportReason.illegal": {
+    "message": "Treści niezgodne z prawem",
+    "description": "Powód zgłoszenia treści: działalność niezgodna z prawem"
+  },
+  "reportReason.ip": {
+    "message": "Naruszenie praw własności intelektualnej",
+    "description": "Powód zgłoszenia treści: naruszenie praw własności intelektualnej"
+  },
+  "reportReason.other": {
+    "message": "Inne",
+    "description": "Powód zgłoszenia treści: inne"
+  },
+  "x402Scenario.paymentMethod": {
+    "message": "Metoda płatności",
+    "description": "Etykieta wyboru punktów lub portfela Solana USDC w scenariuszu generowania obrazów."
+  },
+  "x402Scenario.credits": {
+    "message": "Punkty",
+    "description": "Opcja płatności punktami w scenariuszu generowania."
+  },
+  "x402Scenario.wallet": {
+    "message": "Portfel USDC",
+    "description": "Opcja płatności portfelem Solana USDC w scenariuszu generowania."
+  },
+  "x402Scenario.quoteBeforeSigning": {
+    "message": "Przed podpisaniem portfela wyświetli się dokładna cena USDC podana przez serwer.",
+    "description": "Wskazówka, że w trybie płatności portfelem serwer dostarczy autorytatywną wycenę."
+  },
+  "x402Scenario.connectWalletFirst": {
+    "message": "Proszę najpierw połączyć portfel Solana przed generowaniem.",
+    "description": "Wskazówka, gdy wybrano tryb portfela, ale portfel nie został jeszcze połączony."
+  },
+  "x402Scenario.confirmPayment": {
+    "message": "Czy potwierdzasz płatność za generowanie w wysokości {amount} USDC (Solana)?",
+    "description": "Potwierdzenie płatności po otrzymaniu wyzwania x402; {amount} to dokładna wycena serwera."
+  },
+  "x402Scenario.paymentFailed": {
+    "message": "Płatność portfelem nie powiodła się.",
+    "description": "Prefiks komunikatu o niepowodzeniu w generowaniu w trybie portfela."
+  },
+  "x402Scenario.gptEditCreditsOnly": {
+    "message": "Płatność portfelem obecnie wspiera tylko generowanie obrazów GPT; aby edytować obraz referencyjny, przełącz się na punkty.",
+    "description": "Wskazówka dla użytkowników MVP, którzy próbują edytować obraz referencyjny w trybie portfela."
+  },
+  "x402Scenario.payEachTime": {
+    "message": "Potwierdź za każdym razem",
+    "description": "Opcja wymagająca potwierdzenia użytkownika przed każdą płatnością z portfela."
+  },
+  "x402Scenario.continuousPayments": {
+    "message": "Płatności cykliczne",
+    "description": "Opcja korzystania z autoryzacji płatności Solana USDC do ponownego użycia."
+  },
+  "x402Scenario.continuousPaymentsDescription": {
+    "message": "Pozwala Studio na płatność z portfela Solana USDC do rzeczywistego zużycia w ramach ustalonego dziennego limitu.",
+    "description": "Opis wyświetlany przed włączeniem płatności cyklicznych."
+  },
+  "x402Scenario.dailyPaymentLimit": {
+    "message": "Dzienny limit płatności",
+    "description": "Maksymalna kwota USDC, którą można wykorzystać dziennie w płatnościach cyklicznych."
+  },
+  "x402Scenario.validUntil": {
+    "message": "Ważne do",
+    "description": "Data wygaśnięcia autoryzacji płatności cyklicznych."
+  },
+  "x402Scenario.validDays": {
+    "message": "Liczba dni ważności",
+    "description": "Liczba dni do wygaśnięcia autoryzacji płatności cyklicznych."
+  },
+  "x402Scenario.enableContinuousPayments": {
+    "message": "Włącz płatności cykliczne",
+    "description": "Przycisk do utworzenia autoryzacji płatności Solana do ponownego użycia."
+  },
+  "x402Scenario.disableContinuousPayments": {
+    "message": "Dezaktywuj",
+    "description": "Przycisk do zatrzymania korzystania z płatności cyklicznych bez unieważniania autoryzacji na blockchainie."
+  },
+  "x402Scenario.revokeAuthorization": {
+    "message": "Cofnij autoryzację",
+    "description": "Przycisk do cofnięcia autoryzacji płatności do ponownego użycia na Solana."
+  },
+  "x402Scenario.continuousPaymentsEnabled": {
+    "message": "Płatności cykliczne są włączone.",
+    "description": "Powiadomienie po pomyślnym utworzeniu autoryzacji płatności w portfelu."
+  },
+  "update.check": {
+    "message": "Sprawdź aktualizacje",
+    "description": "Wejście do sprawdzania aktualizacji w menu użytkownika na komputerze"
+  },
+  "update.checking": {
+    "message": "Sprawdzanie aktualizacji…",
+    "description": "Aplikacja na komputerze sprawdza aktualizacje"
+  },
+  "update.available": {
+    "message": "Znaleziono nową wersję {version}",
+    "description": "Aplikacja na komputerze znalazła nową wersję"
+  },
+  "update.downloading": {
+    "message": "Pobieranie aktualizacji… {percent}%",
+    "description": "Postęp pobierania aktualizacji aplikacji na komputerze"
+  },
+  "update.ready": {
+    "message": "Nowa wersja {version} jest gotowa",
+    "description": "Aktualizacja aplikacji na komputerze została pobrana i jest gotowa do zainstalowania"
+  },
+  "update.upToDate": {
+    "message": "AceData {version} jest najnowszą wersją",
+    "description": "Aplikacja na komputerze nie ma dostępnych nowych wersji"
+  },
+  "update.unsupported": {
+    "message": "Sprawdź aktualizacje w zainstalowanej aplikacji na komputerze",
+    "description": "Nieobsługiwane środowisko deweloperskie nie wspiera sprawdzania aktualizacji"
+  },
+  "update.feedUnavailable": {
+    "message": "Usługa aktualizacji jest obecnie niedostępna",
+    "description": "Lista aktualizacji aplikacji na komputerze jest niedostępna"
+  },
+  "update.networkError": {
+    "message": "Nie można połączyć się z usługą aktualizacji, sprawdź sieć i spróbuj ponownie",
+    "description": "Aplikacja na komputerze nie mogła sprawdzić aktualizacji z powodu problemów z siecią"
+  },
+  "update.failed": {
+    "message": "Sprawdzanie aktualizacji nie powiodło się, spróbuj ponownie później",
+    "description": "Ogólny komunikat o błędzie aktualizacji aplikacji na komputerze"
+  },
+  "update.installTitle": {
+    "message": "Aktualizacja jest gotowa",
+    "description": "Tytuł okna potwierdzenia instalacji aktualizacji aplikacji na komputerze"
+  },
+  "update.installMessage": {
+    "message": "AceData {version} została pobrana. Czy teraz zrestartować i zainstalować?",
+    "description": "Komunikat potwierdzający instalację aktualizacji aplikacji na komputerze"
+  },
+  "update.restartInstall": {
+    "message": "Zrestartuj i zainstaluj",
+    "description": "Przycisk do zrestartowania aplikacji na komputerze i zainstalowania aktualizacji"
+  },
+  "update.later": {
+    "message": "Później",
+    "description": "Przycisk do odłożenia instalacji aktualizacji aplikacji na komputerze"
   }
 }

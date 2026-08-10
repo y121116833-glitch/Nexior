@@ -4,10 +4,26 @@
     <div v-else class="conversations">
       <div class="conversation" @click="onNewConversation">
         <div class="icons">
-          <font-awesome-icon icon="fa-solid fa-plus" class="icon" />
+          <add-icon class="icon" :size="'1em' as any" aria-hidden="true" focusable="false" />
         </div>
         <div class="title">
           {{ $t('chat.message.startNewChat') }}
+        </div>
+      </div>
+      <div class="conversation" @click="onScheduledTasks">
+        <div class="icons">
+          <time-icon class="icon" :size="'1em' as any" aria-hidden="true" focusable="false" />
+        </div>
+        <div class="title">
+          {{ $t('chat.scheduledTasks.navTitle') }}
+        </div>
+      </div>
+      <div class="conversation" @click="onArtifacts">
+        <div class="icons">
+          <file-archive-icon class="icon" :size="'1em' as any" aria-hidden="true" focusable="false" />
+        </div>
+        <div class="title">
+          {{ $t('chat.artifacts.navTitle') }}
         </div>
       </div>
       <div v-for="(group, groupKey) in conversationGroups" :key="groupKey" class="group">
@@ -30,17 +46,30 @@
               :teleported="true"
               @command="(command) => onConversationCommand(command, conversation)"
             >
-              <span class="more" @click.stop>
-                <font-awesome-icon icon="fa-solid fa-ellipsis" />
+              <span
+                class="more"
+                role="button"
+                tabindex="0"
+                :aria-label="$t('common.button.more')"
+                :title="$t('common.button.more')"
+                @click.stop
+                @keydown.enter.stop
+                @keydown.space.prevent.stop
+              >
+                <more-icon :size="'1em' as any" aria-hidden="true" focusable="false" />
               </span>
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item command="rename" @click.stop>
-                    <font-awesome-icon icon="fa-solid fa-pen-to-square" class="mr-2" />
-                    重命名
+                    <edit-icon class="mr-2" :size="'1em' as any" aria-hidden="true" focusable="false" />
+                    {{ $t('chat.actions.rename') }}
+                  </el-dropdown-item>
+                  <el-dropdown-item command="share" @click.stop>
+                    <share-icon class="mr-2" :size="'1em' as any" aria-hidden="true" focusable="false" />
+                    {{ $t('chat.share.menu') }}
                   </el-dropdown-item>
                   <el-dropdown-item command="delete" @click.stop>
-                    <font-awesome-icon icon="fa-solid fa-trash" class="mr-2" />
+                    <delete-icon class="mr-2" :size="'1em' as any" aria-hidden="true" focusable="false" />
                     {{ $t('common.button.delete') }}
                   </el-dropdown-item>
                 </el-dropdown-menu>
@@ -51,75 +80,51 @@
       </div>
     </div>
 
-    <el-dialog v-model="renameDialogVisible" width="420px" title="重命名" :close-on-click-modal="false">
-      <el-input v-model="renameDraft" autofocus @keydown.enter="onConfirmRename" />
-      <template #footer>
-        <el-button @click="renameDialogVisible = false">{{ $t('common.button.cancel') }}</el-button>
-        <el-button type="primary" :loading="renameSubmitting" @click="onConfirmRename">
-          {{ $t('common.button.confirm') }}
-        </el-button>
-      </template>
-    </el-dialog>
-
-    <el-dialog
-      v-model="deleteDialogVisible"
-      width="420px"
-      :title="$t('chat.message.confirmDelete')"
-      :close-on-click-modal="false"
-    >
-      <div class="delete-tip">确认删除该会话？删除后不可恢复。</div>
-      <template #footer>
-        <el-button @click="deleteDialogVisible = false">{{ $t('common.button.cancel') }}</el-button>
-        <el-button type="danger" :loading="deleteSubmitting" @click="onConfirmDelete">
-          {{ $t('common.button.delete') }}
-        </el-button>
-      </template>
-    </el-dialog>
+    <conversation-actions
+      ref="actions"
+      :active-conversation-id="conversationId"
+      @change-conversation="$emit('change-conversation', $event)"
+    />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
 import {
-  ElSkeleton,
-  ElInput,
-  ElButton,
-  ElDialog,
-  ElDropdown,
-  ElDropdownItem,
-  ElDropdownMenu,
-  ElMessage
-} from 'element-plus';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { chatOperator } from '@/operators';
+  AddIcon,
+  DeleteIcon,
+  EditIcon,
+  FileArchiveIcon,
+  MoreIcon,
+  ShareIcon,
+  TimeIcon
+} from '@acedatacloud/core/icons/components';
+import { defineComponent } from 'vue';
+import { ElSkeleton, ElDropdown, ElDropdownItem, ElDropdownMenu } from 'element-plus';
 import { IChatConversation } from '@/models';
 import { Status } from '@/models';
-
-type ConversationCommand = 'rename' | 'delete';
+import { ROUTE_CHAT_SCHEDULED_TASKS, ROUTE_CHAT_ARTIFACTS } from '@/router/constants';
+import ConversationActions, { type ConversationCommand } from './ConversationActions.vue';
 
 export default defineComponent({
   name: 'SidePanel',
   components: {
-    ElInput,
-    ElButton,
-    ElDialog,
+    AddIcon,
+    DeleteIcon,
+    EditIcon,
+    FileArchiveIcon,
+    MoreIcon,
+    ShareIcon,
+    TimeIcon,
     ElDropdown,
     ElDropdownItem,
     ElDropdownMenu,
-    FontAwesomeIcon,
-    ElSkeleton
+    ElSkeleton,
+    ConversationActions
   },
   props: {},
   emits: ['change-conversation'],
   data() {
-    return {
-      renameDialogVisible: false,
-      deleteDialogVisible: false,
-      actingConversation: undefined as IChatConversation | undefined,
-      renameDraft: '',
-      renameSubmitting: false,
-      deleteSubmitting: false
-    };
+    return {};
   },
   computed: {
     conversationId() {
@@ -177,15 +182,18 @@ export default defineComponent({
     },
     loading() {
       return this.$store.state.chat.status.getConversations === Status.Request;
-    },
-    token() {
-      return this.$store.state.chat?.credential?.token;
     }
   },
   methods: {
     async onNewConversation() {
       console.debug('onNewConversation from side panel');
       this.$emit('change-conversation', undefined);
+    },
+    onScheduledTasks() {
+      this.$router.push({ name: ROUTE_CHAT_SCHEDULED_TASKS });
+    },
+    onArtifacts() {
+      this.$router.push({ name: ROUTE_CHAT_ARTIFACTS });
     },
     onClickConversation(id?: string) {
       console.debug('onClickConversation in side panel', id);
@@ -199,82 +207,7 @@ export default defineComponent({
       return conversation?.title || conversation?.last_message_preview || '';
     },
     onConversationCommand(command: ConversationCommand, conversation: IChatConversation) {
-      if (command === 'rename') {
-        this.openRenameDialog(conversation);
-      } else if (command === 'delete') {
-        this.openDeleteDialog(conversation);
-      }
-    },
-    openRenameDialog(conversation: IChatConversation) {
-      this.actingConversation = conversation;
-      this.renameDraft = (conversation?.title || '').trim();
-      this.renameDialogVisible = true;
-    },
-    openDeleteDialog(conversation: IChatConversation) {
-      this.actingConversation = conversation;
-      this.deleteDialogVisible = true;
-    },
-    async onConfirmRename() {
-      const token = this.token;
-      const conversationId = this.actingConversation?.id;
-      const title = (this.renameDraft || '').trim();
-      if (!token) {
-        ElMessage.error('Token 不存在，请重新登录');
-        return;
-      }
-      if (!conversationId) {
-        ElMessage.error('会话不存在');
-        return;
-      }
-      if (!title) {
-        ElMessage.warning('请输入名称');
-        return;
-      }
-      this.renameSubmitting = true;
-      try {
-        await chatOperator.updateConversation(
-          {
-            id: conversationId,
-            title
-          } as IChatConversation,
-          { token }
-        );
-        await this.$store.dispatch('chat/getConversations');
-        this.renameDialogVisible = false;
-        ElMessage.success('已重命名');
-      } catch (e) {
-        console.error(e);
-        ElMessage.error('重命名失败，请稍后重试');
-      } finally {
-        this.renameSubmitting = false;
-      }
-    },
-    async onConfirmDelete() {
-      const token = this.token;
-      const conversationId = this.actingConversation?.id;
-      if (!token) {
-        ElMessage.error('Token 不存在，请重新登录');
-        return;
-      }
-      if (!conversationId) {
-        ElMessage.error('会话不存在');
-        return;
-      }
-      this.deleteSubmitting = true;
-      try {
-        await chatOperator.deleteConversation(conversationId, { token });
-        await this.$store.dispatch('chat/getConversations');
-        if (conversationId === this.conversationId) {
-          this.$emit('change-conversation', undefined);
-        }
-        this.deleteDialogVisible = false;
-        ElMessage.success('已删除');
-      } catch (e) {
-        console.error(e);
-        ElMessage.error('删除失败，请稍后重试');
-      } finally {
-        this.deleteSubmitting = false;
-      }
+      (this.$refs.actions as InstanceType<typeof ConversationActions>)?.run(command, conversation);
     }
   }
 });
@@ -286,7 +219,7 @@ export default defineComponent({
   flex-direction: column;
   align-items: flex-end;
   padding: 12px;
-  width: 260px;
+  width: 100%;
   height: 100%;
   border-right: none;
 
@@ -343,14 +276,21 @@ export default defineComponent({
       }
 
       .icons {
-        width: 30px;
-        padding-left: 10px;
+        display: flex;
+        flex: 0 0 30px;
+        align-items: center;
+        justify-content: center;
+        align-self: stretch;
+        line-height: 1;
+
         .icon {
+          display: block;
           font-size: 14px;
         }
       }
       .title {
         flex: 1;
+        min-width: 0;
         font-size: 14px;
         line-height: 40px;
         overflow: hidden;
@@ -381,12 +321,6 @@ export default defineComponent({
           }
         }
       }
-    }
-
-    .delete-tip {
-      color: var(--el-text-color-regular);
-      font-size: 14px;
-      line-height: 22px;
     }
   }
 }

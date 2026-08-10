@@ -177,7 +177,7 @@
   },
   "button.video": {
     "message": "Video",
-    "description": "Testo del pulsante video"
+    "description": "Testo del pulsante per il video"
   },
   "button.download_video": {
     "message": "Scarica Video",
@@ -209,7 +209,7 @@
   },
   "button.remaster": {
     "message": "Remaster",
-    "description": "Testo del pulsante per migliorare la qualità audio"
+    "description": "Testo del pulsante per migliorare la qualità audio della traccia master"
   },
   "button.replace_section": {
     "message": "Sostituisci Sezione",
@@ -319,6 +319,10 @@
     "message": "Influenza Stile",
     "description": "Controlla l'influenza dello stile sul risultato generato"
   },
+  "name.duration": {
+    "message": "Durata della canzone",
+    "description": "Controlla la durata target della canzone generata"
+  },
   "name.variationCategory": {
     "message": "Tipo di Variazione",
     "description": "Controlla la varietà delle variazioni generate"
@@ -334,6 +338,10 @@
   "name.failureReason": {
     "message": "Motivo di Fallimento",
     "description": "Motivo del fallimento del compito"
+  },
+  "name.failure": {
+    "message": "Generazione fallita",
+    "description": "Titolo per il fallimento del compito Suno"
   },
   "name.status": {
     "message": "Stato",
@@ -388,15 +396,19 @@
     "description": "Descrizione del selettore di genere vocale"
   },
   "description.weirdness": {
-    "message": "Valori più alti generano musica più creativa e sperimentale (0-100)",
+    "message": "Valori più alti generano musica più creativa e sperimentale (0-1)",
     "description": "Descrizione del parametro di creatività"
   },
   "description.styleInfluence": {
-    "message": "Valori più alti aumentano l'influenza dell'etichetta di stile sul risultato generato (0-100)",
+    "message": "Valori più alti aumentano l'influenza dell'etichetta di stile sul risultato generato (0-1)",
     "description": "Descrizione del parametro di influenza dello stile"
   },
+  "description.duration": {
+    "message": "Specifica la durata desiderata della canzone (secondi), il supporto varia a seconda del modello, la durata effettiva può variare leggermente",
+    "description": "Descrizione del parametro della durata della canzone"
+  },
   "description.audioWeight": {
-    "message": "Peso dell'originale sul risultato durante il cover (0-100)",
+    "message": "Peso dell'originale sul risultato durante il cover (0-1)",
     "description": "Descrizione del parametro di peso dell'originale"
   },
   "description.lyricPrompt": {
@@ -494,6 +506,10 @@
   "message.startingTask": {
     "message": "Avvio del compito in corso...",
     "description": "Messaggio all'inizio del compito di generazione musicale"
+  },
+  "message.promptRequired": {
+    "message": "Inserisci una parola chiave o informazioni musicali",
+    "description": "Messaggio di errore quando manca l'input per la generazione musicale."
   },
   "message.startingUploadAudio": {
     "message": "Caricamento della musica personalizzata in corso...",
@@ -767,6 +783,22 @@
     "message": "Inserisci comandi di modifica, ad esempio: rendi i testi più allegri...",
     "description": "Segnaposto per l'input di miglioramento dei testi"
   },
+  "placeholder.lyricsTheme": {
+    "message": "Ad esempio: una ballata rilassante sulla nostalgia d'autunno",
+    "description": "Testo segnaposto per l'input del tema della canzone per la generazione dei testi con AI"
+  },
+  "message.lyricsThemePromptTitle": {
+    "message": "Generazione testi con AI",
+    "description": "Titolo della finestra di input per la generazione dei testi con AI"
+  },
+  "message.lyricsThemePromptMessage": {
+    "message": "Descrivi il tema o la storia di questa canzone, l'AI genererà i testi in base a questo",
+    "description": "Testo esplicativo nella finestra di input per la generazione dei testi con AI"
+  },
+  "message.lyricsThemeRequired": {
+    "message": "Per favore descrivi prima il tema della canzone",
+    "description": "Messaggio di validazione quando il campo del tema è vuoto"
+  },
   "message.enhancingLyrics": {
     "message": "Miglioramento dei testi in corso...",
     "description": "Messaggio durante il miglioramento dei testi"
@@ -833,7 +865,7 @@
   },
   "filter.video": {
     "message": "Video",
-    "description": "Sezione di filtro: Contiene video"
+    "description": "Filtro per la sezione: se contiene video"
   },
   "filter.videoAll": {
     "message": "Tutti",

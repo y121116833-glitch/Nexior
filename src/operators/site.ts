@@ -4,7 +4,9 @@ import { ISite, ISiteDetailResponse, ISiteListResponse } from '@/models';
 
 export interface ISiteQuery {
   origin?: string;
+  origin__endswith?: string;
   user_id?: string;
+  ordering?: string;
   offset?: number;
   limit?: number;
 }
@@ -32,6 +34,10 @@ class SiteService {
 
   async update(id: string, data: ISite): Promise<AxiosResponse<ISiteDetailResponse>> {
     return await httpClient.put(`/${this.key}/${id}`, data);
+  }
+
+  async delete(id: string): Promise<AxiosResponse<void>> {
+    return await httpClient.delete(`/${this.key}/${id}`);
   }
 }
 

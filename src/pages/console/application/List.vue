@@ -1,5 +1,5 @@
 <template>
-  <el-row class="panel p-[30px]">
+  <el-row class="application-list">
     <el-col :span="24">
       <el-row>
         <el-col :span="24">
@@ -12,7 +12,7 @@
             <el-skeleton v-if="loading" />
             <div v-else class="summary-card">
               <div class="icon-wrapper">
-                <font-awesome-icon icon="fa-solid fa-cubes-stacked" />
+                <applications-icon :size="'1em' as any" aria-hidden="true" focusable="false" />
               </div>
               <p class="label">
                 {{ $t('application.title.count') }}
@@ -24,14 +24,14 @@
             </div>
           </el-card>
         </el-col>
-        <el-col v-if="globalApplications?.length > 0" :md="12" :xs="24">
+        <el-col v-if="showGlobalPayment && globalApplications?.length > 0" :md="12" :xs="24">
           <el-card shadow="hover" class="relative min-h-[180px] mb-2" :body-style="{ padding: '18px 20px' }">
             <el-skeleton v-if="loading" />
-            <div v-else class="flex flex-row justify-between align-center">
-              <div class="summary-card">
+            <div v-else class="flex flex-row justify-between items-center gap-3">
+              <div class="summary-card min-w-0 flex-1">
                 <div class="flex justify-start items-center gap-2 mb-2 w-full">
                   <div class="icon-wrapper !mb-0">
-                    <font-awesome-icon icon="fa-solid fa-wallet" />
+                    <wallet-icon :size="'1em' as any" aria-hidden="true" focusable="false" />
                   </div>
                   <span class="text-[var(--el-text-color-regular)] text-[14px] truncate">
                     {{ $t('application.field.id') }}: {{ globalApplications?.[0]?.id }}
@@ -51,19 +51,20 @@
                   {{ $t('application.message.globalBalanceDescription') }}
                 </p>
               </div>
-              <div class="flex flex-col items-end gap-2">
+              <div class="flex flex-col items-end gap-2 shrink-0">
                 <el-button class="!m-0 !px-2" size="small" round @click="onGoUsage(globalApplications?.[0])">
-                  <font-awesome-icon icon="fa-solid fa-chart-line" class="mr-1 text-[12px]" />
+                  <analytics-icon class="mr-1 text-[12px]" :size="'1em' as any" aria-hidden="true" focusable="false" />
                   {{ $t('application.button.usage') }}
                 </el-button>
                 <el-button
+                  v-if="showGlobalPayment"
                   class="!m-0 !px-2"
                   type="primary"
                   round
                   size="small"
                   @click="onBuyMore(globalApplications?.[0])"
                 >
-                  <font-awesome-icon icon="fa-solid fa-coins" class="mr-1 text-[12px]" />
+                  <credits-icon class="mr-1 text-[12px]" :size="'1em' as any" aria-hidden="true" focusable="false" />
                   {{ $t('application.button.buyMore') }}
                 </el-button>
               </div>
@@ -73,12 +74,12 @@
       </el-row>
       <el-row>
         <el-col :span="24">
-          <el-card shadow="hover">
+          <el-card shadow="hover" class="applications-table-card hidden sm:block">
             <el-table
               v-loading="loading"
               :data="individualApplications"
               stripe
-              class="!min-h-[calc(100vh-420px)]"
+              class="applications-table !min-h-[calc(100vh-420px)]"
               table-layout="fixed"
               :empty-text="$t('common.message.noData')"
             >
@@ -90,7 +91,12 @@
                   </span>
                 </template>
               </el-table-column>
-              <el-table-column :label="$t('application.field.type')" width="90px">
+              <el-table-column
+                :label="$t('application.field.type')"
+                width="90px"
+                class-name="hidden sm:table-cell"
+                label-class-name="hidden sm:table-cell"
+              >
                 <template #default="scope">
                   <el-tag v-if="scope.row?.type === 'Period'" type="success" effect="dark" round>
                     {{ $t('application.type.period') }}
@@ -103,6 +109,9 @@
               <el-table-column :label="$t('application.field.name')" width="180px">
                 <template #default="scope">
                   <span>{{ scope.row?.service?.title }}</span>
+                  <el-tag v-if="scope.row?.role === 'grantee'" type="info" size="small" round class="ml-2">
+                    {{ $t('application.badge.shared') }}
+                  </el-tag>
                 </template>
               </el-table-column>
               <el-table-column
@@ -119,7 +128,8 @@
                 prop="used_amount"
                 :label="$t('application.field.usedAmount')"
                 width="150px"
-                class-name="text-center"
+                class-name="hidden sm:table-cell text-center"
+                label-class-name="hidden sm:table-cell"
               >
                 <template #default="scope">
                   <span>{{ getUsedAmount(scope.row) }}</span>
@@ -129,7 +139,8 @@
                 prop="allow_consume_global"
                 :label="$t('application.field.allowConsumeGlobal')"
                 width="120px"
-                class-name="text-center"
+                class-name="hidden sm:table-cell text-center"
+                label-class-name="hidden sm:table-cell"
               >
                 <template #default="scope">
                   <el-switch
@@ -141,7 +152,12 @@
                   />
                 </template>
               </el-table-column>
-              <el-table-column :label="$t('application.field.expiredAt')" width="180px">
+              <el-table-column
+                :label="$t('application.field.expiredAt')"
+                width="180px"
+                class-name="hidden sm:table-cell"
+                label-class-name="hidden sm:table-cell"
+              >
                 <template #default="scope">
                   <span v-if="scope.row.expired_at" class="expired-at">{{ $dayjs.format(scope.row.expired_at) }}</span>
                 </template>
@@ -149,12 +165,35 @@
               <el-table-column fixed="right" width="200px">
                 <template #default="scope">
                   <div class="flex flex-wrap items-center justify-end gap-1">
-                    <el-button class="!m-0 !px-2" size="small" round @click="onGoUsage(scope?.row)">
-                      <font-awesome-icon icon="fa-solid fa-chart-line" class="mr-1 text-[12px]" />
+                    <el-button
+                      v-if="scope.row?.service?.type === serviceType.API"
+                      class="!m-0 !px-2"
+                      size="small"
+                      round
+                      @click="onGoUsage(scope?.row)"
+                    >
+                      <analytics-icon
+                        class="mr-1 text-[12px]"
+                        :size="'1em' as any"
+                        aria-hidden="true"
+                        focusable="false"
+                      />
                       {{ $t('application.button.usage') }}
                     </el-button>
-                    <el-button class="!m-0 !px-2" type="primary" round size="small" @click="onBuyMore(scope?.row)">
-                      <font-awesome-icon icon="fa-solid fa-coins" class="mr-1 text-[12px]" />
+                    <el-button
+                      v-if="rowCanPay(scope?.row)"
+                      class="!m-0 !px-2"
+                      type="primary"
+                      round
+                      size="small"
+                      @click="onBuyMore(scope?.row)"
+                    >
+                      <credits-icon
+                        class="mr-1 text-[12px]"
+                        :size="'1em' as any"
+                        aria-hidden="true"
+                        focusable="false"
+                      />
                       {{ $t('application.button.buyMore') }}
                     </el-button>
                   </div>
@@ -162,6 +201,82 @@
               </el-table-column>
             </el-table>
           </el-card>
+          <div class="application-cards block sm:hidden">
+            <el-skeleton v-if="loading" :rows="4" animated />
+            <template v-else>
+              <el-empty v-if="!individualApplications?.length" :description="$t('common.message.noData')" />
+              <el-card
+                v-for="app in individualApplications"
+                v-else
+                :key="app.id"
+                shadow="hover"
+                class="application-card mb-2"
+                :body-style="{ padding: '14px 16px' }"
+              >
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span class="application-card__name">{{ app?.service?.title }}</span>
+                  <el-tag v-if="app?.type === 'Period'" type="success" effect="dark" size="small" round>
+                    {{ $t('application.type.period') }}
+                  </el-tag>
+                  <el-tag v-else-if="app?.type === 'Usage'" effect="dark" size="small" round>
+                    {{ $t('application.type.usage') }}
+                  </el-tag>
+                  <el-tag v-if="app?.role === 'grantee'" type="info" size="small" round>
+                    {{ $t('application.badge.shared') }}
+                  </el-tag>
+                </div>
+                <div class="application-card__id">
+                  <span class="truncate">{{ $t('application.field.id') }}: {{ app.id }}</span>
+                  <copy-to-clipboard :content="app.id" class="inline-block shrink-0" />
+                </div>
+                <div class="application-card__row">
+                  <span class="label">{{ $t('application.field.remainingAmount') }}</span>
+                  <span class="value">{{ getRemainingAmount(app) }}</span>
+                </div>
+                <div v-if="app?.expired_at" class="application-card__row">
+                  <span class="label">{{ $t('application.field.expiredAt') }}</span>
+                  <span class="value">{{ $dayjs.format(app.expired_at) }}</span>
+                </div>
+                <div v-if="app.service?.type === serviceType.API" class="application-card__row">
+                  <span class="label">{{ $t('application.field.allowConsumeGlobal') }}</span>
+                  <el-switch
+                    v-model="app.allow_consume_global"
+                    :active-value="true"
+                    :inactive-value="false"
+                    @change="updateAllowConsumeGlobal(app, $event)"
+                  />
+                </div>
+                <div class="flex items-center justify-end gap-2 mt-3">
+                  <el-button
+                    v-if="app?.service?.type === serviceType.API"
+                    class="!m-0 !px-3"
+                    size="small"
+                    round
+                    @click="onGoUsage(app)"
+                  >
+                    <analytics-icon
+                      class="mr-1 text-[12px]"
+                      :size="'1em' as any"
+                      aria-hidden="true"
+                      focusable="false"
+                    />
+                    {{ $t('application.button.usage') }}
+                  </el-button>
+                  <el-button
+                    v-if="rowCanPay(app)"
+                    class="!m-0 !px-3"
+                    type="primary"
+                    round
+                    size="small"
+                    @click="onBuyMore(app)"
+                  >
+                    <credits-icon class="mr-1 text-[12px]" :size="'1em' as any" aria-hidden="true" focusable="false" />
+                    {{ $t('application.button.buyMore') }}
+                  </el-button>
+                </div>
+              </el-card>
+            </template>
+          </div>
         </el-col>
       </el-row>
       <el-row>
@@ -182,9 +297,10 @@
 </template>
 
 <script lang="ts">
+import { AnalyticsIcon, ApplicationsIcon, CreditsIcon, WalletIcon } from '@acedatacloud/core/icons/components';
 import { defineComponent } from 'vue';
 import { applicationOperator } from '@/operators';
-import Pagination from '@/components/common/Pagination.vue';
+import { Pagination } from '@acedatacloud/core/components';
 import CopyToClipboard from '@/components/common/CopyToClipboard.vue';
 import {
   ElTable,
@@ -196,9 +312,11 @@ import {
   ElTag,
   ElSkeleton,
   ElSwitch,
+  ElEmpty,
   ElMessage
 } from 'element-plus';
 import { ROUTE_CONSOLE_APPLICATION_EXTRA, ROUTE_CONSOLE_USAGE_LIST } from '@/router/constants';
+import { isIOS, isRechargeDisabled } from '@/utils';
 import {
   IApplication,
   IApplicationListResponse,
@@ -208,7 +326,6 @@ import {
   IService,
   IServiceType
 } from '@/models';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 interface IData {
   individualApplications: IApplication[];
@@ -232,6 +349,10 @@ interface IData {
 export default defineComponent({
   name: 'ConsoleApplicationList',
   components: {
+    AnalyticsIcon,
+    ApplicationsIcon,
+    CreditsIcon,
+    WalletIcon,
     Pagination,
     CopyToClipboard,
     ElTable,
@@ -241,9 +362,9 @@ export default defineComponent({
     ElTag,
     ElSkeleton,
     ElSwitch,
+    ElEmpty,
     ElTableColumn,
-    ElCard,
-    FontAwesomeIcon
+    ElCard
   },
   data(): IData {
     return {
@@ -271,6 +392,15 @@ export default defineComponent({
     },
     page() {
       return parseInt(this.$route.query.page?.toString() || '1');
+    },
+    // The global 积分 wallet IS buyable on iOS via Apple IAP (it always has
+    // the mapped consumable packages), so its top-up entry is shown on every
+    // surface. The card itself is still gated on having a global application.
+    showGlobalPayment(): boolean {
+      if (isRechargeDisabled(this.$store.getters.site)) {
+        return false;
+      }
+      return true;
     }
   },
   watch: {
@@ -285,6 +415,17 @@ export default defineComponent({
     this.onFetchData();
   },
   methods: {
+    // A per-service app row shows "Buy More" on every surface, but on iOS
+    // only when it has an Apple-buyable package (apple_product_id mapped).
+    rowCanPay(application: IApplication): boolean {
+      if (application.role === 'grantee' || isRechargeDisabled(this.$store.getters.site)) {
+        return false;
+      }
+      if (!isIOS()) {
+        return true;
+      }
+      return ((application as any)?.packages || []).some((p: any) => p?.metadata?.apple_product_id);
+    },
     updateAllowConsumeGlobal(application: IApplication, value: any) {
       if (!application || !application.id) {
         return;
@@ -302,8 +443,7 @@ export default defineComponent({
       this.$router.push({
         name: ROUTE_CONSOLE_USAGE_LIST,
         query: {
-          application_id: application.id,
-          type: application?.service?.type
+          application_id: application.id
         }
       });
     },
@@ -407,13 +547,19 @@ export default defineComponent({
   .icon-wrapper {
     height: 40px;
     width: 40px;
-    line-height: 40px;
+    display: grid;
+    place-items: center;
     border-radius: 50%;
     background-color: var(--el-bg-color-page);
-    text-align: center;
     margin-bottom: 6px;
     color: var(--el-color-primary);
     flex-shrink: 0;
+
+    :deep(svg) {
+      display: block;
+      width: 18px;
+      height: 18px;
+    }
   }
   .label {
     color: var(--el-text-color-regular);
@@ -426,12 +572,80 @@ export default defineComponent({
     font-size: 30px;
     margin: 0;
     line-height: 36px;
-    word-break: break-all;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
   }
   .description {
     color: var(--el-text-color-secondary);
     font-size: 12px;
     margin: 4px 0 0 0;
+  }
+}
+
+.application-list {
+  width: 100%;
+  margin: 0;
+}
+
+// Tablet/desktop table can exceed the viewport — let it scroll horizontally
+// instead of squashing columns.
+.applications-table-card {
+  :deep(.el-card__body) {
+    overflow-x: auto;
+  }
+}
+
+.application-card {
+  &__name {
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--el-text-color-primary);
+    word-break: break-word;
+  }
+  &__id {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 6px;
+    color: var(--el-text-color-secondary);
+    font-size: 12px;
+    .truncate {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+  &__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 8px;
+    .label {
+      color: var(--el-text-color-regular);
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+    .value {
+      color: var(--el-text-color-primary);
+      font-size: 14px;
+      font-weight: 500;
+      text-align: right;
+      word-break: break-all;
+    }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .application-list {
+    display: block;
+  }
+
+  .summary-card {
+    .value {
+      font-size: 24px;
+      line-height: 30px;
+    }
   }
 }
 </style>

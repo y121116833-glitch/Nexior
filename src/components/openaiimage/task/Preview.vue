@@ -1,14 +1,25 @@
 <template>
   <div class="preview">
     <div class="left">
-      <el-image :src="OPENAIIMAGE_LOGO" class="avatar" />
+      <capability-presentation capability="openaiimage" part="avatar" class="avatar" />
     </div>
     <div class="main">
       <div class="bot">
-        {{ $t('openaiimage.name.openaiimageBot') }}
+        <capability-presentation capability="openaiimage" part="name" />
         <span class="datetime">
           {{ $dayjs.format('' + new Date(parseFloat((modelValue?.created_at || '').toString()) * 1000)) }}
         </span>
+        <el-tooltip effect="dark" :content="$t('common.button.delete')" placement="top">
+          <button
+            v-if="modelValue?.id"
+            type="button"
+            class="btn-delete"
+            :aria-label="$t('common.button.delete')"
+            @click.stop="onDelete"
+          >
+            <delete-icon :size="'1em' as any" aria-hidden="true" focusable="false" />
+          </button>
+        </el-tooltip>
       </div>
       <div class="info">
         <div
@@ -48,39 +59,41 @@
               {{ $t('common.button.edit') }}
             </el-button>
           </el-tooltip>
+          <api-code-button :path="openaiimagePath" :body="openaiimageCodeBody" />
+          <report-button
+            service="openaiimage"
+            :target-id="modelValue?.id"
+            :snapshot="{ prompt: modelValue?.request?.prompt }"
+          />
         </div>
         <el-alert :closable="false" class="mt-2 success">
           <p v-if="modelValue?.request?.model" class="text-[var(--el-text-color-regular)] text-xs mb-2">
-            <font-awesome-icon icon="fa-solid fa-cube" class="mr-1" />
+            <application-icon class="mr-1" :size="'1em' as any" aria-hidden="true" focusable="false" />
             {{ $t('openaiimage.name.model') }}:
             {{ modelValue?.request?.model }}
           </p>
           <p v-if="(modelValue?.request as any)?.size" class="text-[var(--el-text-color-regular)] text-xs mb-2">
-            <font-awesome-icon icon="fa-solid fa-image" class="mr-1" />
+            <image-icon class="mr-1" :size="'1em' as any" aria-hidden="true" focusable="false" />
             {{ $t('openaiimage.name.size') }}:
             {{ (modelValue?.request as any)?.size }}
           </p>
-          <p v-if="modelValue?.request?.action" class="text-[var(--el-text-color-regular)] text-xs mb-2">
-            <font-awesome-icon icon="fa-solid fa-bolt" class="mr-1" />
+          <p v-if="showTaskType" class="text-[var(--el-text-color-regular)] text-xs mb-2">
+            <lightning-icon class="mr-1" :size="'1em' as any" aria-hidden="true" focusable="false" />
             {{ $t('openaiimage.name.task') }}:
-            {{
-              modelValue?.request?.action === 'generate'
-                ? $t('openaiimage.name.generate')
-                : $t('openaiimage.name.edits')
-            }}
+            {{ taskTypeLabel }}
           </p>
           <p class="text-[var(--el-text-color-regular)] text-xs mb-2">
-            <font-awesome-icon icon="fa-solid fa-magic" class="mr-1" />
+            <magic-icon class="mr-1" :size="'1em' as any" aria-hidden="true" focusable="false" />
             {{ $t('openaiimage.name.taskId') }}:
             {{ modelValue?.id }}
             <copy-to-clipboard :content="modelValue?.id!" class="btn-copy inline-block" />
           </p>
           <p v-if="modelValue?.elapsed" class="text-[var(--el-text-color-regular)] text-xs mb-2">
-            <font-awesome-icon icon="fa-solid fa-clock" class="mr-1" />
+            <time-icon class="mr-1" :size="'1em' as any" aria-hidden="true" focusable="false" />
             {{ $t('openaiimage.name.elapsed') }}: {{ modelValue?.elapsed?.toFixed(2) }}s
           </p>
           <p v-if="modelValue?.response?.trace_id" class="text-[var(--el-text-color-regular)] text-xs mb-0">
-            <font-awesome-icon icon="fa-solid fa-hashtag" class="mr-1" />
+            <channel-icon class="mr-1" :size="'1em' as any" aria-hidden="true" focusable="false" />
             {{ $t('openaiimage.name.traceId') }}:
             {{ modelValue?.response?.trace_id }}
             <copy-to-clipboard :content="modelValue?.response?.trace_id" class="btn-copy inline-block" />
@@ -90,46 +103,42 @@
       <div v-else-if="modelValue?.response?.success === false" :class="{ content: true }">
         <el-alert :closable="false" class="failure">
           <template #template>
-            <font-awesome-icon icon="fa-solid fa-exclamation-triangle" class="mr-1" />
+            <warning-icon class="mr-1" :size="'1em' as any" aria-hidden="true" focusable="false" />
             {{ $t('openaiimage.name.failure') }}
           </template>
           <p v-if="modelValue?.request?.model" class="text-[var(--el-text-color-regular)] text-xs mb-2">
-            <font-awesome-icon icon="fa-solid fa-cube" class="mr-1" />
+            <application-icon class="mr-1" :size="'1em' as any" aria-hidden="true" focusable="false" />
             {{ $t('openaiimage.name.model') }}:
             {{ modelValue?.request?.model }}
           </p>
           <p v-if="(modelValue?.request as any)?.size" class="text-[var(--el-text-color-regular)] text-xs mb-2">
-            <font-awesome-icon icon="fa-solid fa-image" class="mr-1" />
+            <image-icon class="mr-1" :size="'1em' as any" aria-hidden="true" focusable="false" />
             {{ $t('openaiimage.name.size') }}:
             {{ (modelValue?.request as any)?.size }}
           </p>
-          <p v-if="modelValue?.request?.action" class="text-[var(--el-text-color-regular)] text-xs mb-2">
-            <font-awesome-icon icon="fa-solid fa-bolt" class="mr-1" />
+          <p v-if="showTaskType" class="text-[var(--el-text-color-regular)] text-xs mb-2">
+            <lightning-icon class="mr-1" :size="'1em' as any" aria-hidden="true" focusable="false" />
             {{ $t('openaiimage.name.task') }}:
-            {{
-              modelValue?.request?.action === 'generate'
-                ? $t('openaiimage.name.generate')
-                : $t('openaiimage.name.edits')
-            }}
+            {{ taskTypeLabel }}
           </p>
           <p class="text-[var(--el-text-color-regular)] text-xs mb-2">
-            <font-awesome-icon icon="fa-solid fa-magic" class="mr-1" />
+            <magic-icon class="mr-1" :size="'1em' as any" aria-hidden="true" focusable="false" />
             {{ $t('openaiimage.name.taskId') }}:
             {{ modelValue?.id }}
             <copy-to-clipboard :content="modelValue?.id!" class="btn-copy" />
           </p>
           <p class="text-[var(--el-text-color-regular)] text-xs mb-2">
-            <font-awesome-icon icon="fa-solid fa-circle-info" class="mr-1" />
+            <info-icon class="mr-1" :size="'1em' as any" aria-hidden="true" focusable="false" />
             {{ $t('openaiimage.name.failureReason') }}:
             {{ modelValue?.response?.error?.message }}
             <copy-to-clipboard :content="modelValue?.response?.error?.message!" class="btn-copy" />
           </p>
           <p v-if="modelValue?.elapsed" class="text-[var(--el-text-color-regular)] text-xs mb-2">
-            <font-awesome-icon icon="fa-solid fa-clock" class="mr-1" />
+            <time-icon class="mr-1" :size="'1em' as any" aria-hidden="true" focusable="false" />
             {{ $t('openaiimage.name.elapsed') }}: {{ modelValue?.elapsed?.toFixed(2) }}s
           </p>
           <p v-if="modelValue?.response?.trace_id" class="text-[var(--el-text-color-regular)] text-xs mb-0">
-            <font-awesome-icon icon="fa-solid fa-hashtag" class="mr-1" />
+            <channel-icon class="mr-1" :size="'1em' as any" aria-hidden="true" focusable="false" />
             {{ $t('openaiimage.name.traceId') }}:
             {{ modelValue?.response?.trace_id }}
             <copy-to-clipboard :content="modelValue?.response?.trace_id" class="btn-copy" />
@@ -139,30 +148,33 @@
       <div v-else :class="{ content: true }">
         <el-alert :closable="false" class="info">
           <template #template>
-            <font-awesome-icon icon="fa-solid fa-exclamation-triangle" class="mr-1" />
-            {{ $t('openaiimage.name.failure') }}
+            <time-icon
+              v-if="!modelValue?.response"
+              class="mr-1"
+              :size="'1em' as any"
+              aria-hidden="true"
+              focusable="false"
+            />
+            <info-icon v-else class="mr-1" :size="'1em' as any" aria-hidden="true" focusable="false" />
+            {{ $t(modelValue?.response ? 'openaiimage.name.status' : 'openaiimage.status.pending') }}
           </template>
           <p v-if="modelValue?.request?.model" class="text-[var(--el-text-color-regular)] text-xs mb-2">
-            <font-awesome-icon icon="fa-solid fa-cube" class="mr-1" />
+            <application-icon class="mr-1" :size="'1em' as any" aria-hidden="true" focusable="false" />
             {{ $t('openaiimage.name.model') }}:
             {{ modelValue?.request?.model }}
           </p>
           <p v-if="(modelValue?.request as any)?.size" class="text-[var(--el-text-color-regular)] text-xs mb-2">
-            <font-awesome-icon icon="fa-solid fa-image" class="mr-1" />
+            <image-icon class="mr-1" :size="'1em' as any" aria-hidden="true" focusable="false" />
             {{ $t('openaiimage.name.size') }}:
             {{ (modelValue?.request as any)?.size }}
           </p>
-          <p v-if="modelValue?.request?.action" class="text-[var(--el-text-color-regular)] text-xs mb-2">
-            <font-awesome-icon icon="fa-solid fa-bolt" class="mr-1" />
+          <p v-if="showTaskType" class="text-[var(--el-text-color-regular)] text-xs mb-2">
+            <lightning-icon class="mr-1" :size="'1em' as any" aria-hidden="true" focusable="false" />
             {{ $t('openaiimage.name.task') }}:
-            {{
-              modelValue?.request?.action === 'generate'
-                ? $t('openaiimage.name.generate')
-                : $t('openaiimage.name.edits')
-            }}
+            {{ taskTypeLabel }}
           </p>
           <p class="text-[var(--el-text-color-regular)] text-xs mb-2">
-            <font-awesome-icon icon="fa-solid fa-magic" class="mr-1" />
+            <magic-icon class="mr-1" :size="'1em' as any" aria-hidden="true" focusable="false" />
             {{ $t('openaiimage.name.taskId') }}:
             {{ modelValue?.id }}
             <copy-to-clipboard :content="modelValue?.id!" class="btn-copy" />
@@ -174,26 +186,46 @@
 </template>
 
 <script lang="ts">
+import {
+  ApplicationIcon,
+  ChannelIcon,
+  DeleteIcon,
+  ImageIcon,
+  InfoIcon,
+  LightningIcon,
+  MagicIcon,
+  TimeIcon,
+  WarningIcon
+} from '@acedatacloud/core/icons/components';
 import { defineComponent } from 'vue';
-import { ElImage, ElAlert, ElButton, ElTooltip } from 'element-plus';
+import { ElAlert, ElButton, ElMessageBox, ElMessage, ElTooltip } from 'element-plus';
 import { IOpenAIImageTask, IOpenAIImageImage } from '@/models';
-import { OPENAIIMAGE_LOGO } from '@/constants/openaiimage';
 import CopyToClipboard from '@/components/common/CopyToClipboard.vue';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import ImageWrapper from '@/components/common/ImageWrapper.vue';
 import ImagePreview from '@/components/common/ImagePreview.vue';
+import ApiCodeButton from '@/components/common/ApiCodeButton.vue';
+import ReportButton from '@/components/common/ReportButton.vue';
 
 export default defineComponent({
   name: 'TaskPreview',
   components: {
-    ElImage,
+    ApplicationIcon,
+    ChannelIcon,
+    DeleteIcon,
+    ImageIcon,
+    InfoIcon,
+    LightningIcon,
+    MagicIcon,
+    TimeIcon,
+    WarningIcon,
     CopyToClipboard,
-    FontAwesomeIcon,
     ElAlert,
     ImageWrapper,
     ElButton,
     ElTooltip,
-    ImagePreview
+    ImagePreview,
+    ApiCodeButton,
+    ReportButton
   },
   props: {
     modelValue: {
@@ -201,10 +233,41 @@ export default defineComponent({
       required: true
     }
   },
-  setup() {
-    return { OPENAIIMAGE_LOGO };
-  },
   computed: {
+    isEditRequest(): boolean {
+      const req: any = this.modelValue?.request;
+      return this.modelValue?.type === 'images_edits' || req?.action === 'edit' || this.referenceImages.length > 0;
+    },
+    showTaskType(): boolean {
+      return Boolean(this.modelValue?.request?.action || this.modelValue?.type || this.referenceImages.length > 0);
+    },
+    taskTypeLabel() {
+      return this.isEditRequest ? this.$t('openaiimage.name.edits') : this.$t('openaiimage.name.generate');
+    },
+    openaiimagePath(): string {
+      return this.isEditRequest ? '/openai/images/edits' : '/openai/images/generations';
+    },
+    openaiimageCodeBody(): Record<string, unknown> | undefined {
+      const req = this.modelValue?.request as Record<string, unknown> | undefined;
+      if (!req) return undefined;
+      const body: Record<string, unknown> = { ...req };
+      delete body.action;
+      delete body.callback_url;
+      if (this.isEditRequest) {
+        delete body.image_urls;
+        delete body.image;
+        const images = this.referenceImages;
+        if (images.length === 1) {
+          body.image = images[0];
+        } else if (images.length > 1) {
+          body.image = images;
+        }
+      } else {
+        delete body.image_urls;
+        delete body.image;
+      }
+      return body;
+    },
     images(): IOpenAIImageImage[] {
       const result: IOpenAIImageImage[] = [];
       if (Array.isArray(this.modelValue?.response?.data)) {
@@ -239,6 +302,15 @@ export default defineComponent({
       const raw = req.image;
       if (Array.isArray(raw)) return raw.filter((u: unknown): u is string => typeof u === 'string' && u.length > 0);
       if (typeof raw === 'string' && raw.length > 0) return [raw];
+      if (Array.isArray(req.images)) {
+        return req.images
+          .map((item: unknown) => {
+            if (typeof item === 'string') return item;
+            if (item && typeof item === 'object') return (item as { image_url?: unknown }).image_url;
+            return undefined;
+          })
+          .filter((u: unknown): u is string => typeof u === 'string' && u.length > 0);
+      }
       return [];
     }
   },
@@ -249,6 +321,26 @@ export default defineComponent({
       const nextConfig = { ...(this.$store.state.openaiimage?.config || {}) };
       (nextConfig as any).image_urls = [imageUrl];
       this.$store.commit('openaiimage/setConfig', nextConfig);
+    },
+    async onDelete() {
+      const id = this.modelValue?.id;
+      if (!id) return;
+      try {
+        await ElMessageBox.confirm(this.$t('common.message.deleteTaskConfirm'), this.$t('common.button.delete'), {
+          type: 'warning',
+          confirmButtonText: this.$t('common.button.delete'),
+          cancelButtonText: this.$t('common.button.cancel'),
+          confirmButtonClass: 'el-button--danger'
+        });
+      } catch {
+        return; // user cancelled
+      }
+      try {
+        await this.$store.dispatch('openaiimage/deleteTask', { id });
+        ElMessage.success(this.$t('common.message.deleteTaskSuccess'));
+      } catch {
+        ElMessage.error(this.$t('common.message.deleteTaskFailed'));
+      }
     }
   }
 });
@@ -280,19 +372,43 @@ $left-width: 70px;
     padding: 10px 10px 0 10px;
 
     .bot {
+      display: flex;
+      align-items: center;
       font-size: 16px;
       font-weight: bold;
       color: var(--el-color-primary);
       margin-bottom: 0;
       margin-top: 0;
       overflow: hidden;
-      text-overflow: ellipsis;
       white-space: nowrap;
       .datetime {
         font-size: 12px;
         font-weight: normal;
         color: var(--el-text-color-secondary);
         margin-left: 10px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .btn-delete {
+        margin-left: auto;
+        padding: 4px 6px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        line-height: 1;
+        color: var(--el-text-color-secondary);
+        // Hover-reveal on pointer devices; keep it out of the way until wanted.
+        opacity: 0;
+        transition:
+          opacity 0.15s ease,
+          color 0.15s ease;
+        &:hover {
+          color: var(--el-color-danger);
+        }
+        // Touch devices have no hover — always show the control.
+        @media (hover: none) {
+          opacity: 1;
+        }
       }
     }
 
@@ -324,6 +440,11 @@ $left-width: 70px;
         &.info {
           border-color: var(--el-color-info);
         }
+        // Drop the trailing `mb-2` on whichever `<p>` ends up rendered
+        // last (trace_id / elapsed are conditional — e.g. pending tasks).
+        :deep(p:last-child) {
+          margin-bottom: 0;
+        }
       }
     }
 
@@ -342,6 +463,11 @@ $left-width: 70px;
         margin-bottom: 10px;
       }
     }
+  }
+
+  // Reveal the trash icon when hovering anywhere on the card.
+  &:hover .main .bot .btn-delete {
+    opacity: 1;
   }
 }
 </style>

@@ -177,7 +177,7 @@
   },
   "button.video": {
     "message": "Video",
-    "description": "Videopainikkeen teksti"
+    "description": "Videon painikkeen teksti"
   },
   "button.download_video": {
     "message": "Lataa video",
@@ -216,8 +216,8 @@
     "description": "Korvaa kappaleen osa painike"
   },
   "button.mashup": {
-    "message": "Mashup",
-    "description": "Mashup useista kappaleista painike"
+    "message": "Yhdistä",
+    "description": "Yhdistä useita kappaleita -painikkeen teksti"
   },
   "button.generate_lyrics": {
     "message": "AI luo sanoitukset",
@@ -319,6 +319,10 @@
     "message": "Tyylin vaikutus",
     "description": "Säädä tyylin vaikutusta luotavaan tulokseen"
   },
+  "name.duration": {
+    "message": "Kappaleen kesto",
+    "description": "Säätelee luotavan kappaleen tavoitekestoa"
+  },
   "name.variationCategory": {
     "message": "Muunnelman tyyppi",
     "description": "Säädä luotavien muunnelmien monimuotoisuutta"
@@ -334,6 +338,10 @@
   "name.failureReason": {
     "message": "Epäonnistumisen syy",
     "description": "Tehtävän epäonnistumisen syy"
+  },
+  "name.failure": {
+    "message": "Luonti epäonnistui",
+    "description": "Suno-tehtävän epäonnistumisen otsikko"
   },
   "name.status": {
     "message": "Tila",
@@ -388,15 +396,19 @@
     "description": "Ihmisen äänen sukupuolen valitsimen kuvaus"
   },
   "description.weirdness": {
-    "message": "Korkeampi arvo tekee musiikista luovempaa ja kokeellisempaa (0-100)",
+    "message": "Korkeampi arvo tekee musiikista luovempaa ja kokeellisempaa (0-1)",
     "description": "Luovuusparametrin kuvaus"
   },
   "description.styleInfluence": {
-    "message": "Korkeampi arvo tarkoittaa, että tyylilaput vaikuttavat enemmän tulokseen (0-100)",
+    "message": "Korkeampi arvo tarkoittaa, että tyylilaput vaikuttavat enemmän tulokseen (0-1)",
     "description": "Tyylin vaikutusparametrin kuvaus"
   },
+  "description.duration": {
+    "message": "Määritä toivottu kappaleen kesto (sekunteina), eri mallit tukevat eri määriä, todellinen kesto voi vaihdella hieman",
+    "description": "Kappaleen keston parametrin kuvaus"
+  },
   "description.audioWeight": {
-    "message": "Alkuperäisen kappaleen vaikutus paino (0-100)",
+    "message": "Alkuperäisen kappaleen vaikutus paino (0-1)",
     "description": "Alkuperäisen kappaleen painoarvon kuvaus"
   },
   "description.lyricPrompt": {
@@ -494,6 +506,10 @@
   "message.startingTask": {
     "message": "Aloitetaan tehtävä...",
     "description": "Musiikin generointitehtävän aloitusviesti"
+  },
+  "message.promptRequired": {
+    "message": "Syötä kehotussana tai musiikkitieto",
+    "description": "Virheilmoitus, kun musiikin luontiin tarvittava syöte puuttuu."
   },
   "message.startingUploadAudio": {
     "message": "Ladataan mukautettua musiikkia...",
@@ -767,6 +783,22 @@
     "message": "Syötä muokkausohje, esim. tee sanoista iloisempia...",
     "description": "Sanojen parantamisen syöttökentän paikkamerkki"
   },
+  "placeholder.lyricsTheme": {
+    "message": "Esimerkiksi: rauhallinen folk-kappale syksyisestä ikävästä",
+    "description": "Paikkamerkkiteksti tekoälyn sanoitusteeman syötekentässä"
+  },
+  "message.lyricsThemePromptTitle": {
+    "message": "Tekoälyn luomat sanoitukset",
+    "description": "Tekoälyn sanoitusten generoinnin syöteikkunan otsikko"
+  },
+  "message.lyricsThemePromptMessage": {
+    "message": "Kuvaile kappaleen teema tai tarina, niin tekoäly luo sen pohjalta sanoitukset",
+    "description": "Ohjeteksti tekoälyn sanoitusten generoinnin syöteikkunassa"
+  },
+  "message.lyricsThemeRequired": {
+    "message": "Kuvaile ensin kappaleen teema",
+    "description": "Validointiviesti, kun teeman syöte on tyhjä"
+  },
   "message.enhancingLyrics": {
     "message": "Sanoja parannetaan...",
     "description": "Viesti sanoja parannettaessa"
@@ -833,7 +865,7 @@
   },
   "filter.video": {
     "message": "Video",
-    "description": "Suodatusosio: Sisältääkö videoita"
+    "description": "Suodatinosio: sisältääkö videoita"
   },
   "filter.videoAll": {
     "message": "Kaikki",

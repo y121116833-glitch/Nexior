@@ -79,6 +79,18 @@
     "message": "Avaa WeChat puhelimessasi ja skannaa maksun suorittamiseksi",
     "description": "WeChat-maksuohjeen viesti."
   },
+  "message.wechatPayMobileGuide": {
+    "message": "Mobiiliselaimet eivät voi avata WeChat Pay -maksua suoraan. Kopioi alla oleva maksulinkki ja avaa se WeChat-sovelluksessa jatkaaksesi.",
+    "description": "Ohje mobiiliselaimen käyttäjille WeChatin ulkopuolella, missä H5 WeChat Pay ei ole käytettävissä."
+  },
+  "button.copyPayLink": {
+    "message": "Kopioi maksulinkki",
+    "description": "Painikkeen otsikko, joka kopioi nykyisen sivun URL-osoitteen liitettäväksi WeChat-sovelluksessa."
+  },
+  "message.wechatPayMobileHint": {
+    "message": "Kopioimisen jälkeen avaa WeChat, liitä linkki mihin tahansa keskusteluun tai hakukenttään ja napauta sitä suorittaaksesi maksun.",
+    "description": "Toissijainen ohje kopiointilinkin painikkeen alla, joka ohjaa käyttäjiä linkin liittämisessä WeChat-sovelluksessa."
+  },
   "message.free": {
     "message": "Ilmainen",
     "description": "Ilmaisen tilauksen viesti."
@@ -86,6 +98,18 @@
   "message.buyInExternalUrl": {
     "message": "Suorita maksu ulkoisessa linkissä",
     "description": "Ulkoisen linkin maksamisen viesti."
+  },
+  "message.applePayProcessing": {
+    "message": "Viimeistellään ostoa App Storessa…",
+    "description": "Viesti Apple-sisäoston käsittelyn aikana."
+  },
+  "message.applePayFailed": {
+    "message": "App Store -maksu ei valmistunut. Yritä uudelleen.",
+    "description": "Viesti, kun Apple-sisäosto epäonnistuu."
+  },
+  "message.applePayUnavailable": {
+    "message": "Tätä pakettia ei voi ostaa sovelluksessa.",
+    "description": "Viesti, kun Apple-sisäosto ei ole käytettävissä paketille."
   },
   "message.updateFailed": {
     "message": "Päivitys epäonnistui",
@@ -129,11 +153,15 @@
   },
   "title.aliPay": {
     "message": "Alipay",
-    "description": "Otsikko, joka näytetään verkkosivustolla ja tarkoittaa Alipay-maksua, Alipay on verkkopankkimaksu."
+    "description": "Otsikko, joka näkyy verkkosivustolla, tarkoittaa Alipay-maksua. Alipay-maksu on verkkopayment-muoto."
   },
   "title.stripe": {
     "message": "Stripe",
     "description": "Otsikko, joka näytetään verkkosivustolla ja tarkoittaa Stripe-maksua, Stripe on verkkopankkimaksu."
+  },
+  "title.card": {
+    "message": "Pankkikortti",
+    "description": "Otsikko, joka näkyy verkkosivustolla, tarkoittaa pankkikorttimaksua (luottokortti/veloituskortti)."
   },
   "title.manageOrder": {
     "message": "Hallitse tilausta",
@@ -371,6 +399,10 @@
     "message": "Solana Lompakko",
     "description": "Solana lompakon yhdistämiskortin otsikko."
   },
+  "message.publicPayNotFound": {
+    "message": "Tilausta ei löytynyt tai se on vanhentunut.",
+    "description": "Näytetään julkisella maksusivulla, kun tilauksen GET palauttaa 404."
+  },
   "message.x402WalletStatusDetected": {
     "message": "Havaittu",
     "description": "Havaittu/Asennettu lompakon tilan etiketti."
@@ -502,5 +534,45 @@
   "title.updateDiscount": {
     "message": "Päivitä alennus",
     "description": "Alennuksen muokkausikkunan otsikko."
+  },
+  "message.wechatPayLongPressTip": {
+    "message": "Paina alla olevaa QR-koodia pitkaan ja valitse 'Tunnista QR-koodi' suorittaaksesi maksun WeChatissa.",
+    "description": "Vihje, joka näkyy QR-koodin yläpuolella mobiili-WeChat-selaimessa. Käyttäjä painaa pitkään tunnistaakseen `weixin://wxpay/bizpayurl` -osoitteen ja voi maksaa poistumatta WeChat-sovelluksesta."
+  },
+  "message.wechatPayMobileScanTip": {
+    "message": "Tallenna tai ota kuvakaappaus alla olevasta QR-koodista, avaa WeChat, napsauta Skannaa, valitse oikeassa yläkulmassa oleva galleria ja valitse juuri tallennettu kuva maksamisen suorittamiseksi.",
+    "description": "Näytetään QR-koodin yläpuolella mobiiliselainympäristössä, joka ei ole WeChat. Ohjeistaa käyttäjää tallentamaan QR-koodikuva ja tunnistamaan se WeChatin gallerian kautta maksamisen suorittamiseksi."
+  },
+  "message.creditsValue": {
+    "message": "{value} krediittiä",
+    "description": "Tilauksen krediittimäärän näyttö, esim. '5 krediittiä'. {value} on muotoiltu krediittinumero."
+  },
+  "title.totalOrders": {
+    "message": "Tilaukset yhteensä",
+    "description": "Yhteenvetokortti: nykyisten suodattimien mukaisten tilausten kokonaismäärä."
+  },
+  "title.totalSpent": {
+    "message": "Yhteensä käytetty",
+    "description": "Yhteenvetokortti: yhteensä käytetty summa vastaavissa tilauksissa."
+  },
+  "title.finishedOrders": {
+    "message": "Valmiit tilaukset",
+    "description": "Yhteenvetokortti: valmiiden tilausten määrä."
+  },
+  "title.pendingOrders": {
+    "message": "Odottavat tilaukset",
+    "description": "Yhteenvetokortti: odottavien tilausten määrä."
+  },
+  "button.export": {
+    "message": "Vie CSV",
+    "description": "Painikkeen otsikko suodatettujen tilausten viemiseen CSV-muodossa."
+  },
+  "field.allStates": {
+    "message": "Kaikki tilat",
+    "description": "Tilasuodattimen pudotusvalikon paikkamerkki, kun tilaa ei ole valittu."
+  },
+  "field.allPayWays": {
+    "message": "Kaikki maksutavat",
+    "description": "Maksutapasuodattimen pudotusvalikon paikkamerkki, kun maksutapaa ei ole valittu."
   }
 }

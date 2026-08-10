@@ -4,7 +4,7 @@
       <div class="trigger">
         <img v-if="model?.icon" :src="model.icon" class="trigger-icon" />
         <span class="trigger-name">{{ model?.getDisplayName?.() ?? model?.name ?? '' }}</span>
-        <font-awesome-icon icon="fa-solid fa-chevron-down" class="trigger-arrow" />
+        <expand-down-icon class="trigger-arrow" :size="'1em' as any" aria-hidden="true" focusable="false" />
       </div>
       <template #dropdown>
         <el-dropdown-menu v-if="modelGroup && modelGroup?.models">
@@ -17,10 +17,19 @@
             <div class="item">
               <img v-if="option?.icon" :src="option.icon" class="item-icon" />
               <div class="item-info">
-                <p v-if="option?.getDisplayName" class="item-name">{{ option?.getDisplayName() }}</p>
+                <p v-if="option?.getDisplayName" class="item-name">
+                  {{ option?.getDisplayName() }}
+                  <span v-if="option?.isFree" class="item-free-tag">{{ $t('chat.model.freeTag') }}</span>
+                </p>
                 <p v-if="option?.getDescription" class="item-desc">{{ option?.getDescription() }}</p>
               </div>
-              <font-awesome-icon v-if="model?.name === option?.name" icon="fa-solid fa-check" class="item-check" />
+              <confirm-icon
+                v-if="model?.name === option?.name"
+                class="item-check"
+                :size="'1em' as any"
+                aria-hidden="true"
+                focusable="false"
+              />
             </div>
           </el-dropdown-item>
         </el-dropdown-menu>
@@ -30,9 +39,9 @@
 </template>
 
 <script lang="ts">
+import { ConfirmIcon, ExpandDownIcon } from '@acedatacloud/core/icons/components';
 import { defineComponent } from 'vue';
 import { ElDropdown, ElDropdownItem, ElDropdownMenu } from 'element-plus';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { IChatModelGroup } from '@/models';
 import {
   CHAT_MODEL_GROUP_CHATGPT,
@@ -40,7 +49,8 @@ import {
   CHAT_MODEL_GROUP_GROK,
   CHAT_MODEL_GROUP_GEMINI,
   CHAT_MODEL_GROUP_CLAUDE,
-  CHAT_MODEL_GROUP_KIMI
+  CHAT_MODEL_GROUP_KIMI,
+  getDefaultChatModel
 } from '@/constants';
 
 interface IData {
@@ -50,10 +60,11 @@ interface IData {
 export default defineComponent({
   name: 'ModelSelector',
   components: {
+    ConfirmIcon,
+    ExpandDownIcon,
     ElDropdown,
     ElDropdownMenu,
-    ElDropdownItem,
-    FontAwesomeIcon
+    ElDropdownItem
   },
   emits: ['update:modelValue', 'select', 'model-group-changed', 'model-changed'],
   data(): IData {
@@ -82,7 +93,7 @@ export default defineComponent({
     modelGroup(newValue: IChatModelGroup) {
       console.debug('modelGroup from route changed', newValue);
       this.$store.dispatch('chat/setModelGroup', newValue);
-      this.$store.dispatch('chat/setModel', newValue.models[0]);
+      this.$store.dispatch('chat/setModel', getDefaultChatModel(newValue));
     }
   },
   mounted() {
@@ -93,7 +104,7 @@ export default defineComponent({
     //
     // We also reconcile `chat.model` (which IS persisted): if the
     // remembered model belongs to a different group than the route, fall
-    // back to the new group's first model. Otherwise leave the user's
+    // back to the new group's default model. Otherwise leave the user's
     // selection alone \u2014 a refresh shouldn't snap them from gpt-5-mini
     // back to gpt-5.
     const route = this.modelGroup;
@@ -102,7 +113,7 @@ export default defineComponent({
     }
     const persistedModel = this.$store.state.chat?.model;
     if (!route.models.some((m) => m.name === persistedModel?.name)) {
-      this.$store.dispatch('chat/setModel', route.models[0]);
+      this.$store.dispatch('chat/setModel', getDefaultChatModel(route));
     }
   },
   methods: {
@@ -192,6 +203,22 @@ export default defineComponent({
     color: var(--el-text-color-primary);
     margin: 0;
     line-height: 1.4;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .item-free-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--el-color-success);
+    background-color: var(--el-color-success-light-9);
+    border: 1px solid var(--el-color-success-light-7);
   }
 
   .item-desc {

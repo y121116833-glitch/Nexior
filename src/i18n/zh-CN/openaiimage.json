@@ -51,28 +51,32 @@
     "message": "尺寸",
     "description": "输出图像尺寸"
   },
+  "size.auto": {
+    "message": "自动",
+    "description": "尺寸选项：自动，由模型根据提示词选择合适的宽高比"
+  },
   "description.size": {
     "message": "输出图像尺寸。不同模型支持的尺寸不同：gpt-image-1 / gpt-image-1.5 仅支持 1024x1024、1536x1024、1024x1536；gpt-image-2 还支持 1792x1024、1024x1792，以及 2K/4K 预设；gpt-image-2 可启用自定义尺寸。",
     "description": "尺寸说明"
   },
   "sizeGroup.standard1k": {
-    "message": "1K 标准（基础价）",
-    "description": "1K 尺寸分组标题，按基础价计费"
+    "message": "1K 标准",
+    "description": "1K 尺寸分组标题"
   },
   "sizeGroup.preset2k": {
-    "message": "2K 预设（1.5 倍价）",
-    "description": "2K 尺寸分组标题，按 1.5 倍价计费"
+    "message": "2K 预设",
+    "description": "2K 尺寸分组标题"
   },
   "sizeGroup.preset4k": {
-    "message": "4K 预设（1.5 倍价）",
-    "description": "4K 尺寸分组标题，按 1.5 倍价计费"
+    "message": "4K 预设",
+    "description": "4K 尺寸分组标题"
   },
   "name.customSize": {
     "message": "自定义尺寸",
     "description": "自定义尺寸开关标签"
   },
   "description.customSize": {
-    "message": "启用后可自由设置宽高（仅 gpt-image-2 支持）。需为 16 的倍数，最长边 ≤ 3840，总像素 ≤ 8,294,400。非 1K 标准尺寸按 1.5 倍价计费。",
+    "message": "启用后可自由设置宽高（仅 gpt-image-2 支持）。需为 16 的倍数，最长边 ≤ 3840，总像素 ≤ 8,294,400。",
     "description": "自定义尺寸说明"
   },
   "name.width": {
@@ -112,7 +116,7 @@
     "description": "model 参数说明"
   },
   "description.imageUrls": {
-    "message": "上传 1-5 张参考图即可进入编辑模式。",
+    "message": "上传 1-16 张参考图即可进入编辑模式。",
     "description": "image_urls 参数说明"
   },
   "status.pending": {
@@ -139,6 +143,10 @@
     "message": "正在启动任务...",
     "description": "开始任务消息"
   },
+  "message.promptRequired": {
+    "message": "请输入提示词",
+    "description": "提示词缺失时的错误消息"
+  },
   "message.startTaskSuccess": {
     "message": "成功发起生成任务",
     "description": "任务成功创建"
@@ -152,7 +160,7 @@
     "description": "已用完提示"
   },
   "message.uploadImageExceed": {
-    "message": "最多可上传 5 张图片",
+    "message": "最多可上传 {count} 张图片",
     "description": "图片数量超过限制"
   },
   "message.uploadImageError": {
@@ -174,5 +182,9 @@
   "model.gptImage2": {
     "message": "gpt-image-2",
     "description": "gpt-image-2 模型选项"
+  },
+  "model.gptImage2Official": {
+    "message": "gpt-image-2（官方直连）",
+    "description": "gpt-image-2 官方直连模型选项"
   }
 }

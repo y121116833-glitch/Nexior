@@ -11,6 +11,10 @@
     "message": "サブサイトに今すぐアクセス",
     "description": "新規作成後に即座に移動するかどうかを尋ねるダイアログのタイトル"
   },
+  "title.openSite": {
+    "message": "サブサイトを開く",
+    "description": "サブサイト確認ダイアログを開くタイトル"
+  },
   "field.slug": {
     "message": "サブドメインプレフィックス",
     "description": "サブサイトのスラッグ入力フィールドのタイトル"
@@ -18,6 +22,14 @@
   "field.origin": {
     "message": "サブサイトのドメイン名",
     "description": "サブサイトリストのドメイン名列"
+  },
+  "field.defaultLabel": {
+    "message": "デフォルト",
+    "description": "サブドメイン確認ダイアログのデフォルトサブドメイン横のタグ"
+  },
+  "field.customLabel": {
+    "message": "カスタム",
+    "description": "サブドメイン確認ダイアログのカスタム（独自）ホスト名横のタグ"
   },
   "field.title": {
     "message": "サブサイトのタイトル",
@@ -51,6 +63,10 @@
     "message": "管理",
     "description": "サブサイト設定に入るボタン"
   },
+  "button.delete": {
+    "message": "削除",
+    "description": "サブサイトを削除するボタン"
+  },
   "message.indexTip": {
     "message": "メインサイトの下に独立したブランドのサブサイトを作成できます。各サブサイトは独自のロゴ、タイトル、機能セットを持ち、ソースコードを個別に構築する必要はありません。",
     "description": "サブサイト管理ホームページの説明文"
@@ -79,6 +95,10 @@
     "message": "サブサイトの作成に失敗しました。後でもう一度お試しください。",
     "description": "作成失敗"
   },
+  "message.slugTaken": {
+    "message": "サブドメイン {origin} はすでに使用されています。別のものを試してください。",
+    "description": "サブサイト作成時に、slug がすでに使用されている場合（バックエンドから code=duplication が返された場合）"
+  },
   "message.loadFailed": {
     "message": "サブサイトリストの読み込みに失敗しました。",
     "description": "リストの取得失敗"
@@ -86,6 +106,22 @@
   "message.openNowConfirm": {
     "message": "サブサイト {origin} が作成されました。今すぐ開いて設定を続けますか？",
     "description": "作成後に即座に開くかどうか"
+  },
+  "message.openSiteHint": {
+    "message": "このサブサイトは複数のドメインにバインドされています。開くアドレスを選択してください。新しいタブで開きます。",
+    "description": "URLピッカーを説明するオープンサブサイトダイアログ内の本文ヒント。"
+  },
+  "message.deleteConfirm": {
+    "message": "サブサイト {origin} を削除しますか？このドメインからはアクセスできなくなり、この操作は元に戻せません。",
+    "description": "サブサイト削除前の確認プロンプト"
+  },
+  "message.deleted": {
+    "message": "サブサイト {origin} を削除しました。",
+    "description": "サブサイト削除後の成功メッセージ"
+  },
+  "message.deleteFailed": {
+    "message": "サブサイトの削除に失敗しました。しばらくしてから再度お試しください。",
+    "description": "DELETE失敗時のフォールバックエラーメッセージ"
   },
   "title.domains": {
     "message": "{origin} のカスタムドメイン名",
@@ -155,6 +191,10 @@
     "message": "ドメインの作成に失敗しました。後でもう一度お試しください。",
     "description": "作成失敗"
   },
+  "message.domainTaken": {
+    "message": "ドメイン {hostname} はすでに追加されています。別のドメインを使用してください。",
+    "description": "選択したホスト名がすでにサイトに紐付けられている場合に表示されます（バックエンドが code=duplication を返した場合）。"
+  },
   "message.domainsLoadFailed": {
     "message": "ドメインリストの読み込みに失敗しました。",
     "description": "ドメインリストの取得失敗"
@@ -190,5 +230,9 @@
   "status.failed": {
     "message": "失敗",
     "description": "Failed 状態ラベル"
+  },
+  "message.recordNameHint": {
+    "message": "ヒント: 多くの DNS プロバイダー（DNSPod / Cloudflare / Aliyun / Tencent Cloud など）の「ホスト」「名前」欄にはサブドメイン部分のみを入力します。たとえば studio.your-brand.com をバインドするときは studio とだけ入力します。ルートドメインそのもの（例: your-brand.com）をバインドする場合は、ホストに {'@'} を入力してください。FQDN 全体を要求するサービス（AWS Route 53、Bind など）では、上の表に表示された値をそのまま入力してください。",
+    "description": "DNS レコード表の下に表示されるヒント。一般的な DNS プロバイダーで「ホスト/名前」欄に入力すべき値（サブドメイン接頭辞 / @ / 完全な FQDN）を説明する。"
   }
 }

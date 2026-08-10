@@ -7,6 +7,10 @@
     "message": "Användning",
     "description": "Tjänstens användning."
   },
+  "badge.shared": {
+    "message": "Delad",
+    "description": "En badge i applikationslistan som markerar att denna applikation är auktoriserad för användning av den nuvarande användaren av någon annan, snarare än att den ägs av den nuvarande användaren."
+  },
   "field.expiredAt": {
     "message": "Utgångsdatum",
     "description": "Datum för ansökans utgång."
@@ -49,7 +53,7 @@
   },
   "field.status": {
     "message": "Status",
-    "description": "Ansökans status."
+    "description": "Status för ansökan."
   },
   "field.id": {
     "message": "Ansöknings-ID",
@@ -72,8 +76,8 @@
     "description": "Ansökans tjänst."
   },
   "field.operation": {
-    "message": "Operation",
-    "description": "Ansökans operation."
+    "message": "Åtgärd",
+    "description": "Den åtgärd som ansökan avser."
   },
   "field.allowConsumeGlobal": {
     "message": "Tillåt användning av allmänt saldo",
@@ -101,7 +105,7 @@
   },
   "field.proxy": {
     "message": "Proxy",
-    "description": "Detta är en online-tjänst som tillhandahåller tjänster via HTTP-proxy."
+    "description": "Detta är en online-tjänst där formulär använder en HTTP-proxy (för att överföra data) för att tillhandahålla tjänster till användaren."
   },
   "field.credential": {
     "message": "Autentiseringsuppgifter",
@@ -134,6 +138,18 @@
   "message.applySuccessfully": {
     "message": "Ansökan lyckades",
     "description": "Meddelande som visas när användaren framgångsrikt har ansökt om denna tjänst."
+  },
+  "message.applyFailed": {
+    "message": "Misslyckades med att aktivera gratis provperiod, vänligen uppdatera sidan och försök igen.",
+    "description": "Visas som en varning när den globala ansökan misslyckas."
+  },
+  "message.welcomeWithCredits": {
+    "message": "🎉 Välkommen till {brand}! Vi har gett dig {credits} krediter som du kan använda för att uppleva alla tjänster på plattformen.",
+    "description": "Visas som en välkomstmeddelande efter en lyckad global ansökan eller vid första inloggning. {credits} är det kvarvarande beloppet av den globala ansökan."
+  },
+  "message.welcomeNoCredits": {
+    "message": "🎉 Välkommen till {brand}! Ditt konto är klart, och du kan använda alla tjänster på plattformen.",
+    "description": "Visas som en välkomstmeddelande när det inte finns några tillgängliga gratis krediter."
   },
   "message.notApplied": {
     "message": "Du har inte ansökt om denna tjänst, vänligen ansök innan du använder den.",
@@ -228,7 +244,7 @@
     "description": "Titeln på sidan när användaren vill köpa en tjänst."
   },
   "title.globalBuy": {
-    "message": "Ace Data Cloud Allmänna poängpåfyllning",
+    "message": "{brand} Allmänna poängpåfyllning",
     "description": "Titeln på sidan när användaren vill köpa en allmän tjänst."
   },
   "title.applicationRemainingCount": {
@@ -240,7 +256,7 @@
     "description": "Titeln på sidan när användaren vill hantera ansökningar."
   },
   "title.applicationBalance": {
-    "message": "Exklusiv poäng - {service}",
+    "message": "Dedikerat saldo - {service}",
     "description": "Visas när användaren kontrollerar ansökningsbalansen."
   },
   "title.count": {
@@ -256,8 +272,8 @@
     "description": "Titeln på sidan när användaren kontrollerar den allmänna balansen."
   },
   "message.globalBalanceDescription": {
-    "message": "När 'Tillåt allmän balans' är aktiverat kommer instansens balans att använda den allmänna balansen automatiskt vid brist.",
-    "description": "Förklarande text som beskriver att den allmänna balansen kommer att användas automatiskt vid brist på instansens balans."
+    "message": "När 'Tillåt allmän balans' är aktiverat kommer det dedikerade saldot att använda den allmänna balansen automatiskt vid brist.",
+    "description": "Förklarande text som beskriver att den allmänna balansen kommer att användas automatiskt vid brist på dedikerade saldot."
   },
   "button.service": {
     "message": "Exklusiv support",

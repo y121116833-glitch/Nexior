@@ -3,13 +3,14 @@
     <router-view class="main" />
     <navigator class="navigator" :direction="mobile ? 'row' : 'column'" />
     <application-status
-      v-if="application"
-      class="fixed right-2 top-2 z-[200]"
+      v-if="application || x402Scenario"
+      class="status-floating fixed right-2 z-[200]"
       :application="application"
       :applications="applications"
       :show-price="false"
       :authenticated="!!$store.state.token.access"
       :service="service"
+      :scenario="x402Scenario"
       @select="$store.dispatch(`${appName}/setApplication`, $event)"
     />
     <application-confirm v-model.visible="applying" @apply="onApply" />
@@ -27,6 +28,12 @@ import { applicationOperator } from '@/operators';
 import { ERROR_CODE_DUPLICATION } from '@/constants';
 import ApplicationConfirm from '@/components/application/Confirm.vue';
 import { getFinalApplication } from '@/utils';
+import { isScenarioX402Enabled } from '@/utils/x402/scenarioPayment';
+
+// How often the floating Credits pill re-syncs the selected application's
+// balance. Generations spend credits server-side at task-creation time, so
+// without this the pill stayed stale until a full page reload.
+const BALANCE_REFRESH_INTERVAL_MS = 15000;
 
 export default defineComponent({
   name: 'LayoutMain',
@@ -44,14 +51,47 @@ export default defineComponent({
     return {
       initialized: false,
       applying: false,
-      mobile: window.innerWidth < 768,
+      mobile: typeof window !== 'undefined' && window.innerWidth < 768,
       initializeRunId: 0,
-      welcomeShown: false
+      balanceTimer: 0
     };
   },
   computed: {
     appName(): keyof IAppState {
       return this.$route.meta.appName as keyof IAppState;
+    },
+    x402Scenario(): string | undefined {
+      if (this.appName === 'kling' && this.$store.state.kling?.taskType === 'motion') return undefined;
+      return this.x402ScenarioEnabled ? String(this.appName) : undefined;
+    },
+    x402ScenarioEnabled(): boolean {
+      return (
+        [
+          'nanobanana',
+          'openaiimage',
+          'flux',
+          'qrart',
+          'luma',
+          'pika',
+          'pixverse',
+          'hailuo',
+          'veo',
+          'seedance',
+          'sora',
+          'wan',
+          'omni',
+          'grokvideo',
+          'minimax',
+          'maestro',
+          'kling',
+          'digitalhuman',
+          'serp',
+          'suno',
+          'midjourney',
+          'producer',
+          'chat'
+        ].includes(String(this.appName)) && isScenarioX402Enabled()
+      );
     },
     application() {
       // Global application and individual application can be used here
@@ -88,15 +128,62 @@ export default defineComponent({
   mounted() {
     // Fetch applications when the component is mounted
     this.initialize();
-    // Update mobile state on resize
-    window.addEventListener('resize', () => {
-      this.mobile = window.innerWidth < 768;
-    });
+    // Update mobile state on resize. Stored as a stable reference so that
+    // beforeUnmount can remove it — Main.vue is re-mounted on every
+    // service-page navigation, so the anonymous-arrow version was leaking
+    // one listener per visit, all of which kept the mounted instance alive.
+    window.addEventListener('resize', this.onResize);
+    // Keep the floating Credits pill live after generations spend balance:
+    // refresh on an interval and whenever the tab regains focus.
+    this.balanceTimer = window.setInterval(this.refreshBalances, BALANCE_REFRESH_INTERVAL_MS);
+    document.addEventListener('visibilitychange', this.onVisibility);
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.onResize);
+    window.clearInterval(this.balanceTimer);
+    document.removeEventListener('visibilitychange', this.onVisibility);
   },
   methods: {
+    onResize() {
+      this.mobile = window.innerWidth < 768;
+    },
+    onVisibility() {
+      if (typeof document !== 'undefined' && !document.hidden) {
+        this.refreshBalances();
+      }
+    },
+    // Re-sync the selected application's balance so the floating Credits pill
+    // reflects spend right after a generation, without a full page reload.
+    async refreshBalances() {
+      if (!this.appName) return;
+      if (!this.$store.state.token?.access) return;
+      if (typeof document !== 'undefined' && document.hidden) return;
+      if (this.loading) return;
+      await Promise.allSettled([
+        this.$store.dispatch('getApplications'),
+        this.$store.dispatch(`${this.appName}/getApplications`)
+      ]);
+      // Update via the plain mutation with a fresh copy from the just-fetched
+      // list — NOT the setApplication action, which would re-run credential
+      // creation on every tick.
+      const current = this.$store.state[this.appName]?.application;
+      if (!current) return;
+      const fresh = this.applications?.find((a) => a.id === current.id);
+      if (fresh && fresh !== current) {
+        this.$store.commit(`${this.appName}/setApplication`, fresh);
+      }
+    },
     async initialize() {
       const runId = ++this.initializeRunId;
       this.initialized = false;
+      // Guests browse without an application/credential — defer all of that
+      // (and login itself) until they actually start an operation. Skip the
+      // whole bootstrap so we neither fire doomed authenticated requests nor
+      // pop the auto-apply error toast. `initialized` stays false, so the
+      // per-page `initialized` watchers that fetch tasks never run for guests.
+      if (!this.$store.state.token?.access) {
+        return;
+      }
       console.debug('Fetching all individual and global applications for', this.appName);
       await Promise.allSettled([
         this.$store.dispatch('getApplications'),
@@ -106,13 +193,12 @@ export default defineComponent({
         return;
       }
       console.debug('Fetched all applications', this.applications);
-      // Auto-create the global application silently for first-time users and
-      // greet them with a welcome toast. Avoid the previous "apply for service"
-      // confirm dialog that interrupted every first service visit.
+      // First-time users: silently create the global application. The welcome
+      // toast only fires inside onAutoApply(), so users who already had a
+      // global application (returning visitors, top-ups, multi-device logins)
+      // never see the credit-grant message.
       if (this.$store.state.applications?.length === 0) {
         await this.onAutoApply();
-      } else if (!this.welcomeShown && this.$store.state.token?.access) {
-        this.showWelcomeToast(false);
       }
       // set the application if it exists
       const currentApplication = this.$store.state[this.appName]?.application;
@@ -140,7 +226,7 @@ export default defineComponent({
         });
         this.applying = false;
         await this.$store.dispatch('getApplications');
-        this.showWelcomeToast(true);
+        this.showWelcomeToast();
       } catch (error: any) {
         if (error?.response?.data?.code === ERROR_CODE_DUPLICATION) {
           // Backend already had the global app — refresh and continue silently.
@@ -150,24 +236,18 @@ export default defineComponent({
         }
       }
     },
-    showWelcomeToast(firstTime: boolean) {
-      if (this.welcomeShown) return;
-      const userId = this.$store.state.user?.id;
-      if (!userId) return;
-      const storageKey = `nexior:welcomeShown:${userId}`;
-      if (!firstTime && localStorage.getItem(storageKey)) {
-        this.welcomeShown = true;
-        return;
-      }
+    showWelcomeToast() {
+      // Called only after a successful applicationOperator.create() for a
+      // GLOBAL application — i.e. the user genuinely just got their first
+      // free-credit grant. No localStorage gate needed.
       const globalApp = this.$store.state.applications?.[0];
       const credits = Math.floor(globalApp?.remaining_amount ?? 0);
+      const brand = this.$store.state.site?.title || 'AceData';
       const message =
         credits > 0
-          ? this.$t('application.message.welcomeWithCredits', { credits })
-          : this.$t('application.message.welcomeNoCredits');
+          ? this.$t('application.message.welcomeWithCredits', { credits, brand })
+          : this.$t('application.message.welcomeNoCredits', { brand });
       ElMessage({ message: message as string, type: 'success', duration: 6000, showClose: true });
-      localStorage.setItem(storageKey, '1');
-      this.welcomeShown = true;
     }
   }
 });
@@ -194,20 +274,40 @@ export default defineComponent({
   }
 }
 
+// Keep the wallet / balance pill below native status bars.
+.status-floating {
+  top: calc(0.5rem + var(--app-safe-area-top));
+}
+
+// Desktop: push the pill below the 40px titleBarOverlay so it doesn't overlap
+// the window drag region visually. Keep the right offset at the base value
+// (`right-2` = 0.5rem) — the min/max/close buttons occupy top 0..40px, so a
+// pill starting at top: 44px sits *below* them, not next to them.
+html.surface-desktop .status-floating {
+  top: 44px;
+}
+
 @media (max-width: 767px) {
   .wrapper {
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
+    // Keep page content below the iOS Dynamic Island / notch and Android
+    // status bar (battery / time / icons). The bottom navigator already
+    // consumes `--app-safe-area-bottom`; the top inset has to be added at
+    // the layout wrapper so every routed service page inherits it.
+    padding-top: var(--app-safe-area-top);
     .main {
-      height: calc(100% - 60px);
+      height: calc(100% - var(--app-dock-height) - var(--app-safe-area-bottom) - var(--app-safe-area-top));
       width: 100%;
       flex: 1;
     }
     .navigator {
       width: 100%;
-      height: 60px;
+      height: calc(var(--app-dock-height) + var(--app-safe-area-bottom));
+      padding-bottom: var(--app-safe-area-bottom);
+      transition: height 0.18s ease;
     }
   }
 }

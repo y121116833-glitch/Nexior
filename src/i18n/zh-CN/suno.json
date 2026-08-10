@@ -319,6 +319,10 @@
     "message": "风格影响力",
     "description": "控制风格对生成结果的影响程度"
   },
+  "name.duration": {
+    "message": "歌曲时长",
+    "description": "控制生成歌曲的目标时长"
+  },
   "name.variationCategory": {
     "message": "变体类型",
     "description": "控制生成变体的多样性程度"
@@ -334,6 +338,10 @@
   "name.failureReason": {
     "message": "失败原因",
     "description": "任务失败的原因"
+  },
+  "name.failure": {
+    "message": "生成失败",
+    "description": "Suno 任务失败标题"
   },
   "name.status": {
     "message": "状态",
@@ -388,15 +396,19 @@
     "description": "人声性别选择器的描述"
   },
   "description.weirdness": {
-    "message": "值越高生成的音乐越有创意和实验性 (0-100)",
+    "message": "值越高生成的音乐越有创意和实验性 (0-1)",
     "description": "创意度参数的描述"
   },
   "description.styleInfluence": {
-    "message": "值越高风格标签对生成结果的影响越大 (0-100)",
+    "message": "值越高风格标签对生成结果的影响越大 (0-1)",
     "description": "风格影响力参数的描述"
   },
+  "description.duration": {
+    "message": "指定期望的歌曲时长（秒），不同模型支持程度不同，实际时长会有小幅浮动",
+    "description": "歌曲时长参数的描述"
+  },
   "description.audioWeight": {
-    "message": "翻唱时原曲对结果的影响权重 (0-100)",
+    "message": "翻唱时原曲对结果的影响权重 (0-1)",
     "description": "原曲权重参数的描述"
   },
   "description.lyricPrompt": {
@@ -494,6 +506,10 @@
   "message.startingTask": {
     "message": "正在启动任务...",
     "description": "音乐生成任务开始时的消息"
+  },
+  "message.promptRequired": {
+    "message": "请输入提示词或音乐信息",
+    "description": "音乐生成输入缺失时的错误消息"
   },
   "message.startingUploadAudio": {
     "message": "正在上传自定义音乐...",

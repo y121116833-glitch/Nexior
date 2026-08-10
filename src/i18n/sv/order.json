@@ -61,7 +61,7 @@
   },
   "field.proxy": {
     "message": "Proxy",
-    "description": "Proxy är en typ av online-tjänst som används för att överföra data via HTTP."
+    "description": "Proxy är en online-tjänst som används för att överföra data via HTTP."
   },
   "message.paidSuccessfully": {
     "message": "Betalning genomförd",
@@ -79,6 +79,18 @@
     "message": "Öppna WeChat på din telefon och skanna för att slutföra betalningen",
     "description": "Meddelande om hjälp med WeChat-betalning."
   },
+  "message.wechatPayMobileGuide": {
+    "message": "Den aktuella webbläsaren stöder inte direkt anrop av WeChat-betalning. Kopiera länken nedan och öppna den i WeChat för att fortsätta med betalningen.",
+    "description": "Guidetext som visas i en mobil webbläsare som inte är WeChat."
+  },
+  "button.copyPayLink": {
+    "message": "Kopiera betalningslänk",
+    "description": "Knapptext för att kopiera den aktuella sidans URL till urklipp, så att användaren kan klistra in den i WeChat."
+  },
+  "message.wechatPayMobileHint": {
+    "message": "Efter att ha kopierat, öppna WeChat, klistra in länken i valfritt chattfönster eller i sökfältet högst upp, klicka på länken för att slutföra betalningen.",
+    "description": "Andra guidetips under knappen för att kopiera länken."
+  },
   "message.free": {
     "message": "Gratis",
     "description": "Meddelande om gratis beställning."
@@ -86,6 +98,18 @@
   "message.buyInExternalUrl": {
     "message": "Vänligen slutför betalningen via den externa länken",
     "description": "Meddelande om betalning via extern länk."
+  },
+  "message.applePayProcessing": {
+    "message": "Slutför ditt köp via App Store…",
+    "description": "Message while the Apple in-app purchase is processing."
+  },
+  "message.applePayFailed": {
+    "message": "App Store-betalningen slutfördes inte. Försök igen.",
+    "description": "Message when the Apple in-app purchase fails."
+  },
+  "message.applePayUnavailable": {
+    "message": "Det här paketet kan inte köpas i appen.",
+    "description": "Message when Apple in-app purchase is unavailable for the package."
   },
   "message.updateFailed": {
     "message": "Uppdatering misslyckades",
@@ -129,11 +153,15 @@
   },
   "title.aliPay": {
     "message": "Alipay",
-    "description": "Titel som visas på webbplatsen, vilket indikerar Alipay-betalning, Alipay är en typ av online-betalning."
+    "description": "Titeln som visas på webbplatsen, vilket indikerar Alipay-betalning, en form av onlinebetalning."
   },
   "title.stripe": {
     "message": "Stripe",
     "description": "Titel som visas på webbplatsen, vilket indikerar Stripe-betalning, Stripe är en typ av online-betalning."
+  },
+  "title.card": {
+    "message": "Bankkort",
+    "description": "Titel som visas som webbplatsens rubrik, indikerar betalning med bankkort (kreditkort/debitkort)."
   },
   "title.manageOrder": {
     "message": "Hantera beställningar",
@@ -371,6 +399,10 @@
     "message": "Solana Plånbok",
     "description": "Rubrik för Solana plånboksanslutningskort."
   },
+  "message.publicPayNotFound": {
+    "message": "Beställningen hittades inte eller har gått ut.",
+    "description": "Shown on public pay page when the order GET returns 404."
+  },
   "message.x402WalletStatusDetected": {
     "message": "Upptäckt",
     "description": "Statusetikett för upptäckta/installera plånböcker."
@@ -502,5 +534,45 @@
   "title.updateDiscount": {
     "message": "Uppdatera rabatt",
     "description": "Titel på popup-fönstret för att redigera rabatt."
+  },
+  "message.wechatPayLongPressTip": {
+    "message": "Hall in QR-koden nedan och valj 'Identifiera QR-kod' for att slutfora betalningen i WeChat.",
+    "description": "Tip shown above the Native QR on mobile-WeChat. The user long-presses to recognise the `weixin://wxpay/bizpayurl` URL and pays without leaving WeChat."
+  },
+  "message.wechatPayMobileScanTip": {
+    "message": "Spara eller ta en skärmbild av QR-koden nedan, öppna WeChat, tryck på Skanna, välj albumet uppe till höger och välj sedan den sparade bilden för att slutföra betalningen.",
+    "description": "Vägledande text som visas ovanför QR-koden i mobila webbläsare utanför WeChat. Den instruerar användaren att spara QR-kodsbilden och sedan använda albumfunktionen i WeChats skanningsverktyg för att identifiera koden och slutföra betalningen."
+  },
+  "message.creditsValue": {
+    "message": "{value} krediter",
+    "description": "Display of credits amount for an order, e.g. '5 credits'. {value} is the formatted credit number."
+  },
+  "title.totalOrders": {
+    "message": "Totalt antal beställningar",
+    "description": "Sammanfattningskort: Totalt antal beställningar baserat på aktuella filtreringsvillkor."
+  },
+  "title.totalSpent": {
+    "message": "Totala utgifter",
+    "description": "Sammanfattningskort: Totalt belopp för beställningar baserat på aktuella filtreringsvillkor."
+  },
+  "title.finishedOrders": {
+    "message": "Avslutade beställningar",
+    "description": "Sammanfattningskort: Antal avslutade beställningar."
+  },
+  "title.pendingOrders": {
+    "message": "Väntande betalningar",
+    "description": "Sammanfattningskort: Antal väntande betalningar."
+  },
+  "button.export": {
+    "message": "Exportera CSV",
+    "description": "Knapptext: Exportera order CSV baserat på aktuella filtreringsvillkor."
+  },
+  "field.allStates": {
+    "message": "Alla statusar",
+    "description": "Platsinnehavare för rullgardinsmenyn för status: indikerar att inga statusar är begränsade."
+  },
+  "field.allPayWays": {
+    "message": "Alla betalningsmetoder",
+    "description": "Platsinnehavare för rullgardinsmenyn för betalningsmetoder: indikerar att inga betalningsmetoder är begränsade."
   }
 }

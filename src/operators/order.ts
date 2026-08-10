@@ -16,6 +16,12 @@ export interface IOrderQuery {
   state?: string | string[];
 }
 
+export interface IOrderSummary {
+  total_count: number;
+  total_spent: number;
+  state_counts: Record<string, number>;
+}
+
 class OrderService {
   key = 'orders';
 
@@ -57,6 +63,10 @@ class OrderService {
     });
   }
 
+  async appleVerify(id: string, transactionId: string): Promise<AxiosResponse<IOrderDetailResponse>> {
+    return await httpClient.post(`/${this.key}/${id}/apple-verify/`, { transaction_id: transactionId });
+  }
+
   async updatePrice(id: string, data: IOrder): Promise<AxiosResponse<IOrderDetailResponse>> {
     return await httpClient.post(`/${this.key}/${id}/update-price/`, data);
   }
@@ -67,6 +77,17 @@ class OrderService {
 
   async delete(id: string): Promise<AxiosResponse<null>> {
     return await httpClient.delete(`/${this.key}/${id}`);
+  }
+
+  async getSummary(query: IOrderQuery): Promise<AxiosResponse<IOrderSummary>> {
+    return await httpClient.get(`/${this.key}/summary/`, { params: query });
+  }
+
+  async exportCsv(query: IOrderQuery): Promise<AxiosResponse<Blob>> {
+    return await httpClient.get(`/${this.key}/export/`, {
+      params: query,
+      responseType: 'blob'
+    });
   }
 }
 
